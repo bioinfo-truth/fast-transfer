@@ -1,5 +1,7 @@
 # fast-transfer：公开数据下载与网盘上传 PoC
 
+项目规划和架构见[项目 Wiki 文档](docs/wiki/Home.md)，执行进度使用 [GitHub Issues](https://github.com/bioinfo-truth/fast-transfer/issues) 跟踪。
+
 第一阶段以文件清单作为输入，逐个下载公开 HTTPS 文件，按需验证源站 MD5，然后通过百度网盘开放平台的预上传、分片上传和创建文件接口上传到自己的应用目录。一个文件完成后才处理下一个，限制文件大小并为系统磁盘保留空间。输出 JSON Lines，可留存计时和文件校验记录。
 
 ## 当前范围
