@@ -1,0 +1,10 @@
+{
+  "files": [
+    {
+      "name": "example.fastq.gz",
+      "url": "https://example.org/example.fastq.gz",
+      "size": 123456,
+      "md5": "0123456789abcdef0123456789abcdef"
+    }
+  ]
+}
