@@ -53,6 +53,18 @@
 
 依据：[官方集成介绍](https://www.terabox.com/integrations)、[官方 API 文档](https://www.terabox.com/integrations/docs)。以上是文档能力，不是账号权限或性能实测结论。
 
+## Send Anywhere：人工临时传输候选，暂不作为自动化主链路
+
+2026-11-07 核对官方资料，未实测。最关键变化是官方宣布于 2026-03-31 终止 Open API 服务，原 API key 失效；普通用户服务继续。旧 API 页面或历史 SDK 文章不能作为仍可集成的依据。
+
+- 六位码方式即时发送、不在服务器持久保存文件，要求发送端配合接收端在线；官方单次上限为 50 GB。不宜直接假定其连接在本链路必定为点对点或必定高速。
+- 分享链接先上传到平台，默认保留 48 小时。官方帮助页列出每链接免费/Lite/Standard 上限分别 10/20/30 GB、最多 1,000 个文件；接收方完成下载需文件上传完成。
+- 帮助页列出每账号每月分享下载流量免费/Lite/Standard 为 10/200/500 GB，另有链接存储容量限制。此类消费级额度不适合作为批量 TB 级交付的默认配置；采购前应重新核对实际套餐。
+- 官方有 Linux 桌面下载，当前列出 Ubuntu 24.04 或以上；不能据此认定提供受支持的无界面 CLI 或 Debian 自动化服务。
+- 可保留为人工小批量临时交付、海外节点到境内 NAS 传输的实验候选。境内可达性、速度、恢复能力均未实测，也没有证据表明可直接上传百度网盘或减少下载源文件的暂存空间。除非获得厂商当前支持的自动化方案，否则不投入旧 Open API 集成。
+
+依据：[Open API 终止公告](https://support.send-anywhere.com/hc/en-us/articles/54660040864025-End-of-support-for-Open-API-Service-26-3-31)、[单次大小限制](https://support.send-anywhere.com/hc/en-us/articles/360005223534-File-size-that-can-be-transferred-at-one-time)、[文件保留方式](https://support.send-anywhere.com/hc/en-us/articles/360005222894-How-long-the-transferred-files-are-kept-on-the-server)、[下载流量及链接限制](https://support.send-anywhere.com/hc/en-us/articles/360003454153-I-am-unable-to-download-files-from-the-link)、[官方下载](https://send-anywhere.com/file-transfer)。
+
 ## 官方依据
 
 - [镭速 Proxy](https://www.raysync.cn/products/vpn/)
