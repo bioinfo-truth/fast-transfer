@@ -65,6 +65,30 @@
 
 依据：[Open API 终止公告](https://support.send-anywhere.com/hc/en-us/articles/54660040864025-End-of-support-for-Open-API-Service-26-3-31)、[单次大小限制](https://support.send-anywhere.com/hc/en-us/articles/360005223534-File-size-that-can-be-transferred-at-one-time)、[文件保留方式](https://support.send-anywhere.com/hc/en-us/articles/360005222894-How-long-the-transferred-files-are-kept-on-the-server)、[下载流量及链接限制](https://support.send-anywhere.com/hc/en-us/articles/360003454153-I-am-unable-to-download-files-from-the-link)、[官方下载](https://send-anywhere.com/file-transfer)。
 
+## 夸克网盘与阿里云盘：境内交付备选
+
+2026-11-07 文档调研，未安装、授权或实测。两者加入备选；以下优先级为建议，不代表已决定替换百度网盘。
+
+### 夸克网盘
+
+夸克官网已介绍网盘 Skill；公开的 `quark-clouddrive/quarkclouddrive_offical` 仓库说明支持 OAuth 2.0、Linux amd64/arm64、Node.js CLI，以及上传、下载、备份和生成分享链接。因此优先验证现有 CLI 的上传到分享流程，避免直接假设只能依赖 Cookie 逆向。公开工具不等于可任意申请独立开发者应用，商业服务许可仍需核实。
+
+未确认事项：美国节点授权及控制/数据接口可达性，大文件上传和跨进程恢复，是否依赖完整本地文件、临时文件峰值，账号/会员的容量和单文件限制，客户免费账号的领取与持续下载体验、分享限制及批量收费代下载适用条件。CLI 文档能力不能视为生产吞吐或无人值守稳定性证明。
+
+依据：[夸克官方发布介绍](https://www.quark.cn/documents/quark-updates/brand-news/quark-drive-skill)、[公开 Skill/CLI 仓库](https://github.com/quark-clouddrive/quarkclouddrive_offical)。
+
+### 阿里云盘（阿里云盘个人服务，与 OSS 分开）
+
+存在官方 OpenAPI 和官方 SDK，开放平台需要提交应用场景审核。官方接入申请说明明确限制文件分发服务、替代 OSS 提供企业服务、共享用户令牌及下载地址等行为。我们“自有账号存储并向客户分享”的付费代下载流程是否被允许，需要结合完整场景确认；不能由个人账号能上传分享推导商业自动分发已获许可，也不能将普通分享链接与直接下载地址混为一谈。
+
+第三方 `tickstep/aliyunpan` 提供 Linux 命令行上传和分享，其开发者明确说明融合官方 OpenAPI 与网页接口，分享等能力依赖网页接口；所以存在工具不代表这些功能都受官方 OpenAPI 支持。生信原始文件扩展名（如 `.fastq.gz`、`.bam`、`.sra`）、大文件/目录分享及快传方式应按当前规则逐项验证。
+
+依据：[官方开放平台申请与限制](https://yida.alibaba-inc.com/o/aliyundrive_developer)、[官方 SDK](https://alibaba.github.io/aliyunpan-ios-sdk/)、[第三方 CLI 文档](https://github.com/tickstep/aliyunpan/blob/main/docs/manual.md)、[开发者接口库说明](https://github.com/tickstep/aliyunpan-api)。第三方仓库只作为自身工具能力的依据。
+
+### 建议验证顺序
+
+优先夸克的小文件上传、分享、境内领取闭环；阿里云盘先核实服务使用范围及目标格式分享条件，再投入适配。所有后端采用相同公开测试文件与校验，分别测上传、分享创建和接收端下载，记录是否要求客户会员；闭环通过后再测大文件、恢复及磁盘占用。保留百度为当前主方向，不同时采购多个会员。具体执行沿用现有上传、交付及链路验证 Issues，不重复建单。
+
 ## 官方依据
 
 - [镭速 Proxy](https://www.raysync.cn/products/vpn/)
