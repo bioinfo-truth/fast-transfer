@@ -6,7 +6,7 @@
 
 ## M1/M2 当前交付
 
-实现位于 [MVP 评审分支](https://github.com/bioinfo-truth/fast-transfer/tree/codex/mvp-intake-download)，尚未部署。源码、输入契约、测试和证据见该分支的 README、docs/mvp-input-contract.md、docs/mvp-milestones.md、examples/ncbi-ecoli/ 和 docs/validation/mvp-source-2026-11-08.json。
+实现见 [PR #9](https://github.com/bioinfo-truth/fast-transfer/pull/9)（[MVP 评审分支](https://github.com/bioinfo-truth/fast-transfer/tree/codex/mvp-intake-download)），尚未合并或部署。源码、输入契约、测试和证据见该分支的 README、docs/mvp-input-contract.md、docs/mvp-milestones.md、examples/ncbi-ecoli/ 和 docs/validation/mvp-source-2026-11-08.json。
 
 M1 输入状态有 accepted、manual_review 和 rejected。必须有明确大小、至少一个源站 MD5/SHA-256、版本、公开性与再分发审核依据；缺失则不下载、转人工。受控数据、禁止分发、非法文件名/路径、带凭据或查询参数的 URL 拒绝。操作人员审核不等于外部客户可自行声明权限。
 

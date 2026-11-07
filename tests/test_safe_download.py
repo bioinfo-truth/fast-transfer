@@ -72,10 +72,12 @@ class SafeHTTPTests(unittest.TestCase):
     def test_redirect_loop_and_access_denied_states(self):
         for status, headers, code in [(302, {'Location': '/a'}, 'redirect_loop'),
                                      (401, {}, 'source_access_denied'), (403, {}, 'source_access_denied')]:
-            c = MagicMock(); c.getresponse.return_value = Response(status=status, headers=headers)
+            response = Response(status=status, headers=headers)
+            c = MagicMock(); c.getresponse.return_value = response
             with patch.object(net, 'public_addresses', return_value=['8.8.8.8']), patch.object(net, 'PinnedHTTPSConnection', return_value=c):
                 with self.assertRaisesRegex(InputProblem, code):
                     net.open_public('https://example.org/a', time.monotonic()+60)
+                self.assertTrue(response.closed)
 
     def test_redirect_count_limit(self):
         connections = [MagicMock(), MagicMock()]

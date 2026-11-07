@@ -51,6 +51,7 @@ def open_public(url, deadline, max_redirects=3):
             raise InputProblem('download_deadline', 'manual_review')
         addresses = public_addresses(u.hostname)
         connection = PinnedHTTPSConnection(u.hostname, addresses[0], min(30, remaining))
+        response = None
         try:
             target = urllib.parse.urlunsplit(('', '', u.path or '/', '', ''))
             connection.request('GET', target, headers={'User-Agent': 'fast-transfer-mvp/0.1', 'Accept-Encoding': 'identity'})
@@ -75,6 +76,8 @@ def open_public(url, deadline, max_redirects=3):
                 raise InputProblem('source_http_status', 'manual_review')
             return response, connection, hop
         except BaseException:
+            if response is not None:
+                response.close()
             connection.close()
             raise
     raise InputProblem('too_many_redirects')
