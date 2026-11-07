@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "receipt_observation",
+  "job_id": "job-acceptance-demo",
+  "attempt_id": "synthetic-attempt-01",
+  "spec_sha256": "c0d7b930d75bb01e724b7ce269c5f6587591e7b776ad4373210fc51989546338",
+  "mapping_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+  "device_ref_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "location_claim": "unknown",
+  "location_evidence_sha256": null,
+  "acquisition": {
+    "kind": "simulation",
+    "method": "local_copy",
+    "started_at": null,
+    "finished_at": null,
+    "outcome": "unknown"
+  },
+  "observations": {
+    "elapsed_ms": null,
+    "network_received_bytes": null,
+    "minimum_free_bytes": null,
+    "manual_steps": null
+  }
+}

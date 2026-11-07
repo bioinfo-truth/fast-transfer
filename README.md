@@ -46,3 +46,5 @@ M3 的 `python3 -m fast_transfer.m3 --simulate ...` 仅使用本地已校验文�
 新增 fake-only [隔离不覆盖候选](docs/mvp-baidu-http.md)：目录身份核验、改名失败保留、提交未知不重试；真实写入保持关闭。
 
 [M4/M5 离线单任务工作流](docs/mvp-workflow.md)：人工回填与清单草稿、私有状态/查看及人工核查；无真实分享、发送或交付能力。
+
+[M6 本地验收准备](docs/mvp-acceptance.md)：回执契约、只读文件核验与真实领取清单；准备完成不代表境内实测通过。
