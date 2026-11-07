@@ -31,6 +31,7 @@ SAFE_REASONS = frozenset('''
     space_source_plan_mismatch invalid_space_stage space_stage_regression space_directory_changed
     space_file_device_or_alias_changed source_exceeds_space_plan source_not_complete_for_stage
     payload_exceeds_space_plan temporary_overhead_exceeds_plan disk_budget_exceeded
+    candidate_fake_only candidate_replay_rejected candidate_terminal candidate_expired
     http_runtime_locked http_stopped http_scope_invalid http_url_rejected http_redirect_rejected
     http_header_rejected http_status_rejected http_limit_exceeded http_deadline http_io_failure
     http_auth_missing http_concurrent_request protocol_json_invalid protocol_api_error
@@ -293,6 +294,9 @@ def run_simulated_upload(entry, source_path, receipt_path, backend_root, job_id,
         # Arbitrary injected exceptions may contain tokens or signed URLs. Never stringify.
         result['reason'] = 'adapter_or_local_io_failure'
     finally:
+        # Only booleans are persisted; never adapter URLs, IDs or raw exceptions.
+        result['mutation_outcome_unknown'] = getattr(transport, 'uncertain_objects', False) is True
+        result['commit_attempted'] = getattr(transport, 'commit_attempted', False) is True
         if source is not None:
             try:
                 source.close()

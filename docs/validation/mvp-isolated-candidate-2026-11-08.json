@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-08",
+  "base_commit": "6d919e7e1892a39936af9275ed4a0f1070617980",
+  "scope": "fake-only isolated non-overwrite candidate; official public docs only",
+  "policy": {
+    "directory_rtype": 0,
+    "precreate_rtype": 1,
+    "create_rtype": 1,
+    "is_revision": 0,
+    "rename": "fail and retain objects",
+    "unknown_commit": "terminal; no write retry",
+    "atomic_preflight_claim": false,
+    "live_enabled": false,
+    "delete_or_share": false
+  },
+  "sources": [
+    {
+      "id": "precreate",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E4%B8%8A%E4%BC%A0/%E9%A2%84%E4%B8%8A%E4%BC%A0/",
+      "title": "预上传",
+      "public_text_sha256": "98037b0dff3dbb5105f378c4317b093ba498876c524588fa318931c13ffa66c8"
+    },
+    {
+      "id": "create",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E4%B8%8A%E4%BC%A0/%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6/",
+      "title": "创建文件",
+      "public_text_sha256": "a41506402ee5a3b723e075d8d775e393d1612ccf83d2910de5087c6a4158667d"
+    },
+    {
+      "id": "mkdir",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/",
+      "title": "创建文件夹",
+      "public_text_sha256": "d3850936e6f0a610a4031c98588368b3cd070c477fdc68a0cfdc252811d7e92e"
+    },
+    {
+      "id": "metas",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E8%8E%B7%E5%8F%96%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF/%E6%9F%A5%E8%AF%A2%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF/",
+      "title": "查询文件信息",
+      "public_text_sha256": "547f38529bc81e6d7b8942766ac32b78c082a54d20931790a2a68f4fe0e7091c"
+    }
+  ],
+  "source_hash_note": "Fetched public page text via Jina; not official signature. No full page body copied. Prior HTTP evidence remains its historical snapshot.",
+  "implementation_sha256": {
+    "fast_transfer/isolated_candidate.py": "4a5ef883f67985a49e4c497e2e75c419c71657d30421873421955a4fdcb8f89d",
+    "fast_transfer/upload_stage.py": "0ad7efcf15b595bc8ab0287061c4bd71d6f18301530018bb3f2de52e6cf845c9",
+    "tests/test_isolated_candidate.py": "f1a7a538577961a2252699d1c9f2cd4d5262b519352df7de8bfc2f4a5ebc7272"
+  },
+  "tests": {
+    "new_candidate_tests": 7,
+    "workspace_total": 111,
+    "clean_tree_expected": 107,
+    "real_socket_calls": 0,
+    "real_account_calls": 0,
+    "credentials_read": false,
+    "old_benchmarks_repeated": false
+  },
+  "remaining": [
+    "real directory fsids support and conflict/rename behavior",
+    "separate reviewed live activation and explicit object-retention scope",
+    "actual account permissions/limits",
+    "joint real M2/M3 space and stop acceptance",
+    "M4-M6"
+  ]
+}

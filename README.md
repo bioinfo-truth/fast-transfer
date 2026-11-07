@@ -42,3 +42,5 @@ python3 -m unittest discover -s tests -v
 新测试使用模拟网络检查危险输入、重定向、固定 IP 与 TLS 主机名、大小/磁盘/哈希错误及旧文件保护。另有一次真实 NCBI 小文件源下载记录，见 [M2 证据](docs/validation/mvp-source-2026-11-08.json)；它不包含网盘上传、分享或客户领取。
 
 M3 的 `python3 -m fast_transfer.m3 --simulate ...` 仅使用本地已校验文件与内存假远端，不加载凭据或连接网盘；没有 live 回退。模拟成功始终 `cloud_verified=false`、`delivery_eligible=false`，不得用于真实分享。操作及完整验收矩阵见 M3 说明。
+
+新增 fake-only [隔离不覆盖候选](docs/mvp-baidu-http.md)：目录身份核验、改名失败保留、提交未知不重试；真实写入保持关闭。

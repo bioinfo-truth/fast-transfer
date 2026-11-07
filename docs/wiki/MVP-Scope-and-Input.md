@@ -48,3 +48,9 @@ HTTP 绑定与假响应审查已补齐；真实账号权限/文件限制、严�
 具体进度使用已有 M1–M6 执行清单，不重复创建任务。上一轮临时 access_token 配置许可已结束，不授权新一轮持久配置。未导入新凭据、未上传/分享、未发消息、未收费、未部署，也未恢复暂停的定时检查。
 
 [项目首页](https://github.com/bioinfo-truth/fast-transfer/wiki) · [路线图](https://github.com/bioinfo-truth/fast-transfer/wiki/Roadmap) · [产品与架构](https://github.com/bioinfo-truth/fast-transfer/wiki/Product-and-Architecture)
+
+## 隔离不覆盖候选已实现（无真实调用）
+
+新增 fake-only 候选：随机任务名配合本地持久独占目录，云端新目录 rtype=0，文件 precreate/create 一致 rtype=1；目录 fs_id/path 身份复核、返回改名即失败、会话过期/重放拒绝、提交未知不重试、保留全部原有及新增/不确定对象。查询不是无竞态原子性证明；此候选允许冲突时留下改名对象，不能声称零副本。源/远端长度、完整双哈希、空间及 stop 闸门继续复用。新增 7 项候选测试通过，真实写入仍独立关闭，模拟不获得交付资格。
+
+保护原有资料可采用这一官方不覆盖策略候选，不再将 precreate=0 的严格零改名依据缺口作为全部工程阻碍。真实目录查询、权限/权益、节点行为和 M2/M3 联合验收仍 pending、未尝试；未来明确批准须包含新任务目录及可能改名/未知对象的保留范围，不覆盖、不删除、不分享。详见[候选实现、官方来源与残余风险](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mvp-baidu-http.md)。
