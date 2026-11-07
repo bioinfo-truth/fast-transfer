@@ -1,6 +1,7 @@
 import hashlib
 import io
 import json
+import sys
 import socket
 import tempfile
 import time
@@ -12,6 +13,7 @@ from unittest.mock import MagicMock, patch
 from fast_transfer import download as app
 from fast_transfer import safe_http as net
 from fast_transfer.intake import InputProblem
+from fast_transfer.space import BackendNeeds, SpaceGuard, RESERVE, MARGIN, rounded
 
 
 class Response(io.BytesIO):
@@ -104,7 +106,7 @@ class DownloadTests(unittest.TestCase):
 
     def run_download(self, path, data=None, headers=None):
         response = Response(self.data if data is None else data, headers=headers)
-        with patch.object(app, 'open_public', return_value=(response, MagicMock(), 0)), patch.object(app.shutil, 'disk_usage', return_value=self.space):
+        with patch.object(app, 'open_public', return_value=(response, MagicMock(), 0)), patch('fast_transfer.space.shutil.disk_usage', return_value=self.space):
             return app.download_verified(self.entry, path, 4096)
 
     def test_success_without_content_length_still_checks_size_and_both_hashes(self):
@@ -128,13 +130,13 @@ class DownloadTests(unittest.TestCase):
             original, target = Path(d)/'original', Path(d)/'target'
             original.write_bytes(b'existing')
             target.symlink_to(original)
-            with self.assertRaises(FileExistsError):
+            with self.assertRaises(InputProblem):
                 self.run_download(target)
             self.assertEqual(original.read_bytes(), b'existing')
             self.assertTrue(target.is_symlink())
 
     def test_size_or_disk_budget_prevents_any_request(self):
-        with tempfile.TemporaryDirectory() as d, patch.object(app, 'open_public') as fetch, patch.object(app.shutil, 'disk_usage', return_value=MagicMock(free=app.RESERVE)):
+        with tempfile.TemporaryDirectory() as d, patch.object(app, 'open_public') as fetch, patch('fast_transfer.space.shutil.disk_usage', return_value=MagicMock(free=app.RESERVE)):
             with self.assertRaisesRegex(InputProblem, 'disk_budget'):
                 app.download_verified(self.entry, Path(d)/'file', 4096)
             with self.assertRaisesRegex(InputProblem, 'file_budget'):
@@ -143,9 +145,14 @@ class DownloadTests(unittest.TestCase):
 
     def test_disk_reserve_drop_during_stream_stops_and_removes_partial(self):
         response = Response(self.data)
-        with tempfile.TemporaryDirectory() as d, patch.object(app, 'open_public', return_value=(response, MagicMock(), 0)), patch.object(app.shutil, 'disk_usage', side_effect=[self.space, MagicMock(free=app.RESERVE)]):
+        original_read = response.read1
+        def drop(n):
+            self.space.free = app.RESERVE
+            return original_read(n)
+        response.read1 = drop
+        with tempfile.TemporaryDirectory() as d, patch.object(app, 'open_public', return_value=(response, MagicMock(), 0)), patch('fast_transfer.space.shutil.disk_usage', return_value=self.space):
             p = Path(d)/'file'
-            with self.assertRaisesRegex(InputProblem, 'disk_reserve'):
+            with self.assertRaisesRegex(InputProblem, 'disk_budget'):
                 app.download_verified(self.entry, p, 4096)
             self.assertFalse(p.exists())
 
@@ -165,10 +172,90 @@ class DownloadTests(unittest.TestCase):
     def test_read_failure_removes_only_new_partial_and_closes_connection(self):
         response, connection = Response(self.data), MagicMock()
         response.read1 = MagicMock(side_effect=OSError('DO_NOT_LOG'))
-        with tempfile.TemporaryDirectory() as d, patch.object(app, 'open_public', return_value=(response, connection, 0)), patch.object(app.shutil, 'disk_usage', return_value=self.space):
+        with tempfile.TemporaryDirectory() as d, patch.object(app, 'open_public', return_value=(response, connection, 0)), patch('fast_transfer.space.shutil.disk_usage', return_value=self.space):
             p = Path(d)/'file'
             with self.assertRaises(OSError):
                 app.download_verified(self.entry, p, 4096)
             self.assertFalse(p.exists())
             self.assertTrue(response.closed)
             connection.close.assert_called_once()
+
+    def test_future_openlist_cache_budget_blocks_download_before_network(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); target = root/'file'
+            import os
+            quantum = os.statvfs(root).f_frsize
+            self.space.free = RESERVE + MARGIN + rounded(len(self.data), quantum)
+            needs = BackendNeeds('openlist', 0, 0, 0, 'stream')
+            with patch('fast_transfer.space.shutil.disk_usage', return_value=self.space), patch.object(app, 'open_public') as fetch:
+                guard = SpaceGuard({'file': len(self.data)}, root, needs, root)
+                with self.assertRaisesRegex(InputProblem, 'disk_budget'):
+                    app.download_verified(self.entry, target, 4096, space_guard=guard)
+                fetch.assert_not_called()
+                self.assertFalse(target.exists())
+
+    def test_backend_budget_is_rechecked_during_download_and_old_files_survive(self):
+        response = Response(self.data)
+        original_read = response.read1
+        def drop(n):
+            self.space.free = RESERVE + MARGIN
+            return original_read(n)
+        response.read1 = drop
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); old = root/'old'; old.write_bytes(b'preserve')
+            needs = BackendNeeds('openlist', 0, 0, 0, 'stream')
+            with patch('fast_transfer.space.shutil.disk_usage', return_value=self.space), patch.object(app, 'open_public', return_value=(response, MagicMock(), 0)):
+                guard = SpaceGuard({'file': len(self.data)}, root, needs, root)
+                with self.assertRaisesRegex(InputProblem, 'disk_budget'):
+                    app.download_verified(self.entry, root/'file', 4096, space_guard=guard)
+            self.assertEqual(old.read_bytes(), b'preserve')
+            self.assertFalse((root/'file').exists())
+
+    def test_cli_backend_admission_and_receipt_are_offline_and_separate_from_upload(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); manifest = root/'manifest.json'
+            manifest.write_text(json.dumps({'schema_version': 1, 'files': [self.entry]}))
+            backend = root/'backend'; backend.mkdir()
+            output = root/'new'
+            args = ['download', str(manifest), '--output-dir', str(output), '--backend', 'openlist',
+                    '--backend-dir', str(backend), '--source-overhead-bytes', '1048576',
+                    '--upload-temp-bytes', '65536', '--readback-temp-bytes', '65536',
+                    '--readback-mode', 'stream', '--expected-layout', 'same']
+            stdout = io.StringIO()
+            with patch.object(sys, 'argv', args), patch.object(sys, 'stdout', stdout), patch('fast_transfer.space.shutil.disk_usage', return_value=self.space), patch.object(app, 'open_public', return_value=(Response(self.data), MagicMock(), 0)) as source:
+                self.assertEqual(app.main(), 0)
+            rows = [json.loads(line) for line in stdout.getvalue().splitlines()]
+            self.assertEqual(rows[0]['event'], 'space_admission')
+            self.assertEqual(rows[0]['planned_stages'], ['download', 'upload', 'readback'])
+            self.assertEqual(rows[0]['requirements']['upload_temp_bytes'], 65536)
+            self.assertEqual(rows[1]['status'], 'source_verified')
+            self.assertEqual((output/self.entry['name']).read_bytes(), self.data)
+            self.assertEqual(list(backend.iterdir()), [])
+            self.assertEqual(json.loads((output/'.receipts/0.json').read_text())['status'], 'source_verified')
+            self.assertEqual(source.call_count, 1)  # Mocked public-source GET only.
+
+    def test_cli_unknown_backend_cost_does_not_create_files_or_request_data(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); manifest = root/'manifest.json'
+            manifest.write_text(json.dumps({'schema_version': 1, 'files': [self.entry]}))
+            output = root/'new'; stdout = io.StringIO()
+            args = ['download', str(manifest), '--output-dir', str(output), '--backend', 'openlist',
+                    '--source-overhead-bytes', '0']
+            with patch.object(sys, 'argv', args), patch.object(sys, 'stdout', stdout), patch.object(app, 'open_public') as source:
+                self.assertEqual(app.main(), 2)
+            self.assertEqual(json.loads(stdout.getvalue())['reason'], 'unknown_backend_overhead')
+            self.assertFalse(output.exists())
+            source.assert_not_called()
+
+    def test_cli_low_space_stops_before_creating_workspace(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); manifest = root/'manifest.json'
+            manifest.write_text(json.dumps({'schema_version': 1, 'files': [self.entry]}))
+            output = root/'new'; stdout = io.StringIO()
+            self.space.free = RESERVE + MARGIN - 1
+            args = ['download', str(manifest), '--output-dir', str(output)]
+            with patch.object(sys, 'argv', args), patch.object(sys, 'stdout', stdout), patch('fast_transfer.space.shutil.disk_usage', return_value=self.space), patch.object(app, 'open_public') as source:
+                self.assertEqual(app.main(), 2)
+            self.assertEqual(json.loads(stdout.getvalue())['reason'], 'space_workspace_reserve')
+            self.assertFalse(output.exists())
+            source.assert_not_called()

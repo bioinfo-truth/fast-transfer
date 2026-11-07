@@ -8,6 +8,8 @@
 
 M1 输入契约与真实 NCBI 小样例、M2 本项目主机的源下载校验已通过；M3 新一轮百度上传、M4 分享、M5 完整任务恢复、M6 国内领取尚未通过。实现处于评审分支，未部署或收费，详见 [MVP 范围与输入](https://github.com/bioinfo-truth/fast-transfer/wiki/MVP-Scope-and-Input)。上一轮临时令牌测试许可不作为新一轮持久配置许可。
 
+M2 补充状态：后端感知的同盘/分盘预算组件、未知开销拒绝和离线动态检查已完成；实际上传/回读过程的空间保护仍待 M3 联调，不能视为整个 M2 已验收。详见 [MVP 范围与输入](https://github.com/bioinfo-truth/fast-transfer/wiki/MVP-Scope-and-Input)。
+
 下方工具记录及后续实验计划保留为此前快照，不能替代当前 M1–M6 状态。
 
 

@@ -2,9 +2,10 @@
 
 目标链路是人工录入公开 HTTPS 文件链接/manifest → 下载及源站校验 → 上传百度网盘并核验 → 分享交付 → 中国境内用户领取校验。首版不做淘宝、支付、项目号解析、完整网站或收费。
 
-目前 **M1 输入契约与真实样例、M2 本地源文件下载/校验**已实现。新 MVP 轮的上传、分享和国内领取尚未验收，完整任务状态恢复也未实现。此前的工具验证作为独立证据保留，不代表该服务已完成。
+目前 **M1 输入契约与真实样例、M2 本地源文件下载/校验**已实现；后端感知预算组件与离线测试已补齐，实际上传期空间保护仍待 M3 联调，不能视为整个 M2 已验收。新 MVP 轮的上传、分享和国内领取尚未验收，完整任务状态恢复也未实现。此前的工具验证作为独立证据保留，不代表该服务已完成。
 
 - [输入契约与拒绝/人工审核规则](docs/mvp-input-contract.md)
+- [后端空间预算、检查接口与未验证范围](docs/mvp-space-budget.md)
 - [M1–M6 里程碑与授权边界](docs/mvp-milestones.md)
 - [真实 NCBI 样例及来源/使用政策](examples/ncbi-ecoli/README.md)
 - [项目 Wiki](https://github.com/bioinfo-truth/fast-transfer/wiki)（[仓库镜像](docs/wiki/Home.md)）
@@ -18,7 +19,7 @@ python3 -m fast_transfer.intake examples/ncbi-ecoli/manifest.json
 python3 -m fast_transfer.download examples/ncbi-ecoli/manifest.json --output-dir ./scratch-ncbi-new-run --max-file-bytes 2097152
 ```
 
-输出目录必须不存在；源文件逐个下载，收据位于 `.receipts/`，不会上传或分享。默认单文件上限 16 MiB；工作文件系统至少保留 5 GiB，另加 256 MiB 提前停止余量。当前只供操作人员串行运行，不具备多用户配额和完整任务监管。
+输出目录必须不存在；源文件逐个下载，收据位于 `.receipts/`，不会上传或分享。默认单文件上限 16 MiB；工作文件系统至少保留 5 GiB，另加 256 MiB 提前停止余量，以及独立的源收据/元数据预算。默认 source-only 计划不含未来后端空间保证；选择后端计划时须显式提供开销及目录，命令仍不会上传。当前只供操作人员串行运行，不具备多用户配额和完整任务监管。
 
 只给公开链接也可以先录入，例如：
 
