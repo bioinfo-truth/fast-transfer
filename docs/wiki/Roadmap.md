@@ -8,7 +8,7 @@ M1 与本地 M2 已有真实 NCBI 小样例及测试证据，新一轮上传/分
 
 M2 补充状态：后端感知的同盘/分盘预算组件、未知开销拒绝和离线动态检查已完成；实际上传/回读过程的空间保护仍待 M3 联调，不能视为整个 M2 已验收。详见 [MVP 范围与输入](https://github.com/bioinfo-truth/fast-transfer/wiki/MVP-Scope-and-Input)。
 
-M3 补充状态：直接 API 流程的无凭据适配、源/回读闸门及空间生命周期模拟已通过；无真实网盘或凭据调用，真实传输绑定与 M2/M3 联合验收仍待执行。模拟资格不能用于真实分享，详见 [MVP 当前交付](https://github.com/bioinfo-truth/fast-transfer/wiki/MVP-Scope-and-Input)。
+M3 补充状态：直接 API 流程的无凭据适配、源/回读闸门及空间生命周期模拟已通过；无真实网盘或凭据调用，HTTP 绑定与假客户端协议测试已补齐，但严格冲突策略仍关闭，真实账号及 M2/M3 联合验收待执行。模拟资格不能用于真实分享，详见 [MVP 当前交付](https://github.com/bioinfo-truth/fast-transfer/wiki/MVP-Scope-and-Input)。
 
 以下保留长期架构/早期路线，不表示这些阶段已经实现。
 

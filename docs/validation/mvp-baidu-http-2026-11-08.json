@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-08",
+  "scope": "HTTP protocol implementation, official public-document review, fake clients only",
+  "sources": [
+    {
+      "id": "ability",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E4%B8%8A%E4%BC%A0/%E8%83%BD%E5%8A%9B%E8%AF%B4%E6%98%8E/",
+      "title": "\u80fd\u529b\u8bf4\u660e",
+      "public_text_sha256": "be4343cb2ef847a9d44735b5dd72631d6a5b1e7faec1af6fd355e2a01a771c6f"
+    },
+    {
+      "id": "precreate",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E4%B8%8A%E4%BC%A0/%E9%A2%84%E4%B8%8A%E4%BC%A0/",
+      "title": "\u9884\u4e0a\u4f20",
+      "public_text_sha256": "98037b0dff3dbb5105f378c4317b093ba498876c524588fa318931c13ffa66c8"
+    },
+    {
+      "id": "create",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E4%B8%8A%E4%BC%A0/%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6/",
+      "title": "\u521b\u5efa\u6587\u4ef6",
+      "public_text_sha256": "730ca7b9f04a5eb1056feb28c4f8ad7b274e56cf59f093cb02c30e316c06299a"
+    },
+    {
+      "id": "part",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E4%B8%8A%E4%BC%A0/%E5%88%86%E7%89%87%E4%B8%8A%E4%BC%A0/",
+      "title": "\u5206\u7247\u4e0a\u4f20",
+      "public_text_sha256": "ac99bf62a24523e6d40898efa359f585c5cd0b60fb86e5cbd267b879cd079859"
+    },
+    {
+      "id": "host",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E4%B8%8A%E4%BC%A0/%E8%8E%B7%E5%8F%96%E4%B8%8A%E4%BC%A0%E5%9F%9F%E5%90%8D/",
+      "title": "\u83b7\u53d6\u4e0a\u4f20\u57df\u540d",
+      "public_text_sha256": "b2bd8cbe87cfa2036b448ca8bdaa8bc58b79f9e2b264448db58b0459ff896cd2"
+    },
+    {
+      "id": "mkdir",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/",
+      "title": "\u521b\u5efa\u6587\u4ef6\u5939",
+      "public_text_sha256": "d3850936e6f0a610a4031c98588368b3cd070c477fdc68a0cfdc252811d7e92e"
+    },
+    {
+      "id": "uinfo",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/",
+      "title": "\u83b7\u53d6\u7528\u6237\u4fe1\u606f",
+      "public_text_sha256": "d8309fde5cfcf6e868ea3a041568bbb01592dc91d39854a8e7fe1f7c4d2b8c5d"
+    },
+    {
+      "id": "quota",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E8%8E%B7%E5%8F%96%E7%BD%91%E7%9B%98%E5%AE%B9%E9%87%8F%E4%BF%A1%E6%81%AF/",
+      "title": "\u83b7\u53d6\u7f51\u76d8\u5bb9\u91cf\u4fe1\u606f",
+      "public_text_sha256": "a901df3759d9497a120462017608647396cefd179b772a4b22e7e3cc12c89eae"
+    },
+    {
+      "id": "metas",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E8%8E%B7%E5%8F%96%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF/%E6%9F%A5%E8%AF%A2%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF/",
+      "title": "\u67e5\u8be2\u6587\u4ef6\u4fe1\u606f",
+      "public_text_sha256": "547f38529bc81e6d7b8942766ac32b78c082a54d20931790a2a68f4fe0e7091c"
+    },
+    {
+      "id": "download",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E4%B8%8B%E8%BD%BD/",
+      "title": "\u4e0b\u8f7d",
+      "public_text_sha256": "6503d058a7f2581fe5b79225b35fb03f2de30fc9958fe66f8d7e7e561d54bd0f"
+    }
+  ],
+  "source_hash_note": "Hash of fetched public page text via reader, not an official signature; no full page copied into repository. Old short-link/overview fallbacks were not accepted as API sources.",
+  "implementation_sha256": {
+    "fast_transfer/baidu_http.py": "6e2daf8b5221251515def9cd745bbb57221584733dcd2ae410a9c6a130fa8d20",
+    "fast_transfer/baidu_protocol.py": "c9bc3df87b338df5aa0b5ca8e64b50c192644db86eb8c1143bc6d00ec90a6ef8",
+    "fast_transfer/upload_stage.py": "87748458bf8b45e7af470802599ed852f087309ccc777ef48f7e610868cf4f15"
+  },
+  "new_protocol_tests": 21,
+  "runtime_default": "closed before credential callback/DNS/connection",
+  "live_write_gate": "hard closed independently of grant; strict precreate conflict-fail policy not proven",
+  "fake_policy": "explicit fake-http diagnostics only: documented precreate=1/create=1; any path drift fails",
+  "credential_test_data": "symbolic AUTH_SLOT or None; no credential files read and no token values supplied",
+  "real_account_calls": 0,
+  "real_cloud_upload_readback_share": false,
+  "biological_simulation_or_old_benchmarks_repeated": false,
+  "largest_new_fixture_bytes": 4194306,
+  "remaining": [
+    "official basis or explicit policy decision for strict conflict failure",
+    "new approval before any real account/credential operation",
+    "actual account permissions/limits and node/redirect behavior",
+    "joint M2/M3 real free-space/stop/IO-boundary acceptance",
+    "M4/M5/M6 acceptance"
+  ],
+  "base_commit": "6343010c3fa558dfa43d02119e04b963617db108",
+  "tests": {
+    "new_protocol_tests": 21,
+    "workspace_total": 104,
+    "workspace_result": "passed",
+    "clean_committed_tree": "verified separately after final commit; four historical uncommitted tests excluded"
+  }
+}

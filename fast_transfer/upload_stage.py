@@ -31,6 +31,12 @@ SAFE_REASONS = frozenset('''
     space_source_plan_mismatch invalid_space_stage space_stage_regression space_directory_changed
     space_file_device_or_alias_changed source_exceeds_space_plan source_not_complete_for_stage
     payload_exceeds_space_plan temporary_overhead_exceeds_plan disk_budget_exceeded
+    http_runtime_locked http_stopped http_scope_invalid http_url_rejected http_redirect_rejected
+    http_header_rejected http_status_rejected http_limit_exceeded http_deadline http_io_failure
+    http_auth_missing http_concurrent_request protocol_json_invalid protocol_api_error
+    protocol_conflict protocol_identity_mismatch protocol_account_limits_unknown protocol_quota_insufficient
+    protocol_strict_conflict_unproven protocol_shape_invalid protocol_path_changed protocol_part_mismatch
+    protocol_session_invalid protocol_not_ready protocol_readback_mismatch
 '''.split())
 
 
@@ -221,12 +227,18 @@ def run_simulated_upload(entry, source_path, receipt_path, backend_root, job_id,
         transport.reserve_new(target_dir)
         guard.check('upload')
         session = transport.begin_new(target, identity['bytes'], tuple(blocks))
+        required = tuple(transport.required_parts(session)) if hasattr(transport, 'required_parts') else tuple(range(len(blocks)))
+        if (any(type(i) is not int or not 0 <= i < len(blocks) for i in required)
+                or len(set(required)) != len(required)):
+            raise StageFailure('protocol_shape_invalid')
+        result['required_parts'] = list(required)
         result['phase'] = 'upload'
-        source.seek(0)
-        for index, md5 in enumerate(blocks):
+        for index in required:
+            md5 = blocks[index]
             guard.check('upload')
             if file_stamp(source) != stamp:
                 raise StageFailure('source_changed')
+            source.seek(index*limits.part_bytes)
             data = source.read(limits.part_bytes)
             if hashlib.md5(data).hexdigest() != md5:
                 raise StageFailure('source_changed')
