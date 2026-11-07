@@ -1,50 +1,39 @@
-# fast-transfer：公开数据下载与网盘上传 PoC
+# fast-transfer：公开生物数据代下载 MVP
 
-项目总览、验证状态和架构见[项目 Wiki](https://github.com/bioinfo-truth/fast-transfer/wiki)（[仓库镜像](docs/wiki/Home.md)），执行进度使用 [GitHub Issues](https://github.com/bioinfo-truth/fast-transfer/issues) 跟踪。
+目标链路是人工录入公开 HTTPS 文件链接/manifest → 下载及源站校验 → 上传百度网盘并核验 → 分享交付 → 中国境内用户领取校验。首版不做淘宝、支付、项目号解析、完整网站或收费。
 
-第一阶段以文件清单作为输入，逐个下载公开 HTTPS 文件，按需验证源站 MD5，然后通过百度网盘开放平台的预上传、分片上传和创建文件接口上传到自己的应用目录。一个文件完成后才处理下一个，限制文件大小并为系统磁盘保留空间。输出 JSON Lines，可留存计时和文件校验记录。
+目前 **M1 输入契约与真实样例、M2 本地源文件下载/校验**已实现。新 MVP 轮的上传、分享和国内领取尚未验收，完整任务状态恢复也未实现。此前的工具验证作为独立证据保留，不代表该服务已完成。
 
-## 当前范围
+- [输入契约与拒绝/人工审核规则](docs/mvp-input-contract.md)
+- [M1–M6 里程碑与授权边界](docs/mvp-milestones.md)
+- [真实 NCBI 样例及来源/使用政策](examples/ncbi-ecoli/README.md)
+- [项目 Wiki](https://github.com/bioinfo-truth/fast-transfer/wiki)（[仓库镜像](docs/wiki/Home.md)）
 
-- 一个进程顺序处理文件，避免项目总大小占满磁盘。文件必须能放入磁盘预算；暂不支持超过磁盘容量的双遍读取。
-- 独立实验已通过 AList + rclone 的 1 GB 上传、远端长度及完整回读双哈希验证；5 GB 同样通过上传、远端长度及完整回读双哈希验证，结果见项目总览。这不表示本仓库 Python PoC 已通过同规模测试。`--download-only` 用于先验证源站和磁盘。
-- 未实现分享链接、淘宝接入、项目号解析、重试或断点续传。失败时临时文件会清理，重跑从头下载；已上传同名文件可能导致冲突，应先核对目标目录。
-- 非多进程安全：不要对同一磁盘运行多个任务，直至实现共享磁盘配额。无流量上限或费用控制，请自行监控。
-- 完整性：本地文件的 MD5 可与数据源清单核对；上传分片返回值与本地分片核对，并验证创建结果大小。此处描述本仓库 Python PoC 的校验能力；独立 AList + rclone 实验的回读证据见项目总览。百度云端断点续传仍未验证。
-- 上传使用 4 MiB 分片。百度接口对账号、应用目录、单文件大小等存在限制；默认每文件最大 10 GiB 只是本程序本地限制，不代表账号可以上传该大小。
+## 只读运行
 
-## 准备清单
-
-创建 `manifest.json`，只填写可信、公开且允许获取的数据源；MD5 和 size 应来自官方清单。大小单位为字节：
-
-```json
-{"files": [{"name": "sample.fastq.gz", "url": "https://example.org/sample.fastq.gz", "size": 123456, "md5": "源站提供的32位MD5"}]}
-```
-
-`size` 和 `md5` 可省略；省略 MD5 时输出会标明未验证源站校验值。文件名必须唯一且不包含目录。
-
-## 运行
-
-Python 3.10+，仅使用标准库：
+Python 3.10+，仅标准库，无需网盘凭据：
 
 ```sh
-python3 -m fast_transfer manifest.json --work-dir ./scratch --remote-dir /apps/你的应用名/test --max-file-gib 10 --reserve-gib 5 --download-only
+python3 -m fast_transfer.intake examples/ncbi-ecoli/manifest.json
+python3 -m fast_transfer.download examples/ncbi-ecoli/manifest.json --output-dir ./scratch-ncbi-new-run --max-file-bytes 2097152
 ```
 
-上传需要先通过百度网盘开放平台申请应用、开通上传权限并授权自己的网盘。令牌通过安全方式设置到环境变量 `BAIDU_ACCESS_TOKEN`（不要写入清单、仓库或终端历史），然后去掉 `--download-only`：
+输出目录必须不存在；源文件逐个下载，收据位于 `.receipts/`，不会上传或分享。默认单文件上限 16 MiB；工作文件系统至少保留 5 GiB，另加 256 MiB 提前停止余量。当前只供操作人员串行运行，不具备多用户配额和完整任务监管。
+
+只给公开链接也可以先录入，例如：
 
 ```sh
-python3 -m fast_transfer manifest.json --work-dir ./scratch --remote-dir /apps/你的应用名/test --max-file-gib 10 --reserve-gib 5
+python3 -m fast_transfer.intake --url https://example.org/sample.fastq.gz --name sample.fastq.gz
 ```
 
-记录输出时请避免泄露源站可能包含凭据的地址。创建远端目录及分享链接目前需要在授权允许的方式下另行处理。任务目录使用临时文件并在退出时清理；强制终止可能遗留 `fast-transfer-*` 目录，检查后手动清理。
+缺少大小、源站哈希或来源审核记录时返回 `manual_review`（退出码 2），不会开始下载。`accepted`（0）仅代表输入通过；`rejected`（1）需修正或拒绝。不接受受控访问、带凭据/查询参数的链接、私网目标或危险重定向。详见输入契约。
 
-## 插件方向
+历史 `python3 -m fast_transfer` 是旧 PoC 入口，保留用于对照，**不用于 MVP 的用户链接处理**；其输入和下载安全实现不具备新契约，不应作为服务接口。[历史 PoC 说明](docs/legacy-poc.md)与未提交实验材料保持独立。
 
-后续解析插件统一输出上述 `files` 清单和项目、样本、文件之间的映射；执行层不直接依赖 GEO、ENA 或 SRA 的解析逻辑。只有文件类型、范围及预计体积明确后才启动传输。
-
-## 测试
+## 检查
 
 ```sh
 python3 -m unittest discover -s tests -v
 ```
+
+新测试使用模拟网络检查危险输入、重定向、固定 IP 与 TLS 主机名、大小/磁盘/哈希错误及旧文件保护。另有一次真实 NCBI 小文件源下载记录，见 [M2 证据](docs/validation/mvp-source-2026-11-08.json)；它不包含网盘上传、分享或客户领取。

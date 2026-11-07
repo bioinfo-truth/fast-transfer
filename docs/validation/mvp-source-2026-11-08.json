@@ -1,0 +1,42 @@
+{
+  "checked_on": "2026-11-08",
+  "milestones": [
+    "M1 input fixture",
+    "M2 source download only"
+  ],
+  "execution_context": "Local project host; not the overseas upload VPS or a mainland customer delivery test.",
+  "input_manifest": "examples/ncbi-ecoli/manifest.json",
+  "manifest_sha256": "0763812c0429e901ce97c318ba57ca1fd1e88942aac4dc82c6ba77dbd4cc753b",
+  "result": {
+    "file": "GCF_000005845.2_ASM584v2_genomic.fna.gz",
+    "status": "source_verified",
+    "bytes": 1379902,
+    "md5": "c13d459b5caa702ff7e1f26fe44b8ad7",
+    "sha256": "a96d3cfa58c88d477013c768f90a11d2386d42a70d566abfb6d9013dcbd24255",
+    "redirect_hops": 0,
+    "source_checksum_algorithms": [
+      "md5"
+    ]
+  },
+  "biology_sanity_check": {
+    "format": "gzip-compressed FASTA",
+    "header": ">NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome",
+    "sequence_count": 1,
+    "bases": 4641652,
+    "decompressed_bytes": 4699745,
+    "decompression_check_limit_bytes": 10485760
+  },
+  "official_checksum": "MD5 from NCBI md5checksums.txt; SHA-256 independently computed locally, not an official source checksum.",
+  "working_filesystem_free_bytes_after": 16395194368,
+  "enforced_reserve_bytes": 5368709120,
+  "pre_stop_margin_bytes": 268435456,
+  "not_executed": [
+    "Baidu upload",
+    "Baidu readback",
+    "share creation",
+    "customer message",
+    "mainland receipt",
+    "production deployment"
+  ],
+  "credentials_used": false
+}

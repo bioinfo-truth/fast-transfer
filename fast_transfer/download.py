@@ -1,0 +1,116 @@
+"""M2: bounded source download and verification; no cloud operations."""
+import argparse
+import hashlib
+import http.client
+import json
+import os
+import shutil
+import socket
+import ssl
+import sys
+import time
+from pathlib import Path
+
+from .intake import InputProblem, load_manifest, require_accepted
+from .safe_http import open_public
+
+RESERVE = 5 * 1024**3
+MARGIN = 256 * 1024**2
+
+
+def download_verified(entry, path, max_bytes, reserve=RESERVE, timeout=300):
+    require_accepted({'schema_version': 1, 'files': [entry]})
+    if type(max_bytes) is not int or max_bytes <= 0 or reserve < RESERVE or timeout <= 0:
+        raise InputProblem('invalid_download_budget')
+    expected = entry['size']
+    if expected > max_bytes:
+        raise InputProblem('file_budget_exceeded', 'manual_review')
+    if shutil.disk_usage(path.parent).free < expected + reserve + MARGIN:
+        raise InputProblem('disk_budget_exceeded', 'manual_review')
+    deadline = time.monotonic() + timeout
+    response = connection = None
+    created = False
+    try:
+        response, connection, hops = open_public(entry['url'], deadline)
+        lengths = response.headers.get_all('Content-Length', [])
+        if lengths and (len(lengths) != 1 or len(lengths[0]) > 20
+                        or not lengths[0].isascii() or not lengths[0].isdigit()):
+            raise InputProblem('invalid_content_length')
+        if lengths and int(lengths[0]) != expected:
+            raise InputProblem('content_length_mismatch')
+        if response.getheader('Content-Encoding', 'identity').lower() != 'identity':
+            raise InputProblem('unexpected_content_encoding')
+        if response.getheader('Transfer-Encoding') and lengths:
+            raise InputProblem('ambiguous_response_framing')
+        total, md5, sha = 0, hashlib.md5(), hashlib.sha256()
+        # Exclusive creation; no existing path/symlink is overwritten or removed.
+        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        created = True
+        with os.fdopen(fd, 'wb') as output:
+            while True:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise InputProblem('download_deadline', 'manual_review')
+                if connection.sock:
+                    connection.sock.settimeout(min(30, remaining))
+                data = response.read1(min(1024**2, expected - total + 1))
+                if not data:
+                    break
+                if total + len(data) > expected:
+                    raise InputProblem('source_size_exceeded')
+                if shutil.disk_usage(path.parent).free < len(data) + reserve + MARGIN:
+                    raise InputProblem('disk_reserve_reached', 'manual_review')
+                output.write(data)
+                total += len(data)
+                md5.update(data)
+                sha.update(data)
+            output.flush()
+            os.fsync(output.fileno())
+        if total != expected:
+            raise InputProblem('source_size_mismatch')
+        result = {'bytes': total, 'md5': md5.hexdigest(), 'sha256': sha.hexdigest()}
+        if any(entry.get(key) and entry[key].lower() != result[key] for key in ('md5', 'sha256')):
+            raise InputProblem('source_checksum_mismatch')
+        return {'status': 'source_verified', **result, 'redirect_hops': hops,
+                'source_checksum_algorithms': [k for k in ('md5', 'sha256') if k in entry]}
+    except BaseException:
+        if created:
+            path.unlink(missing_ok=True)
+        raise
+    finally:
+        if response is not None:
+            response.close()
+        if connection is not None:
+            connection.close()
+
+
+def main():
+    p = argparse.ArgumentParser(description='Download accepted public inputs; never upload or share.')
+    p.add_argument('manifest', type=Path)
+    p.add_argument('--output-dir', type=Path, required=True, help='Fresh per-run directory, must not exist.')
+    p.add_argument('--max-file-bytes', type=int, default=16 * 1024**2)
+    a = p.parse_args()
+    try:
+        entries = require_accepted(load_manifest(a.manifest))
+        if a.max_file_bytes <= 0 or any(e['size'] > a.max_file_bytes for e in entries):
+            raise InputProblem('file_budget_exceeded', 'manual_review')
+        a.output_dir.mkdir(mode=0o700, parents=False, exist_ok=False)
+        receipts = a.output_dir / '.receipts'
+        receipts.mkdir(mode=0o700)
+        for index, e in enumerate(entries):
+            result = download_verified(e, a.output_dir / e['name'], a.max_file_bytes)
+            fd = os.open(receipts / (str(index) + '.json'), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            with os.fdopen(fd, 'w') as f:
+                json.dump({'file': e['name'], **result}, f, indent=2)
+            print(json.dumps({'file': e['name'], **result}))
+        return 0
+    except InputProblem as exc:
+        print(json.dumps({'status': exc.status, 'reason': exc.code}))
+        return 2 if exc.status == 'manual_review' else 1
+    except (OSError, http.client.HTTPException, socket.timeout, ssl.SSLError):
+        print(json.dumps({'status': 'manual_review', 'reason': 'source_io_or_network_failure'}))
+        return 2
+
+
+if __name__ == '__main__':
+    sys.exit(main())

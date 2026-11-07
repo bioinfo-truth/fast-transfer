@@ -1,0 +1,2 @@
+# Preserve the official metadata snapshot byte-for-byte, including its CRLF endings.
+examples/ncbi-ecoli/assembly_report.txt -text whitespace=cr-at-eol

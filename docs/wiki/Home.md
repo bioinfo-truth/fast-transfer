@@ -2,12 +2,21 @@
 
 面向中国境内科研用户，提供海外公开生物信息数据的代下载和百度网盘交付服务。
 
+## 当前 MVP 方向（2026-11-08）
+
+从工具验证推进到最小服务：操作人员人工录入公开 HTTPS 文件链接/manifest → 下载及源站校验 → 百度上传及核验 → 分享交付 → 中国境内领取校验。先不做淘宝、支付、项目号自动解析、完整网站或收费；跨 OpenList 服务重启的分片恢复不是 MVP 前置。
+
+M1 输入契约与真实 NCBI 小样例、M2 本项目主机的源下载校验已通过；M3 新一轮百度上传、M4 分享、M5 完整任务恢复、M6 国内领取尚未通过。实现处于评审分支，未部署或收费，详见 [MVP 范围与输入](https://github.com/bioinfo-truth/fast-transfer/wiki/MVP-Scope-and-Input)。上一轮临时令牌测试许可不作为新一轮持久配置许可。
+
+下方工具记录及后续实验计划保留为此前快照，不能替代当前 M1–M6 状态。
+
+
 - [产品与架构](https://github.com/bioinfo-truth/fast-transfer/wiki/Product-and-Architecture)
 - [路线图与决策](https://github.com/bioinfo-truth/fast-transfer/wiki/Roadmap)
 - [测试方案](https://github.com/bioinfo-truth/fast-transfer/wiki/Validation-Plan)
 - [高速传输工具调研](https://github.com/bioinfo-truth/fast-transfer/wiki/Transfer-Tools)
 
-当前处于概念验证阶段。优先验证美国 VPS 从公开数据库下载并直传百度网盘，之后再开发项目号解析插件和淘宝订单接入。所有性能、续传、分享及平台权限均以实测为准。
+早期概念验证方向：美国 VPS 公开数据下载与直传；项目号解析和淘宝接入仍是后续候选。当前执行范围以上方 MVP 为准；所有性能、续传、分享及平台权限均以实测为准。
 
 ## 当前工具方向（2026-11-07）
 
