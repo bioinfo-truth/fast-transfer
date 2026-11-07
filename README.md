@@ -44,3 +44,5 @@ python3 -m unittest discover -s tests -v
 M3 的 `python3 -m fast_transfer.m3 --simulate ...` 仅使用本地已校验文件与内存假远端，不加载凭据或连接网盘；没有 live 回退。模拟成功始终 `cloud_verified=false`、`delivery_eligible=false`，不得用于真实分享。操作及完整验收矩阵见 M3 说明。
 
 新增 fake-only [隔离不覆盖候选](docs/mvp-baidu-http.md)：目录身份核验、改名失败保留、提交未知不重试；真实写入保持关闭。
+
+[M4/M5 离线单任务工作流](docs/mvp-workflow.md)：人工回填与清单草稿、私有状态/查看及人工核查；无真实分享、发送或交付能力。
