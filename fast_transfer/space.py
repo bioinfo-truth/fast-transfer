@@ -105,13 +105,13 @@ class DiskProbe:
         return Allocation(s.st_dev, s.st_ino, s.st_size, s.st_blocks * 512)
 
 
-def preflight_workspace(parent, backend_dir=None):
+def preflight_workspace(parent, backend_dir=None, *, probe=None):
     """Before creating a fresh child workspace, protect each existing filesystem.
 
     This preliminary floor check does not replace admission using the actual new
     directory. The caller intentionally creates one child, not a missing mount tree.
     """
-    probe = DiskProbe()
+    probe = probe or DiskProbe()
     for path in [Path(parent).absolute(), Path('/')] + ([Path(backend_dir).absolute()] if backend_dir is not None else []):
         volume = probe.directory(path, writable=path != Path('/'))
         if volume.free < RESERVE + MARGIN + SOURCE_OVERHEAD:

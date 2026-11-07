@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-08",
+  "scope": "Local source plus in-memory cloud simulation only",
+  "backend_choice": "direct-api flow, injected MemoryCloud; no live HTTP/auth binding",
+  "source_manifest": "examples/ncbi-ecoli/manifest.json",
+  "source_receipt": "existing M2 source_verified receipt (no redownload)",
+  "result": {
+    "mode": "simulation",
+    "status": "verified_simulation",
+    "reason": null,
+    "verification_complete": true,
+    "simulated_delivery_eligible": true,
+    "delivery_eligible": false,
+    "cloud_verified": false,
+    "phase": "verified",
+    "confirmed_parts": [
+      0
+    ],
+    "requested_payload_bytes": 1379902,
+    "stop_confirmed": true,
+    "state_persisted": true,
+    "job_id": "m3-reviewed-ncbi-20261108",
+    "target": "/apps/Xtransfer/mvp-validation/m3-reviewed-ncbi-20261108/GCF_000005845.2_ASM584v2_genomic.fna.gz",
+    "source": {
+      "bytes": 1379902,
+      "md5": "c13d459b5caa702ff7e1f26fe44b8ad7",
+      "sha256": "a96d3cfa58c88d477013c768f90a11d2386d42a70d566abfb6d9013dcbd24255"
+    },
+    "readback": {
+      "bytes": 1379902,
+      "md5": "c13d459b5caa702ff7e1f26fe44b8ad7",
+      "sha256": "a96d3cfa58c88d477013c768f90a11d2386d42a70d566abfb6d9013dcbd24255"
+    }
+  },
+  "transfer_limits": {
+    "cli_part_bytes": 4194304,
+    "simulation_max_file_bytes": 16777216,
+    "max_parts": 1024,
+    "max_readback_chunk_bytes": 1048576,
+    "meaning": "local simulator bounds, not verified Baidu account limits"
+  },
+  "space_needs": {
+    "profile": "direct-api",
+    "source_overhead_bytes": 65536,
+    "upload_temp_bytes": 262144,
+    "readback_temp_bytes": 262144,
+    "readback_mode": "stream",
+    "scope": "bounded simulator state files only; not real backend overhead defaults"
+  },
+  "implementation_sha256": {
+    "fast_transfer/upload_stage.py": "18e425954182b5439eab2b464b387b35c51460b8f9ac326264b271cc283be275",
+    "fast_transfer/simulated_cloud.py": "d07045824d95d388a61051d2bf65452e59bf0156f708768e8504c00b66295a47",
+    "fast_transfer/m3.py": "d8a4da89404a26bb17832a7be0297ff5a7a2efee4ab92d5bb07dd3b210923064",
+    "fast_transfer/space.py": "77b44a091cb976ffeb9ca2127f7528af6fc60fbe435ae89b639bbc30f49fc5f9"
+  },
+  "prior_M2_code_snapshot": "ef3087c1e1a44ecc3c0790232c5eaf6c9c3d684c (preflight helper now accepts an injected probe; budget math retained)",
+  "tests": {
+    "new_stage_tests": 23,
+    "workspace_total": 83,
+    "workspace_result": "passed",
+    "note": "Four pre-existing uncommitted experiment safety tests are not submitted. Final committed-tree tests are verified separately."
+  },
+  "actual_baidu_calls": 0,
+  "credentials_read_or_configured": false,
+  "source_redownloads": 0,
+  "large_payloads_created": false,
+  "remaining": [
+    "reviewed real HTTP transport and account/permission/file limits",
+    "new explicit temporary access_token authorization for specified real test",
+    "real no-overwrite semantics and cloud length/full-readback hashes",
+    "joint M2/M3 actual upload/readback free-space and stop-latency acceptance",
+    "M4 share, M5 full workflow/recovery, M6 mainland receipt"
+  ],
+  "not_claimed": [
+    "real cloud_verified",
+    "real delivery_eligible",
+    "whole M2/M3 complete",
+    "cross-service part recovery",
+    "bounded stop of a real independent backend process"
+  ]
+}
