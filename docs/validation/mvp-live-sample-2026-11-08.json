@@ -9,11 +9,10 @@
   },
   "metrics_note": "Per-process execution windows; host counters include management/control traffic and exclude setup/diagnostic intervals. Small-file timings are not throughput/billing/limits guarantees; free-space/RSS are sampled.",
   "actual_state": "sample_cloud_verified_share_pending",
-  "next_step": "Use verified existing share-service capability and correct public AppID, or an operable existing signed-in official UI. Current UI connections absent. No new login/cookie import/service purchase; no repeated upload.",
+  "next_step": "User manually creates a share for the exact verified sample in their official client and privately returns the link and applicable access details; verify only after that handoff. Automatic sharing for this round is stopped following the coordinator-reported Mac browser site-safety denial. No new upload, share request, login, credential operation or service purchase.",
   "cloud_verified": true,
   "delivery_eligible": false,
   "m6_domestic_receipt": false,
-  "permission_denial_observed": false,
   "executed_snapshot_note": "Initial and same-directory recovery snapshots are distinct. Recovery code hashes matched the deployed .py files; original failed attempt retained.",
   "final_implementation_sha256": {
     "fast_transfer/approved_sample.py": "76afec3cc54731385aecdd6232e262140e33e1d38559d4a03f13478fb638ec67",
@@ -183,5 +182,6 @@
     "coordinator_reported_mac_site_safety_denial": true,
     "automatic_sharing_stopped": true,
     "no_bypass": true
-  }
+  },
+  "share_api_permission_denial_observed": false
 }
