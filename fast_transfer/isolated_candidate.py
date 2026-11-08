@@ -51,6 +51,9 @@ class IsolatedBaiduCandidate(BaiduProtocol):
             fail('candidate_fake_only')
         super().__init__(client, app_name, target, expected_account_sha256, limits,
                          diagnostic_rename_policy=True)
+        self.initialize_policy(target)
+
+    def initialize_policy(self, target):
         self.phase, self.busy = 'new', False
         self.deadline = time.monotonic()+900
         self.directory = str(PurePosixPath(target).parent)
@@ -95,6 +98,9 @@ class IsolatedBaiduCandidate(BaiduProtocol):
 
     @mutation(('new',), 'reserved')
     def reserve_new(self, path):
+        self.reserve_policy(path)
+
+    def reserve_policy(self,path):
         super().reserve_new(path)
         self.verify_directory()
 

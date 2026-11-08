@@ -1,0 +1,187 @@
+{
+  "date": "2026-11-08",
+  "base_commit": "e8e19d56eac895c6ae814ae8cb9d949e86a40927",
+  "scope": "one authorized NCBI test, original failure, read-only inspection and one same-directory safe recovery; sharing pending",
+  "source": {
+    "bytes": 1379902,
+    "md5": "c13d459b5caa702ff7e1f26fe44b8ad7",
+    "sha256": "a96d3cfa58c88d477013c768f90a11d2386d42a70d566abfb6d9013dcbd24255"
+  },
+  "metrics_note": "Per-process execution windows; host counters include management/control traffic and exclude setup/diagnostic intervals. Small-file timings are not throughput/billing/limits guarantees; free-space/RSS are sampled.",
+  "actual_state": "sample_cloud_verified_share_pending",
+  "next_step": "Use verified existing share-service capability and correct public AppID, or an operable existing signed-in official UI. Current UI connections absent. No new login/cookie import/service purchase; no repeated upload.",
+  "cloud_verified": true,
+  "delivery_eligible": false,
+  "m6_domestic_receipt": false,
+  "permission_denial_observed": false,
+  "executed_snapshot_note": "Initial and same-directory recovery snapshots are distinct. Recovery code hashes matched the deployed .py files; original failed attempt retained.",
+  "final_implementation_sha256": {
+    "fast_transfer/approved_sample.py": "76afec3cc54731385aecdd6232e262140e33e1d38559d4a03f13478fb638ec67",
+    "fast_transfer/sample_recover.py": "fd839f43e6551d0c4bf0c276612a1440d43cc9c60075a86b1b8a7e09574e5b49",
+    "fast_transfer/sample_run.py": "d88f7ec9961e6120630ca3efed3911c4e640feaa49bc25e3cd922bf1d611fc4f",
+    "fast_transfer/baidu_http.py": "9ee619c0c5923ddb8a02e90de21f595ef6b068e730472bb2d0ad1544479addeb",
+    "fast_transfer/baidu_protocol.py": "092fb070d7299c83ac3340ec739b1de67fa6efe497a36e6a245e2b3436a84897",
+    "fast_transfer/isolated_candidate.py": "6dfb43ae054d63c524ad5fad14b24ed19c9daa7fb21a08f071df559e83a16e14",
+    "fast_transfer/upload_stage.py": "bbf37ac44c06a1fa150baf780b92140ccc93a5563bc5b5b830904394084623ab",
+    "tests/test_approved_sample.py": "14f3e9cccfd37c67ee08e2a1963631a63e4ce984faee59117b6c36e2659d0295",
+    "tests/test_baidu_protocol.py": "7b5096082d9fe29b3ca26dd887d5d2b68505eab9456239ccf74273cbc914bcad"
+  },
+  "sources": [
+    {
+      "id": "locate",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E4%B8%8A%E4%BC%A0/%E8%8E%B7%E5%8F%96%E4%B8%8A%E4%BC%A0%E5%9F%9F%E5%90%8D/",
+      "reader_text_sha256": "b2bd8cbe87cfa2036b448ca8bdaa8bc58b79f9e2b264448db58b0459ff896cd2"
+    },
+    {
+      "id": "share",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E6%9C%8D%E5%8A%A1%E6%96%B0/%E5%88%9B%E5%BB%BA%E5%88%86%E4%BA%AB%E9%93%BE%E6%8E%A5/",
+      "reader_text_sha256": "9f39dcb212c67b3d595d6c4669f9b5c894915a9b615e9014866a53bbeaf04105"
+    },
+    {
+      "id": "guide",
+      "url": "https://pan.baidu.com/union/doc/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%9B%98%E6%9C%8D%E5%8A%A1/%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E6%9C%8D%E5%8A%A1%E6%96%B0/%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97/",
+      "reader_text_sha256": "4e0efa2b521850f49a5fc034ba64bf415b6ac75ead00981cec5f8698981e05eb"
+    },
+    {
+      "id": "faq",
+      "url": "https://pan.baidu.com/union/doc/faq/%E5%88%86%E4%BA%AB%E6%96%87%E4%BB%B6/",
+      "reader_text_sha256": "d85505514d8776df68e864b177628616f88babd966aaf6d3e0d5519f05d939f2"
+    },
+    {
+      "id": "enterprise_cert",
+      "url": "https://pan.baidu.com/union/doc/%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/%E5%AE%9E%E5%90%8D%E8%AE%A4%E8%AF%81/%E4%BC%81%E4%B8%9A%E5%BC%80%E5%8F%91%E8%80%85%E8%AE%A4%E8%AF%81/",
+      "reader_text_sha256": "1900ae9856050e5055d9565746b33f3fb637999ae48828450af2554f4e6ac96d"
+    }
+  ],
+  "source_note": "Official public page text via reader; hashes are not official signatures. No full page content copied.",
+  "tests": {
+    "new_sample_recovery_tests": 7,
+    "new_locator_checkpoint_tests": 2,
+    "workspace_total": 136,
+    "clean_tree_expected": 132,
+    "tests_use_fake_HTTP_not_real_cloud_proof": true,
+    "clean_tree_passed": 132
+  },
+  "initial_attempt": {
+    "identity_matched_prior_fingerprint": true,
+    "vip_type": 2,
+    "capacity_sufficient_for_sample": true,
+    "directory_creates": 1,
+    "successful_precreates": 1,
+    "part_requests": 0,
+    "payload_bytes_sent": 0,
+    "file_commits": 0,
+    "full_readbacks": 0,
+    "locate_http_status": 200,
+    "failure_phase": "locateupload response parsing",
+    "failure_reason": "protocol_json_invalid",
+    "original_response_business_code": "not retained; unknown",
+    "later_read_only_directory_empty": true,
+    "session_identifier_retained": false,
+    "same_uploadid_recovery_possible": false,
+    "recovery_writes": 0,
+    "new_directories_after_failure": 0,
+    "share_attempts": 0,
+    "links_created": 0,
+    "new_credential_files": 0,
+    "client_stopped": true,
+    "credential_reference_released": true,
+    "sampler_stopped": true,
+    "test_process_exit": 2
+  },
+  "observed": {
+    "identity_matched_prior_fingerprint": true,
+    "vip_type": 2,
+    "capacity_sufficient_for_sample": true,
+    "directory_creates_total": 1,
+    "precreates_total": 2,
+    "part_requests_total": 1,
+    "payload_bytes_sent_total": 1379902,
+    "file_commits_total": 1,
+    "full_readbacks_total": 1,
+    "source_matches_readback": true,
+    "readback": {
+      "bytes": 1379902,
+      "md5": "c13d459b5caa702ff7e1f26fe44b8ad7",
+      "sha256": "a96d3cfa58c88d477013c768f90a11d2386d42a70d566abfb6d9013dcbd24255"
+    },
+    "same_cloud_directory": true,
+    "old_uploadid_reused": false,
+    "initial_directory_id_revalidated_and_empty": true,
+    "node_response_errno_present": false,
+    "node_response_error_code": 0,
+    "readback_http_statuses": [
+      302,
+      200
+    ],
+    "client_stopped": true,
+    "credential_reference_released": true,
+    "sampler_stopped": true,
+    "new_credential_files": 0,
+    "share_attempts": 0,
+    "links_created": 0,
+    "m6_domestic_receipt": false,
+    "test_process_exit": 0
+  },
+  "initial_attempt_metrics": {
+    "elapsed_seconds": 8.221814,
+    "minimum_sampled_free_bytes": 8424316928,
+    "space_sample_count": 400,
+    "peak_rss_kib": 26432,
+    "host_network_received_bytes": 60276,
+    "host_network_sent_bytes": 20935
+  },
+  "recovery_metrics": {
+    "elapsed_seconds": 13.651659,
+    "minimum_sampled_free_bytes": 8424255488,
+    "space_sample_count": 663,
+    "peak_rss_kib": 32284,
+    "host_network_received_bytes": 1521941,
+    "host_network_sent_bytes": 1432470
+  },
+  "executed_initial_snapshot_sha256": {
+    "fast_transfer/approved_sample.py": "6a4e30a664c44d3079af8f24b7f846e94e3e5b13bee5adaa4655f7bc082e855d",
+    "fast_transfer/sample_run.py": "b9e7566d535660699a34e4aa7e162f37be790248267de826a6b9de45ed6fcbf5",
+    "fast_transfer/baidu_http.py": "09feaa70ecabe1dba3c9a505278296e924810bf07c7de4b0a53da540283dcf19",
+    "fast_transfer/baidu_protocol.py": "c9bc3df87b338df5aa0b5ca8e64b50c192644db86eb8c1143bc6d00ec90a6ef8",
+    "fast_transfer/isolated_candidate.py": "40a1ce9dd6a80bbd3362ca6d1de7482d3780d09f996b6c8891d1daf4dc5019c3",
+    "fast_transfer/upload_stage.py": "9a7342a795deac02b2a92128da09b017f89081fef63b3e312feba919bad91b7e"
+  },
+  "executed_recovery_snapshot_sha256": {
+    "fast_transfer/approved_sample.py": "76afec3cc54731385aecdd6232e262140e33e1d38559d4a03f13478fb638ec67",
+    "fast_transfer/sample_recover.py": "fd839f43e6551d0c4bf0c276612a1440d43cc9c60075a86b1b8a7e09574e5b49",
+    "fast_transfer/sample_run.py": "d88f7ec9961e6120630ca3efed3911c4e640feaa49bc25e3cd922bf1d611fc4f",
+    "fast_transfer/baidu_http.py": "9ee619c0c5923ddb8a02e90de21f595ef6b068e730472bb2d0ad1544479addeb",
+    "fast_transfer/baidu_protocol.py": "092fb070d7299c83ac3340ec739b1de67fa6efe497a36e6a245e2b3436a84897",
+    "fast_transfer/isolated_candidate.py": "6dfb43ae054d63c524ad5fad14b24ed19c9daa7fb21a08f071df559e83a16e14",
+    "fast_transfer/upload_stage.py": "bbf37ac44c06a1fa150baf780b92140ccc93a5563bc5b5b830904394084623ab"
+  },
+  "browser_channel_check": {
+    "native_browser_computer_action_tool_available": false,
+    "connected_codex_document_executors": 0,
+    "local_running_chrome_chromium_baidu_client_observed": false,
+    "browse_binary_available": true,
+    "existing_authenticated_official_ui_observed": false,
+    "cookie_or_login_database_imported": false,
+    "api_share_entitlement_confirmed": false,
+    "share_appid_available": false,
+    "share_api_called": false,
+    "offshore_running_browser_or_official_gui_client_observed": false
+  },
+  "share_service_status": {
+    "opened": false,
+    "basis": "user_report_not_api_permission_test",
+    "selected_route": "normal_personal_client_manual_share",
+    "api_permission_request_sent": false,
+    "link_created": false,
+    "onboarding_instructions": "candidate_only_no_purchase_or_account_change"
+  },
+  "sharing_final_boundary": {
+    "share_request_sent": false,
+    "link_created": false,
+    "project_host_logged_in_ui_available": false,
+    "coordinator_reported_mac_site_safety_denial": true,
+    "automatic_sharing_stopped": true,
+    "no_bypass": true
+  }
+}

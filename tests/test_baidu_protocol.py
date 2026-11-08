@@ -149,6 +149,21 @@ class ProtocolTests(unittest.TestCase):
         t = BaiduProtocol(Redirect(), 'Xtransfer', TARGET, ACCOUNT, LIMITS)
         with self.assertRaisesRegex(StageFailure, 'redirect_rejected'): t.probe()
 
+    def test_locateupload_uses_documented_error_code_envelope(self):
+        self.http.fault=lambda req,obj: ({'error_code':0,'servers':obj['servers']} if req.params.get('method')=='locateupload' else obj)
+        self.assertEqual(self.begin().required,(0,))
+
+    def test_precreate_checkpoint_precedes_locator_and_error_code_failures_are_not_success(self):
+        saved=[]
+        self.transport.precreated_checkpoint=lambda record:saved.append(record)
+        self.http.fault=lambda req,obj: ({'error_code':20013} if req.params.get('method')=='locateupload' else obj)
+        with self.assertRaisesRegex(StageFailure,'protocol_api_error'):self.begin()
+        self.assertEqual(len(saved),1)
+        self.assertEqual(saved[0]['uploadid'],'fixture-session')
+        self.assertEqual(saved[0]['path'],TARGET)
+        self.assertFalse(any(r.purpose=='upload' for r in self.http.calls))
+        self.assertNotIn('access_token',saved[0])
+
     def test_precreate_indices_and_empty_single_block_special_case(self):
         for required in ([True], [1], [0, 0], '0'):
             self.http.required = required

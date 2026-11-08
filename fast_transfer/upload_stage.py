@@ -1,4 +1,4 @@
-"""M3 direct-API flow with an injected simulation transport; no HTTP/auth implementation."""
+"""Shared M3 verification flow; offline entry and one explicit sample lane."""
 import hashlib
 import json
 import os
@@ -31,6 +31,7 @@ SAFE_REASONS = frozenset('''
     space_source_plan_mismatch invalid_space_stage space_stage_regression space_directory_changed
     space_file_device_or_alias_changed source_exceeds_space_plan source_not_complete_for_stage
     payload_exceeds_space_plan temporary_overhead_exceeds_plan disk_budget_exceeded
+    approved_sample_scope_invalid approved_sample_replay approved_sample_token_layout
     candidate_fake_only candidate_replay_rejected candidate_terminal candidate_expired
     http_runtime_locked http_stopped http_scope_invalid http_url_rejected http_redirect_rejected
     http_header_rejected http_status_rejected http_limit_exceeded http_deadline http_io_failure
@@ -150,13 +151,13 @@ class AdapterContext:
         return self.guard.check(self.stage, growth={'backend_extra': bytes_upper_bound})
 
 
-def run_simulated_upload(entry, source_path, receipt_path, backend_root, job_id,
+def _run_upload(entry, source_path, receipt_path, backend_root, job_id,
                          app_name, transport, needs, limits, *, probe=None,
-                         expected_layout='auto'):
+                         expected_layout='auto', _approved_sample=None):
     """Transport contract: reserve_new/begin_new/put_part/commit_new/metadata/readback/stop.
 
-    All calls are synchronous and cooperative. Real transports are deliberately
-    rejected in this round. stop() is local-only, returns True when stopped, and
+    All calls are synchronous and cooperative. The public simulation entry rejects
+    real transports; the private sample lane requires its exact scoped type. stop() is local-only, returns True when stopped, and
     must never delete remote objects. A new instance is owned by this single job.
     """
     result = {'mode': 'simulation', 'status': 'manual_review', 'reason': None,
@@ -164,6 +165,7 @@ def run_simulated_upload(entry, source_path, receipt_path, backend_root, job_id,
               'delivery_eligible': False, 'cloud_verified': False,
               'phase': 'input', 'confirmed_parts': [], 'requested_payload_bytes': 0,
               'stop_confirmed': None, 'state_persisted': False}
+    live = False
     source = record = guard = None
     started = False
     try:
@@ -176,7 +178,14 @@ def run_simulated_upload(entry, source_path, receipt_path, backend_root, job_id,
             raise StageFailure('unsupported_adapter_storage_contract')
         if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,63}', job_id) or not re.fullmatch(r'[A-Za-z][A-Za-z0-9_-]{0,63}', app_name):
             raise StageFailure('invalid_task_or_app_name')
-        if transport.mode != 'simulation' or transport.app_name != app_name:
+        if _approved_sample is not None:
+            from .approved_sample import ApprovedSample
+            if type(transport) is not ApprovedSample or _approved_sample is not transport:
+                raise StageFailure('transport_mode_or_app_mismatch')
+            transport.validate_scope(entry, job_id, app_name)
+            live = True
+            result['mode'] = 'approved-live-sample'
+        if (not live and transport.mode != 'simulation') or transport.app_name != app_name:
             raise StageFailure('transport_mode_or_app_mismatch')
         source_path, receipt_path = Path(source_path).absolute(), Path(receipt_path).absolute()
         backend_root = Path(backend_root).absolute()
@@ -285,7 +294,7 @@ def run_simulated_upload(entry, source_path, receipt_path, backend_root, job_id,
             raise StageFailure('readback_hash_or_length_mismatch')
         if file_stamp(source) != stamp:
             raise StageFailure('source_changed')
-        result.update(readback=back, verification_complete=True, phase='verified', status='verified_simulation')
+        result.update(readback=back, verification_complete=True, phase='verified', status='verified_live_sample' if live else 'verified_simulation')
     except StageFailure as exc:
         result['reason'] = safe_reason(exc.code)
     except InputProblem as exc:
@@ -310,7 +319,8 @@ def run_simulated_upload(entry, source_path, receipt_path, backend_root, job_id,
             if not result['stop_confirmed']:
                 result.update(reason=result['reason'] or 'adapter_stop_unconfirmed', status='manual_review')
         if result['reason'] is None and result['verification_complete'] and result['stop_confirmed']:
-            result['simulated_delivery_eligible'] = True
+            result['simulated_delivery_eligible'] = not live
+            result['cloud_verified'] = live
         else:
             result['status'] = 'manual_review'
             result['simulated_delivery_eligible'] = False
@@ -321,5 +331,14 @@ def run_simulated_upload(entry, source_path, receipt_path, backend_root, job_id,
             except Exception:
                 result.update(state_persisted=False, status='manual_review',
                               reason=result['reason'] or 'job_state_not_persisted',
-                              state_error='job_state_not_persisted', simulated_delivery_eligible=False)
+                              state_error='job_state_not_persisted', simulated_delivery_eligible=False, cloud_verified=False)
     return result
+
+
+def run_simulated_upload(entry, source_path, receipt_path, backend_root, job_id,
+                         app_name, transport, needs, limits, *, probe=None,
+                         expected_layout='auto'):
+    """Offline public entry; cannot be switched to live via JSON or a boolean."""
+    return _run_upload(entry, source_path, receipt_path, backend_root, job_id,
+                       app_name, transport, needs, limits, probe=probe,
+                       expected_layout=expected_layout)

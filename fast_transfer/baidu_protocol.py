@@ -92,8 +92,21 @@ class BaiduProtocol:
             obj = json.loads(raw, object_pairs_hook=unique)
             if not isinstance(obj, dict):
                 fail('protocol_json_invalid')
+            summarize=getattr(self,'record_response_shape',None)
+            if summarize is not None:
+                summarize({'purpose':purpose,'operation':params.get('method','quota'),
+                           'has_errno':'errno' in obj,'has_error_code':'error_code' in obj,
+                           'errno':obj.get('errno') if type(obj.get('errno')) is int else None,
+                           'error_code':obj.get('error_code') if type(obj.get('error_code')) is int else None})
+            if url==LOCATE and params.get('method')=='locateupload' and 'errno' not in obj:
+                if type(obj.get('error_code')) is not int:fail('protocol_json_invalid')
+                if obj['error_code']!=0:fail('protocol_api_error')
             if 'errno' not in obj:
-                if purpose != 'upload' or not isinstance(obj.get('md5'), str) or not re.fullmatch(r'[0-9a-f]{32}', obj['md5']):
+                located_ok = (url == LOCATE and params.get('method') == 'locateupload'
+                              and type(obj.get('error_code')) is int and obj['error_code'] == 0)
+                part_ok = (purpose == 'upload' and isinstance(obj.get('md5'), str)
+                           and re.fullmatch(r'[0-9a-f]{32}', obj['md5']))
+                if not located_ok and not part_ok:
                     fail('protocol_json_invalid')
             elif type(obj['errno']) is not int or obj['errno'] != 0:
                 fail('protocol_conflict' if obj.get('errno') == -8 else 'protocol_api_error')
@@ -173,6 +186,10 @@ class BaiduProtocol:
                 or not isinstance(required, list) or any(type(i) is not int or not 0 <= i < count for i in required)
                 or len(set(required)) != len(required)):
             fail('protocol_shape_invalid')
+        checkpoint = getattr(self, 'precreated_checkpoint', None)
+        if checkpoint is not None:
+            checkpoint({'path':path,'size':size,'block_md5':list(hashes),
+                        'uploadid':obj['uploadid'],'required_parts':list(required)})
         located = self.request('GET', LOCATE, {'method': 'locateupload', 'appid': 250528,
                                               'path': path, 'uploadid': obj['uploadid'], 'upload_version': '2.0'})
         servers = located.get('servers')

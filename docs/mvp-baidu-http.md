@@ -1,3 +1,5 @@
+本页保留此前无凭据协议审查快照；当前单次获准实测及同目录续办结果见[真实样例记录](mvp-live-sample.md)。
+
 # M3：百度 HTTP 协议绑定与无凭据审查
 
 本轮补齐了 `baidu_protocol.py` 的 REST 请求/响应绑定和 `baidu_http.py` 的受门控、可注入 HTTPS 客户端，用假响应验证协议，不再把“写 HTTP 绑定”列为须先获得令牌批准的工作。没有读取真实授权文件、没有配置令牌、没有真实账号请求或上传/回读。现有模拟 CLI 仍只有 --simulate，所有模拟结果真实资格均为 false。
@@ -42,7 +44,7 @@
 
 probe 编码 uinfo(vip_version=v2) 与 quota；身份不符、未知会员、容量不完整/过期都停止，upload_permission 保持 unverified。文档上限是参考而非该账号权益探查成功；没有凭空增加“查单文件上限”的接口。实际应用上传权限仍须在获准后核实，接口错误不自动刷新授权或换凭据。
 
-分片任务绑定同一 path/size/哈希序列/uploadid/节点；确认记录由适配器拥有，改变 session 身份字段或重复提交拒绝。按预上传返回的所需片号发送，未确认完不 create；原始 uploadid、响应正文与下载链接不落任务 JSON。M3 任务层补了可选 required_parts 接口，默认内存模拟器仍发送全部片；假 HTTP 联动测试只发送服务器声明缺少的片，最后用全文件回读校验，而非将略过片假称为新发送。
+分片任务绑定同一 path/size/哈希序列/uploadid/节点；确认记录由适配器拥有，改变 session 身份字段或重复提交拒绝。按预上传返回的所需片号发送，未确认完不 create；原始 uploadid、响应正文与下载链接不落普通任务 JSON；本次获准样例另有独立 0600 私有会话检查点，不进公开证据。M3 任务层补了可选 required_parts 接口，默认内存模拟器仍发送全部片；假 HTTP 联动测试只发送服务器声明缺少的片，最后用全文件回读校验，而非将略过片假称为新发送。
 
 HTTP 绑定调用现有 AdapterContext/SpaceGuard 检查点，不新增整文件磁盘缓存；multipart 会产生有界内存拷贝，JSON/哈希列表也占内存，不宣称零内存开销。响应/协议参数有界不代表真实后端临时开销已确认，M2 仍要求声明并联合验收。现有模拟 API 拒绝 live transport；只有假 HTTP 诊断对象以 simulation 模式参与，cloud_verified、delivery_eligible 永远为 false。
 

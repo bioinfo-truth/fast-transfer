@@ -79,7 +79,7 @@ class HTTPRequest:
         if self.method == 'GET' and self.body:
             fail('http_header_rejected')
         if self.purpose == 'control':
-            methods = {'/rest/2.0/xpan/file': ('meta', 'create', 'precreate'),
+            methods = {'/rest/2.0/xpan/file': ('meta', 'list', 'create', 'precreate'),
                        '/rest/2.0/xpan/nas': ('uinfo',), '/rest/2.0/xpan/multimedia': ('filemetas',),
                        '/rest/2.0/pcs/file': ('locateupload',), '/api/quota': (None,)}
             method = self.params.get('method')
@@ -201,6 +201,10 @@ class PinnedBaiduHTTPClient:
                     self._close_failed = True
         self.active, self.reply = None, None
 
+    def authorize_write(self, req):
+        # Default remains closed, independently of RuntimeGrant.
+        fail('protocol_strict_conflict_unproven')
+
     def exchange(self, req):
         # Gate BEFORE credential callback, DNS or connection construction.
         self.grant.check(req.binding)
@@ -208,9 +212,7 @@ class PinnedBaiduHTTPClient:
             fail('http_stopped')
         req.validate()
         if req.method != 'GET' or req.purpose == 'upload':
-            # Precreate does not document conflict-fail 0 consistently with create.
-            # No live write is enabled merely by opening the authorization gate.
-            fail('protocol_strict_conflict_unproven')
+            self.authorize_write(req)
         u = destination(req.url, req.purpose)
         if self.active is not None:
             fail('http_concurrent_request')
