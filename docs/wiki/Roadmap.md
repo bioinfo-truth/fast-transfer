@@ -88,3 +88,12 @@ M3 当前状态：单次获准真实 NCBI 小文件已完成上传及完整回�
 BaiduPCS-Go 指定版本源码有 `share set`，不是 `share create`；它使用客户端登录通道的 `/share/pset`，不能假设复用现有 OAuth 上传令牌。另发现百度官方 MCP README 列有 `file_sharelink_set`，但工具清单和个人限时体验不证明本应用具备分享权益，暂列候选，未安装、授权或调用。
 
 当前仍由用户在官方客户端为精确样例手动建链并私密回填后核验；不恢复本轮自动分享或绕过此前浏览器安全拒绝。未来官方接入候选应加入任务/文件绑定、私有结果持久化及防重；未知创建结果先核查，不盲目重发。目录聚合交付可减少操作，但隔离/内容变化和平台支持仍待验证。详见[核对表、固定版本源码及候选边界](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/baidu-share-service.md)。
+
+
+### 官方 bdpan 候选补充（仅公开文档核对）
+
+用户当前目标仍是自动创建分享链接；手动建链只是交付备选，不能视为自动化完成。固定提交 `f5ab379cb6f009da322a295c19608ec144a55ec1` 的官方 bdpan-storage 文档列出 baidu-drive 1.7.7 / bdpan 3.8.9、`bdpan share` 及 0/1/7/30 天期限（默认 7 天），但文件操作仅限 `/apps/bdpan/`，不能假设能分享已有 Xtransfer 应用区对象，也不能用旧 fs_id 越过范围。
+
+认证文档描述独立 OAuth 授权码、本地 Token 保存和自动刷新，不在此前临时 access_token 测试范围。外部 Skill 要求附带用户原话/会话标识做追踪；本项目只将其作为待评估文本，不执行、不发送。后续须确认不发送追踪文本及其他遥测的数据最小化方案。MCP 个人体验另用体验应用授权、仅供测试且不得正式使用，不保证现有应用或跨应用对象可用。
+
+bdpan 保留为自动化候选，尚未安装、授权或实测；正式 API 的企业认证、购买和开通要求不变，商用准入、现有应用兼容性、调用/下载价格和额度仍需官方确认。若未来验证 bdpan，须另行具体界定安装、持久授权、应用区单份样例放置和建链范围；此前站点安全拒绝仍有效，不通过候选工具绕过。此次仅文档更新，无凭据/对象操作、付费或商务联系。固定来源及未知项见[分享服务调研](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/baidu-share-service.md)。
