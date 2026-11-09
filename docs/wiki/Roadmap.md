@@ -144,3 +144,10 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 用户明确批准固定公开依赖获取后，隔离缓存内 34 个锁定模块归档及 185 份传递 go.mod 元数据均核验原 go.sum；无版本/锁文件变更、认证信息或用户缓存。恢复进程 seccomp 禁网后完整补丁客户端编译/链接退出 0，二进制未执行，无包初始化、账户请求或对象操作；大于 5 GiB 磁盘底线。旧缺依赖失败仍保留为历史记录。
 
 现可确定“补丁能完整构建”，M4.2 构建阻碍解除；身份门仍默认拒绝，M4.3/M4.4 未验证，不等于自动分享后端已可用。后续真实验证须先具备允许渠道和具体身份/凭据/请求范围，既有站点拒绝不变。见[依赖范围、摘要和完整构建证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/pcs-full-build-2026-11-09.json)。
+
+
+### 实际 requester 包七项回归通过
+
+新增七项回归在实际补丁 requester 包（含审查后的 6 包非标准库初始化）中运行通过，覆盖真实构造/Req/Fetch/HTTPGet，而非仅两个 helper 文件。目标执行前启用 Landlock 文件白名单与 seccomp 禁网；自建目录外假文件/符号链接读取和网络 socket 均被拒绝，目标只得到空 HOME/配置和显式假值。
+
+实际配置包的身份门/账号保存两项测试仅编译通过、未运行：74 个非标准库包初始化审查未完成，且包全局变量会定位配置目录。没有运行 main、账户请求、真实凭据或分享，无新增依赖或系统配置变更。M4.2 运行证据增强，M4.3/M4.4 仍待验证，默认身份拒绝与后端候选结论不变。见[测试范围及初始化/隔离证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/pcs-package-regression-2026-11-09.json)。

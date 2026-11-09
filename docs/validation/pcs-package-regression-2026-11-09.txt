@@ -1,0 +1,15 @@
+=== RUN   TestFTActualClientTLSAndSwitch
+--- PASS: TestFTActualClientTLSAndSwitch (0.00s)
+=== RUN   TestFTActualReqRejectsHTTPBeforeTransport
+--- PASS: TestFTActualReqRejectsHTTPBeforeTransport (0.00s)
+=== RUN   TestFTActualReqConstructionAndTransportErrors
+--- PASS: TestFTActualReqConstructionAndTransportErrors (0.00s)
+=== RUN   TestFTActualClientRedirectIsStopped
+--- PASS: TestFTActualClientRedirectIsStopped (0.00s)
+=== RUN   TestFTActualFetchAndHTTPGetReadFailure
+--- PASS: TestFTActualFetchAndHTTPGetReadFailure (0.00s)
+=== RUN   TestFTActualReqSuccessUsesOnlyMemory
+--- PASS: TestFTActualReqSuccessUsesOnlyMemory (0.00s)
+=== RUN   TestFTRuntimeBoundary
+--- PASS: TestFTRuntimeBoundary (0.00s)
+PASS
