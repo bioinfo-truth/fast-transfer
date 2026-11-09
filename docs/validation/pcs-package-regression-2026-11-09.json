@@ -75,7 +75,6 @@
   "network_policy": "inherited child seccomp socket and related syscalls denied; socket returned EPERM",
   "launcher": "explicit_PATH_only_python_-I_-S_close_fds_stdin_devnull",
   "target_environment": "explicit empty-profile HOME/config/tmp and two synthetic probe paths only",
-  "target_main_executed": false,
   "client_binary_executed": false,
   "real_credentials_used": false,
   "account_requests": 0,
@@ -91,5 +90,7 @@
   "test_binary_sha256": "7515807e49f81b121093a0a9cff89a9ae4e67efcf1d3dda223e919b7fffac1cb",
   "config_test_binary_sha256": "0b1b3c82912772f16a648e9709b621fcb447346c59f8b2d3bd1c3e9cab1f210d",
   "free_bytes_final_checkpoint": 169815601152,
-  "mvp_backend_decision": "actual_requester_behavior_evidence_improved_real_auth_and_share_not_verified"
+  "mvp_backend_decision": "actual_requester_behavior_evidence_improved_real_auth_and_share_not_verified",
+  "client_main_executed": false,
+  "generated_go_test_harness_main_executed": true
 }
