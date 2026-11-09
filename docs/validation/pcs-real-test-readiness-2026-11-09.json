@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-09",
+  "input_commit": "b7422a750b4e101991540ee3df142d38f901099e",
+  "decision": "not_ready_for_real_login",
+  "strict_validation_layer": "implemented_15_tests_previously_passed",
+  "production_binding": "unimplemented_default_closed",
+  "denial_evidence": "trusted_coordinator_report_of_Mac_browser_navigation_denial",
+  "original_control_provider_name": "unknown_not_in_evidence",
+  "denial_policy_id_and_scope": "unknown",
+  "needed_clarification_from": "original_navigation_access_control_provider_or_administrator_and_proposed_channel_control",
+  "proposed_account_requests": "not_attempted_pending_channel_scope_and_phase_permission",
+  "new_tests_or_models": false,
+  "new_credentials_or_dependencies": false,
+  "account_probes": 0,
+  "clearable_by_generic_user_consent": false,
+  "first_next_step": "obtain_nonsecret_original_control_scope_and_allowed_review_path_no_cookie",
+  "evidence_tiers": [
+    "official_OAuth_and_paid_share_contract",
+    "third_party_fixed_cookie_source_only",
+    "actual_cookie_identity_object_share_mapping_unverified"
+  ],
+  "single_phase_budget": {
+    "read_only": 2,
+    "create_and_verify": 4,
+    "optional_cancel": 1
+  },
+  "scope_note": "budgets are candidate maxima and not authorization or service availability proof"
+}
