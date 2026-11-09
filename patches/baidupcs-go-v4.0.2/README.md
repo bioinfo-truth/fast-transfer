@@ -109,3 +109,8 @@ go build -mod=readonly -o <isolated>/pcs-never-execute .
 ## 实际包回归的后续证据
 
 不再仅测试独立 helper：实际 requester 包编译及其经过审查的 6 包非标准库初始化闭包在 seccomp + Landlock 限制下执行，七项新回归通过，覆盖真实构造/Req/Fetch/HTTPGet 和文件/网络隔离边界。配置包的身份门/持久化两项测试只编译、不执行，因为其 74 包传递初始化尚未全面审查。没有运行 main、真实登录或分享，也没有新增依赖；原有六项测试未重复。测试源码、执行 wrapper、初始化范围和精确限制见[实际包回归说明](regression/README.md)与 `docs/validation/pcs-package-regression-2026-11-09.json`。这不改变真实身份默认拒绝或 MVP 后端未具备可用性证据的结论。
+
+
+## 配置包初始化缺口已在两项假值路径解除
+
+进一步审查实际选中的 74 包初始化：GetConfigDir 使用绝对隔离目录提前返回；PCSConfig.init 是有 receiver 的普通方法，不自动加载配置；protobuf binaryHash 只读取受允许的当前测试二进制，其他构造/环境/注册路径受已记录限制。专用目标白名单、Landlock 和 seccomp 在目标初始化前生效后，实际配置包两项测试运行通过，证明身份入口默认拒绝及假账号 Save 在建文件前拒绝；运行后 HOME 仍为空。当前完整构建、requester 七项及配置两项均有证据，但没有真实身份/登录/分享。详情见[配置审查与执行说明](regression/README.md)和 `docs/validation/pcs-config-runtime-2026-11-09.json`。

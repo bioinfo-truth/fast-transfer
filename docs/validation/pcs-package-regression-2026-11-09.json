@@ -92,5 +92,7 @@
   "free_bytes_final_checkpoint": 169815601152,
   "mvp_backend_decision": "actual_requester_behavior_evidence_improved_real_auth_and_share_not_verified",
   "client_main_executed": false,
-  "generated_go_test_harness_main_executed": true
+  "generated_go_test_harness_main_executed": true,
+  "historical_before_config_init_review": true,
+  "config_runtime_followup_evidence": "pcs-config-runtime-2026-11-09.json"
 }
