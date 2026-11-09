@@ -5,7 +5,7 @@ Target binary was NOT executed.
 
 <isolated>/pcs-never-execute: go1.27.3
 	path	github.com/qjfoidnh/BaiduPCS-Go
-	mod	github.com/qjfoidnh/BaiduPCS-Go	(devel)	
+	mod	github.com/qjfoidnh/BaiduPCS-Go	(devel)
 	dep	github.com/GeertJohan/go.incremental	v1.0.0	h1:7AH+pY1XUgQE4Y1HcXYaMqAI0m9yrFqo/jt0CW30vsg=
 	dep	github.com/GeertJohan/go.rice	v1.0.2	h1:PtRw+Tg3oa3HYwiDBZyvOJ8LdIyf6lAovJJtr7YOAYk=
 	dep	github.com/astaxie/beego	v1.12.3	h1:SAQkdD2ePye+v8Gn1r4X6IKZM1wd28EyUOVQ3PDSOOQ=
