@@ -97,3 +97,12 @@ BaiduPCS-Go 指定版本源码有 `share set`，不是 `share create`；它使�
 认证文档描述独立 OAuth 授权码、本地 Token 保存和自动刷新，不在此前临时 access_token 测试范围。外部 Skill 要求附带用户原话/会话标识做追踪；本项目只将其作为待评估文本，不执行、不发送。后续须确认不发送追踪文本及其他遥测的数据最小化方案。MCP 个人体验另用体验应用授权、仅供测试且不得正式使用，不保证现有应用或跨应用对象可用。
 
 bdpan 保留为自动化候选，尚未安装、授权或实测；正式 API 的企业认证、购买和开通要求不变，商用准入、现有应用兼容性、调用/下载价格和额度仍需官方确认。若未来验证 bdpan，须另行具体界定安装、持久授权、应用区单份样例放置和建链范围；此前站点安全拒绝仍有效，不通过候选工具绕过。此次仅文档更新，无凭据/对象操作、付费或商务联系。固定来源及未知项见[分享服务调研](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/baidu-share-service.md)。
+
+
+### BaiduPCS-Go 登录：优先只读诊断
+
+按用户方向，优先研究 BaiduPCS-Go 登录后复用分享命令的可行性。历史实际错误是贴吧 HTTP profile 请求等待响应头超时，不是网盘分享业务拒绝；旧执行版本、认证入口和超时网络根因未留足可核验证据，不能断言 Cookie 无效或海外封禁。
+
+当前正式 release v4.0.2 固定提交 `225bdd3b6cb298601c4d5ef7104c3e08cd1d692d` 的登录支持 BDUSS/Cookies 和用户名密码分支，未找到此版扫码入口；源码存在不证明服务当前接受。用户初始化依赖贴吧资料查询，超时可向上传播阻断登录；这与旧错误相符，但不能倒推旧凭据有效。`force_login_username` 跳过校验并使用固定示例身份，不算可信认证，不执行。
+
+同一版本默认跳过 TLS 证书校验，依赖中含带 BDUSS 的 HTTP 登录检查，账号会话会写入本地 JSON；与现有 Xtransfer OAuth 临时令牌范围不同。下一步可设计身份/资料解耦、证书/凭据 HTTP 防护、格式校验及假 transport 诊断，尚未实现。当前仅只读公开源码/非敏感记录，不运行客户端、读凭据或重试登录；此前站点安全拒绝仍有效，不能用工具切换绕过。真实登录、持久访问及指定对象分享须先有允许渠道并按工具/主机/凭据范围明确授权。详细固定来源、历史证据缺口和风险见[登录优先诊断](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/baidu-share-service.md)。

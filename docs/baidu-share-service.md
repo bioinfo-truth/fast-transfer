@@ -99,3 +99,51 @@
 **自动化下一步（未实施）：** 先确认服务支持的合法接入渠道和商用条件，问题包括现有 Xtransfer 兼容性、商业交付准入、调用/下载费用及额度；若转向 bdpan，再明确其应用区方案与数据最小化。以后如需真实验证，应另行具体界定工具/主机、安装、OAuth 及 Token 持久化/刷新、单份样例在 bdpan 应用区的放置、建链对象和期限以及清理方式，并取得相应授权。此次不申请该许可、不安装、不授权、不读取凭据、不复制/上传/分享/删除对象、不付费、不联系商务。此前站点安全拒绝保持有效，任何候选都不用于绕过限制；实际测试须先有允许的接入渠道。
 
 人工建链仍只是交付备选。本节没有新的真实测试结果，自动化尚未完成；可继续推进上一节列出的无凭据接线设计与模拟验收计划。
+
+
+## BaiduPCS-Go 登录优先诊断（只读，不复现登录）
+
+用户当前优先研究“能否打通 BaiduPCS-Go 登录，以复用其分享能力”。这调整的是研究优先级，不是安装、登录或持久账户访问授权。工具是第三方客户端，不是百度官方 SDK；本轮只读取仓库公开源码和既有非敏感记录，没有运行任何客户端命令，也没有接触认证配置或秘密。
+
+### 旧失败能证实什么
+
+- 用户此前指定 `qjfoidnh/BaiduPCS-Go`；历史会话实际提供的错误为 GET `http://c.tieba.baidu.com/c/u/user/profile` 等待响应头超时（`context deadline exceeded / Client.Timeout exceeded while awaiting headers`）。这里不公开原查询串、用户 ID 或签名。
+- 这是**贴吧资料查询的超时**，不是已收到百度网盘“登录无效”或“分享拒绝”的业务响应。无法据此证明 Cookie 无效、海外节点被禁止、会员不足或新分享 API 未开通导致登录失败。
+- 现有仓库文档/非敏感实验总结没有记录该次二进制摘要、版本、完整调用参数或确定主机身份；虽项目使用过海外测试 VPS，不能据此把本次超时的执行主机写成已确认。历史对话随后讨论获取 Cookie，但不证明当时具体使用了 BDUSS、完整 Cookie 或用户名密码中的哪条入口，也不证明参数已正确传入。
+- 用户曾说旧登录方式已废弃，但缺少可归属的具体命令/服务响应，不能扩写为所有认证方法均失效。未找到这次失败为“未知 CLI 参数”的证据；`share create` 与真实命令不符是后续资料的独立错误，不是旧超时根因。
+
+### 固定发布版与认证实现
+
+本轮 GitHub release 元数据：最新非预发布条目为 [v4.0.2](https://github.com/qjfoidnh/BaiduPCS-Go/releases/tag/v4.0.2)，发布于 2026-08-21；tag 指向 `225bdd3b6cb298601c4d5ef7104c3e08cd1d692d`。此前研究的 main 为 `1b9131817aaf8ca7dee24bc00e33ebc4c7a5cc73`，不能把 main 哈希或当前 release 当作旧实验的执行版本。以下审查使用发布 tag 的固定源码。
+
+| 认证入口 | 源码事实 | 当前服务/本账号结论 |
+| --- | --- | --- |
+| BDUSS，可附 STOKEN/PTOKEN | [`main.go`](https://github.com/qjfoidnh/BaiduPCS-Go/blob/225bdd3b6cb298601c4d5ef7104c3e08cd1d692d/main.go#L400)有对应参数和处理分支；配置代码注明 PTOKEN 实际未使用 | 有实现，不等于凭据仍有效或服务器当前接受；未尝试。 |
+| 完整 Cookies | 同一 login 入口解析 Cookie，抽取 BDUSS 再初始化用户 | 不是 OAuth 授权；还需处理 Cookie 格式、有效期和账号风险。源码 regex 后直接索引捕获，格式缺失存在本地错误风险，不能把这种错误写成服务器拒绝。 |
+| 用户名/密码 | [`RunLogin`](https://github.com/qjfoidnh/BaiduPCS-Go/blob/225bdd3b6cb298601c4d5ef7104c3e08cd1d692d/internal/pcscommand/login.go#L33)调用 Baidu-Login v1.4.1，含图形验证码、短信/邮箱验证分支 | 实际有旧协议实现，但本轮无当前服务接受证据，不推荐收集密码来探测。 |
+| 扫码 | 发布版 CLI 登录注册及仓库 Go/Markdown 搜索未发现扫码登录命令/流程 | 不能因其他 fork、依赖或教程存在扫码就称此版支持；未尝试扫码。 |
+| Xtransfer OAuth access_token | 上述 login 分支没有把开放平台 access_token 作为认证入口 | 不等同于 BDUSS/STOKEN，不导入或混用现有 OAuth。 |
+
+### 更精确的故障定位：附属资料接口阻塞用户初始化
+
+发布版 [`SetupUserByBDUSS`](https://github.com/qjfoidnh/BaiduPCS-Go/blob/225bdd3b6cb298601c4d5ef7104c3e08cd1d692d/internal/pcsconfig/maniper.go#L118)默认调用 `NewUserInfoByBDUSS`；后者依赖 baidu-tools v1.2.0。固定依赖源码 [`tieba_login.go`](https://github.com/qjfoidnh/baidu-tools/blob/c3cd19682bc838fe6c4c8056bb65928a116d7f6f/tieba/tieba_login.go#L14)先调用贴吧登录检查，收到成功后再 `FlushUserInfo`；[`tieba_info.go`](https://github.com/qjfoidnh/baidu-tools/blob/c3cd19682bc838fe6c4c8056bb65928a116d7f6f/tieba/tieba_info.go#L19)使用与旧错误同路径的 HTTP profile 查询，失败向上传播并阻断初始化。
+
+因此可证实**当前发布源码有“附属资料查询失败导致登录初始化失败”的耦合**，与历史错误位置吻合；若旧二进制执行相同路径，错误可能发生在前段 BDUSS 检查之后。但旧执行版本缺失，不能进一步证明旧凭据已有效，也不能确定超时是 DNS、出口、服务端停顿还是接口下线。仅凭等待响应头超时这一证据，不能给出网络层唯一根因。
+
+源码还有 `force_login_username`：[`NewUserInfoByInput`](https://github.com/qjfoidnh/BaiduPCS-Go/blob/225bdd3b6cb298601c4d5ef7104c3e08cd1d692d/internal/pcsconfig/baidu.go#L110)会跳过 BDUSS 验证并填入固定示例身份，而不是重新完成服务器认证。不能把它视作可信登录成功、分享资格或身份核验；本项目不配置或执行此开关，也不以它绕过安全拒绝。
+
+### TLS、协议、落盘与日志审查
+
+- 发布版 [`requester/http_client.go`](https://github.com/qjfoidnh/BaiduPCS-Go/blob/225bdd3b6cb298601c4d5ef7104c3e08cd1d692d/requester/http_client.go#L30)默认 `InsecureSkipVerify=true`，且 `SetHTTPSecure` 仍强制跳过校验；仅启用 HTTPS 开关不能证明证书验证已恢复。这是源码风险，不是本次运行配置或被攻击的证据；不修改 TLS 设置试图连通。
+- 上述依赖的贴吧登录检查使用 HTTP 并在正文传入 BDUSS，profile 也使用 HTTP；分享实现使用 HTTPS `/share/pset`。所以不能把“分享地址是 HTTPS”推广为整个认证链路安全。
+- [`Baidu` 配置结构](https://github.com/qjfoidnh/BaiduPCS-Go/blob/225bdd3b6cb298601c4d5ef7104c3e08cd1d692d/internal/pcsconfig/baidu.go#L31)包含 BDUSS/STOKEN/Cookies；[`Save`](https://github.com/qjfoidnh/BaiduPCS-Go/blob/225bdd3b6cb298601c4d5ef7104c3e08cd1d692d/internal/pcsconfig/pcsconfig.go#L102)序列化为 JSON 写入本地，未见该路径加密。创建目录/文件请求 0700/0600，但不保证已存在文件权限被修复，也不是加密保护。普通 CLI 登录具有持久化语义，超出临时进程内令牌使用。
+- CLI 凭据参数可能进入 shell 历史和进程列表；配置、错误 URL、verbose 输出、分享结果/提取码亦有泄露风险。[分享输出代码](https://github.com/qjfoidnh/BaiduPCS-Go/blob/225bdd3b6cb298601c4d5ef7104c3e08cd1d692d/internal/pcscommand/share.go#L16)直接输出链接和密码。此处不是声称所有日志都会打印 Cookie；没有读取实际日志或账户配置来验证泄露。
+- 客户端 Workdir 默认 `/` 且接口接受路径，不是 Xtransfer OAuth 应用区限制的证明。登录若成功可能持有更广账号访问；具体能否读取/分享 Xtransfer 路径仍须独立验证，不能以持有账号会话保证。分享命令存在也不能证明长期商用可用或规避服务条款。
+
+### 当前可继续的工作与真实操作边界
+
+无秘密条件下的优先候选是：根据上述固定源码设计身份/资料解耦，严格要求可信账号身份；设计恢复证书验证、禁止带凭据 HTTP、Cookie 格式校验、内存凭据或隔离存储及脱敏诊断；用假 transport 测 profile 超时、无效凭据、账号错配和未知结果，分别报错。**本轮仅形成诊断/设计，没有改代码、安装或执行这些测试**。若将来存在不含秘密的旧安装清单、版本摘要或脱敏日志，可先补齐版本/入口/阶段证据，而非重试登录。
+
+真实登录不是当前下一条可执行命令。未来若考虑实验，必须先有允许的接入渠道，不能用 CLI、代理、节点或改 TLS 绕过此前站点安全拒绝；再明确：在 fast-transfer 指定测试主机上运行哪一固定/审查构建；所需 BDUSS/STOKEN/Cookie 类别及用于账号校验的请求范围（不索取密码、不混用 Xtransfer token）；仅内存还是独立目录的持久配置、保存期限/文件权限和结束后的处理；账号级访问与会话失窃风险；是否允许指定对象的读取及另一次受控建链。任何登录、凭据导出/导入或持久访问都需针对具体范围取得授权，分享也须单列对象、期限和返回范围。本轮不申请笼统同意，不获取或传递秘密。
+
+**状态：** 已定位源码耦合和安全缺口；旧执行版本/认证入口、网络超时根因、当前账号登录与分享能力仍未知，未被服务器明确拒绝。真实操作未尝试；此前浏览器拒绝仍有效。自动分享目标未完成。
