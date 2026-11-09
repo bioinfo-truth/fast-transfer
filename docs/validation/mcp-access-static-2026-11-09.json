@@ -1,0 +1,153 @@
+{
+  "commit": "b3983d330fea79c7b72e6b7014803e1830148d2c",
+  "files": [
+    {
+      "path": "README.md",
+      "git_blob": "aebcff89265d8948be9e6dc7147cc2998b4e5d61",
+      "sha256": "73c88e994058f53d5c25068329e18c1596710fce8bed136252192a38425da2fb",
+      "bytes": 25158
+    },
+    {
+      "path": "src/baidu-netdisk/client_demo/servers_config.json",
+      "git_blob": "bdbc4c469a2bf856b0b2b646a467f5133a42a8fc",
+      "sha256": "8ad52d280a3e0de48eaa20add9c06a8bfcbdf3fd554b0a1c20b45d1f078dfe0c",
+      "bytes": 142
+    },
+    {
+      "path": "src/baidu-netdisk/client_demo/client_demo_sse.py",
+      "git_blob": "c644d6c9f929f46fc71fbcc0af844a9d9f25b7bb",
+      "sha256": "c37a29511e9e5010a9da36b26c845df52be8e72849f5d9b3695043530785eba5",
+      "bytes": 14966
+    },
+    {
+      "path": "src/baidu-netdisk/README.md",
+      "git_blob": "d71fb1e1e13625f65c5cc23678930f7d2d1a9038",
+      "sha256": "379b4515d07ac399593ba3aab4d037378a3d8cc7e9041ac92f158126f2ecab65",
+      "bytes": 2734
+    },
+    {
+      "path": "src/baidu-netdisk/fileupload_tool.py",
+      "git_blob": "5ecbd8aa5ed21bbc9de6d462c78116f2730741d5",
+      "sha256": "cb7ac0453720b600c53eb4953296b7bf0103b0f9db9d4e97b10e757348ac1e0a",
+      "bytes": 12266
+    },
+    {
+      "path": "src/baidu-netdisk/pyproject.toml",
+      "git_blob": "ef8b677a6c38894f796b6b7931e5a3ad4bb3cbfc",
+      "sha256": "b978c02b73bc0446a3daa6e66d602204005d43397e1c0a46d839adc8f0f87224",
+      "bytes": 292
+    }
+  ],
+  "date": "2026-11-09",
+  "project_base_commit": "703edf3d0e37b4f0f605813f0ceba0dfa925a4fa",
+  "review_type": "public-source and tracked sanitized project record static review only",
+  "public_tree": {
+    "truncated": false,
+    "sha256": "05ba2b568c9d4e1e0dff1c833bf25c162403bced8c030b98a324530354ecaf3d"
+  },
+  "runtime": {
+    "official_sse_endpoint": "https://mcp-pan.baidu.com/sse",
+    "authentication": "access_token URL query, source-declared not account-tested",
+    "wire_flow": [
+      "sse_client",
+      "ClientSession",
+      "initialize",
+      "list_tools",
+      "call_tool"
+    ],
+    "remote_server_version": "unknown"
+  },
+  "demo_risks": {
+    "llm_endpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "model": "deepseek-v3",
+    "user_and_tool_results_added_to_messages": true,
+    "tool_arguments_logged": true,
+    "raw_errors_logged": true,
+    "default_max_tool_attempts": 2,
+    "loads_dotenv_and_LLM_API_KEY_if_executed": true,
+    "executed": false
+  },
+  "local_reuse": {
+    "python_version": "3.14.4",
+    "official_python_minimum": "3.12",
+    "official_dependencies_locked": false,
+    "project_tracked_MCP_lock_present": false,
+    "MCP_SDK_runtime_availability": "not probed or imported",
+    "live_connector": "unimplemented, live_connect remains rejected",
+    "stdio_tool_registered": "upload_file only in reviewed file",
+    "existing_offline_runner_not_a_live_client": true
+  },
+  "issues": [
+    {
+      "number": 1,
+      "created_at": "2025-08-04T09:18:27Z",
+      "updated_at": "2026-04-28T07:37:19Z",
+      "state": "open",
+      "author_association": "NONE",
+      "comment_associations": [
+        "NONE",
+        "NONE"
+      ],
+      "meaning": "user authorization-link report, not official current availability evidence"
+    },
+    {
+      "number": 2,
+      "created_at": "2026-05-21T16:31:14Z",
+      "updated_at": "2026-05-21T16:31:14Z",
+      "state": "open",
+      "author_association": "NONE",
+      "comments": 0,
+      "meaning": "user SSE/Streamable HTTP 405 report, not official support or account evidence"
+    }
+  ],
+  "current_token": {
+    "read": false,
+    "validity": "unknown",
+    "current_scope": "unknown",
+    "MCP_and_share_entitlement": "unverified",
+    "cross_app_Xtransfer_access": "unverified",
+    "new_or_persistent_auth": "not granted or attempted"
+  },
+  "boundaries": {
+    "project_code_changed": false,
+    "tests_run": false,
+    "previous_17_and_38_results": "historical only, not rerun",
+    "demo_installed_or_imported_or_executed": false,
+    "credentials_read_configured_transmitted": false,
+    "SSE_or_stdio_servers_connected": 0,
+    "account_calls": 0,
+    "real_share_attempts": 0,
+    "recipient_downloads": 0,
+    "new_dependencies": 0,
+    "external_contacts_or_tickets": 0
+  },
+  "first_blocker": {
+    "control": "Browser Use site safety gate",
+    "rule_maintainer_and_review_path": "unknown",
+    "status": "same-purpose access remains blocked pending allowed-channel evidence",
+    "minimal_next_action": "obtain original control scope/formal review for original dr-who-server single-file purpose, not another generic user yes"
+  },
+  "next_stages": [
+    "allowed channel evidence",
+    "service/app/object/response contract and deterministic client review",
+    "separate scoped transient secret-use confirmation, no credential discovery",
+    "SSE handshake plus one user_info and one exact file_meta only if allowed",
+    "one separately reviewed file_sharelink_set, unknown no retry",
+    "private return, stop/reference release, separately scoped domestic receipt"
+  ],
+  "project_evidence": [
+    {
+      "path": "docs/mvp-live-sample.md",
+      "sha256": "97d8e07f868a3899a58012a6b5c3e9f28c4022123957d3cde052192c386c6898"
+    },
+    {
+      "path": "docs/validation/mvp-live-sample-2026-11-08.json",
+      "sha256": "09f32cbaf5ca6a06300a3fc346a2d0142451e7fcafa765b76a4174530393ba67"
+    },
+    {
+      "path": "fast_transfer/mcp_share.py",
+      "sha256": "723fc576ba5ac60a337fd7d25dee858d5c7d3fc45d96d3302c86f7ec0858c399"
+    }
+  ],
+  "source_main_rechecked": "b3983d330fea79c7b72e6b7014803e1830148d2c"
+}

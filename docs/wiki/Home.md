@@ -206,3 +206,8 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 ### M4 官方 MCP 无凭据候选（2026-11-09）
 
 官方 MCP 的无凭据候选已实现：只验证固定16字节合成任务与 README 字段，复用现有 Job 锁/持久意图，不新建账本、不解码未知 MCP 信封。新增17项及干净副本必要回归38项通过（零失败/跳过，排除历史未提交四项）；创建后注入超时，新进程重开同 Job 不再调用模拟创建。字段合格仍未验证，身份/应用范围及分享对象映射不被合成观察证明，live 始终关闭。 用户要求尝试原已回读样例建链，本次实际分享仍未尝试；未迁移/重传/读凭据/连服务器。真实阶段须先取得原控制允许依据及服务/应用/对象映射契约，不能借 MCP 绕行。详见[实现、测试与单次审批范围](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-share-candidate.md)、[机器证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/mcp-share-candidate-2026-11-09.json)。
+
+
+### MCP 接入静态核查（2026-11-09）
+
+公开固定源码现已确认 MCP SSE 入口 https://mcp-pan.baidu.com/sse 及 access_token 查询参数认证；demo 会向千帆发送 messages/工具结果、记录参数并异常自动重试，不能原样用于建链。stdio 注册的是上传工具。当前 token 有效期/scope、应用与分享权益仍未无凭据确认；真实连接器未实现，原控制允许依据仍缺。此次仅静态审查，未改代码/重跑测试/读凭据/连 SSE/建链或领取。 已知 endpoint 不等于允许绕行；下一步先取得原控制允许依据，再确认兼容应用/响应映射并审阅单次内存凭据使用。详见[静态审查与真实阶段](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-share-candidate.md)、[机器证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/mcp-access-static-2026-11-09.json)。
