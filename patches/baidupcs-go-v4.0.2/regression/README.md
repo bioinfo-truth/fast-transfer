@@ -7,19 +7,19 @@
 | 项目 | 编译 | 执行 |
 | --- | --- | --- |
 | 实际 requester 包及其初始化 | `go test -c ./requester` 通过 | 仅 `-test.run=^TestFT` 七项通过 |
-| 实际 internal/pcsconfig 包 | `go test -c ./internal/pcsconfig` 通过 | **未运行**：74 个非标准库传递包的完整初始化审查未完成 |
+| 实际 internal/pcsconfig 包 | `go test -c ./internal/pcsconfig` 通过 | 后续具体初始化审查完成后，两项受限假值测试通过（见末节） |
 
-将 `requester_regression_test.go` 复制为固定隔离副本 `requester/ft_regression_test.go`，`config_regression_test.go` 复制为 `internal/pcsconfig/ft_regression_test.go`，使用已有受审工具链/缓存、同一断网编译 wrapper 生成两个不同测试二进制；没有构建或执行新的 main。只编译不执行配置测试；不能把它们记为身份/持久化行为测试通过。
+将 `requester_regression_test.go` 复制为固定隔离副本 `requester/ft_regression_test.go`，`config_regression_test.go` 复制为 `internal/pcsconfig/ft_regression_test.go`，使用已有受审工具链/缓存、同一断网编译 wrapper 生成两个不同测试二进制；没有构建或执行新的 main。配置测试在后续审查后运行；只证明拒绝/保存防护，不证明真实认证。
 
 七项实际请求层测试覆盖：NewHTTPClient 默认 guardedTransport、SetHTTPSecure 两档均不能关闭证书保护、Req 的 HTTP 前置拒绝/构造和 transport 错误脱敏、实际 http.Client 重定向 hook 不跟随、Fetch/HTTPGet 部分读取失败不泄露、仅内存成功响应，以及网络/越界文件/符号链接边界。没有真实证书握手，fake transport 不证明网络/服务协议兼容性。
 
-配置测试已准备 malformed 假输入在 regex/用户初始化前被身份门拒绝，BDUSS/force-login 入口拒绝，以及带假账号的 Save 在创建文件前拒绝。全部仅为**编译通过、未执行**。已编译两个测试包不等于运行它们的初始化。
+配置测试已准备 malformed 假输入在 regex/用户初始化前被身份门拒绝，BDUSS/force-login 入口拒绝，以及带假账号的 Save 在创建文件前拒绝。先前仅编译；后续在下文专用隔离中两项运行通过。
 
 ## 初始化审查范围
 
 通过禁网 `go list -deps -json` 取得构建选中的文件，未执行目标包。requester 的非标准库闭包为 6 包：requester、rio、expires、cachemap、dnscache、singleflight。审查初始化路径为构造内存 HTTP/cookiejar/TLS 对象、缓存槽/锁和未启动 DNS Resolver；DNS 查询、代理环境解析均在调用路径中，不在这些初始化构造中。没有导入 pcsconfig 或 main。现有 requester 测试文件无 TestMain/init，运行 filter 排除上游测试和旧六项 helper 测试；这不是整个源码依赖的正式安全审计。具体选中文件摘要见验证 JSON。
 
-配置包则在全局初始化调用 GetConfigDir，可能探查可执行文件旁的旧配置或创建 HOME 目录；NewConfig 仅分配对象，但 Init/Reload 才会加载文件。其 74 个非标准库闭包含 JSON/reflect、protobuf 注册、终端/颜色和环境初始化，不能只看 func init 或设置 HOME 就认定安全。本轮不执行配置测试，下一步应完整核对传递全局变量构造及其副作用，再评估同级隔离下只运行两项测试。不需要新真实凭据，也不应把这一步替换为登录。
+配置包则在全局初始化调用 GetConfigDir，可能探查可执行文件旁的旧配置或创建 HOME 目录；NewConfig 仅分配对象，但 Init/Reload 才会加载文件。其 74 个非标准库闭包含 JSON/reflect、protobuf 注册、终端/颜色和环境初始化，不能只看 func init 或设置 HOME 就认定安全。上述具体传递全局变量构造与副作用已在后续审查中核对，并在同级隔离下运行两项测试，详见末节。不需要新真实凭据，也不应把这一步替换为登录。
 
 ## 运行时文件系统与网络限制
 

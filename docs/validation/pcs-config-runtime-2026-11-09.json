@@ -799,7 +799,7 @@
   ],
   "test_binary_sha256": "50b0dc3378f6872dca9a3f15ca897dd954003cb15ec24a60644a1ef0ded371a5",
   "artifact_sha256": {
-    "patches/baidupcs-go-v4.0.2/regression/README.md": "8d326f570d361e2b94d979ac1c903f2a52326727aaf3b9ab30bb32da4e74ec5d",
+    "patches/baidupcs-go-v4.0.2/regression/README.md": "b17b395f420c1960aa68f8a0cba940a1dc7516ea0f5f76125ecb3c4719eeccb3",
     "patches/baidupcs-go-v4.0.2/regression/restricted_config_test_exec.py": "edaa85d17c9394763a39737ab09ec76b0e7b27bb970c95554dee4e96031c9acb",
     "patches/baidupcs-go-v4.0.2/regression/init_scan.go": "b08c11efe05fb1acd38c1595eee0b798a06e2851d972759869668926ca1f7fcf",
     "patches/baidupcs-go-v4.0.2/regression/requester_regression_test.go": "e06189c2fab5073881b3eb009abf0fb5c02863b9a4b2c509438ddb3edc4482ff",
