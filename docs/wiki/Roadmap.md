@@ -162,7 +162,7 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 
 ### M4.3/M4.4 接入契约候选与特征测试
 
-已追踪 Cookie UK、贴吧 UID/现有 OAuth 的不同通道以及按 path_list 建链；新方案要求严格身份/预期账号与精确对象绑定，默认 unavailable 的可注入适配器和一次意图/unknown 核查，尚未实现或开启真实访问。实际固定源码的假响应特征测试两个顶层/十二子场景通过，确认 UK 可接受缺 errno/非正 uk、ShareSet 可接受缺成功码/ID 或非法链接等宽容缺口，不能当作安全或服务能力通过。编译需显式 -vet=off 避开已有无关路径诊断，未宣称默认 vet 通过。
+已追踪 Cookie UK、贴吧 UID/现有 OAuth 的不同通道以及按 path_list 建链；新方案要求严格身份/预期账号与精确对象绑定，默认 unavailable 的可注入适配器和一次意图/unknown 核查，该句为严格验证层实现前的历史状态；目前验证层已实现，生产接线及真实访问仍关闭。实际固定源码的假响应特征测试两个顶层/十二子场景通过，确认 UK 可接受缺 errno/非正 uk、ShareSet 可接受缺成功码/ID 或非法链接等宽容缺口，不能当作安全或服务能力通过。编译需显式 -vet=off 避开已有无关路径诊断，未宣称默认 vet 通过。
 
 现有 Xtransfer 对象访问、客户端 Cookie 契约/商用支持仍未验证；既有站点拒绝有效，先确认可验证的允许渠道，之后再分别审阅精确主机/构建、短期只读身份/对象、单次建链与清理范围。无真实秘密、账户请求或链接生成。见[源码依据、适配器契约和阶段方案](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/pcs-identity-share-plan.md)。
 
@@ -176,4 +176,9 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 
 ### 真实验证进入条件收敛（2026-11-09）
 
-严格候选验证层已实现，十五项隔离测试是已有结果，本次未重复测试。生产可信接线与真实分享仍未完成。原浏览器导航拒绝只有可信转述，缺控制提供方名称、策略引用及适用范围；拟议 Cookie 账户请求尚未尝试，不能写成百度 API 已拒绝。下一步先取得原访问控制提供方或管理者的非敏感范围说明及允许复核途径，不索取 Cookie、不换工具探测。详见[当前进入条件与候选阶段范围](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/pcs-real-test-readiness.md)。
+严格候选验证层已实现，十五项隔离测试是已有结果，本次未重复测试。生产可信接线与真实分享仍未完成。此前仅有可信转述的控制信息已由下节核实结果更新；拟议 Cookie 账户请求尚未尝试，不能写成百度 API 已拒绝。下一步先取得原访问控制提供方或管理者的非敏感范围说明及允许复核途径，不索取 Cookie、不换工具探测。详见[当前进入条件与候选阶段范围](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/pcs-real-test-readiness.md)。
+
+
+### 拒绝元数据回填（2026-11-09）
+
+协调方已核回：用户 Mac 的 Chrome 调用 `cua.createBrowserTab` 打开 `https://pan.baidu.com/` 返回 `isError=true`，拒绝来自 **Browser Use site safety gate**；未授予观察页面，未进入用户授权或 auto-review 流程，且明确禁止通过其他浏览器、间接执行、CDP 等实现同一被拒目的。规则 ID、具体维护方和正式复核路径仍未知。这不证明百度自身拒绝或所有 API 均被禁止，也不是替代通道许可。拟议 Cookie 身份/对象/分享请求仍未尝试。严格候选验证层已实现，生产可信接线未实现；此次仅回填事实，不重跑测试、不索取凭据、不重试或绕过。

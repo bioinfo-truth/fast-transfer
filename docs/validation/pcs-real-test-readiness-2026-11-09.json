@@ -4,8 +4,8 @@
   "decision": "not_ready_for_real_login",
   "strict_validation_layer": "implemented_15_tests_previously_passed",
   "production_binding": "unimplemented_default_closed",
-  "denial_evidence": "trusted_coordinator_report_of_Mac_browser_navigation_denial",
-  "original_control_provider_name": "unknown_not_in_evidence",
+  "denial_evidence": "trusted_coordinator_rechecked_nonsecret_tool_result_metadata",
+  "original_control_provider_name": "Browser Use site safety gate",
   "denial_policy_id_and_scope": "unknown",
   "needed_clarification_from": "original_navigation_access_control_provider_or_administrator_and_proposed_channel_control",
   "proposed_account_requests": "not_attempted_pending_channel_scope_and_phase_permission",
@@ -24,5 +24,17 @@
     "create_and_verify": 4,
     "optional_cancel": 1
   },
-  "scope_note": "budgets are candidate maxima and not authorization or service availability proof"
+  "scope_note": "budgets are candidate maxima and not authorization or service availability proof",
+  "metadata_update_input_commit": "651b7b20bda23e393e9206552e50af1a15f50b29",
+  "specific_control_maintainer": "unknown_not_provided",
+  "denied_tool": "cua.createBrowserTab",
+  "denied_resource": "https://pan.baidu.com/",
+  "tool_result_isError": true,
+  "page_observation_granted": false,
+  "user_authorization_or_auto_review_entered": false,
+  "formal_review_path": "unknown_not_provided",
+  "explicit_no_bypass_scope": "same_denied_purpose_via_other_browsers_indirect_execution_CDP_etc",
+  "all_baidu_apis_denied_proven": false,
+  "baidu_business_api_denial_proven": false,
+  "metadata_is_new_permission": false
 }
