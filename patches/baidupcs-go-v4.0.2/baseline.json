@@ -1,0 +1,15 @@
+{
+  "repository": "qjfoidnh/BaiduPCS-Go",
+  "tag": "v4.0.2",
+  "commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+  "original_sha256": {
+    "requester/http_client.go": "0819fdbdfabdd11acb6f5d6be24d6e2b586206961c4eeeda699fa76572a490a5",
+    "requester/dial.go": "16d5b91091c2d9bb18a3ff61978f2ea5413f9f3d999d6a0c654bfc87fe28f979",
+    "requester/fetch.go": "0a7be5fb1a1d737d99db395fd4f3c5117e8c14e491a54ad7e26b01b785844456",
+    "internal/pcsconfig/baidu.go": "e607f22d1a711f25c842e0ee4e39e429a7c69a3c99aa8f2932dcd1329589324f",
+    "internal/pcsconfig/maniper.go": "588e3c72a0f496cdd974f4459ea803a5106007d4c2ef88e4d6f24aaec2420185",
+    "internal/pcsconfig/pcsconfig.go": "87534c9e3cbfc5a3dc02a7e768c5910f0ad8814b3cbd0dd12acf522229bfe05f",
+    "main.go": "0f8761cf40e7e77721a5ee7eb7dceeb0180dbfd352680f6607bafa862faec0b5"
+  },
+  "patch_sha256": "45152056c597d7f8a32704947adacccb1d8991d9091cb33808e81b623570e19f"
+}

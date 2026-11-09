@@ -1,0 +1,169 @@
+--- a/requester/http_client.go
++++ b/requester/http_client.go
+@@ -23,0 +24 @@
++            CheckRedirect: denyRedirect,
+@@ -27,0 +29 @@
++	h.lazyInit()
+@@ -38 +40,2 @@
+-				InsecureSkipVerify: true,
++				InsecureSkipVerify: false,
++                MinVersion: tls.VersionTLS12,
+@@ -50 +53 @@
+-		h.Client.Transport = h.transport
++		h.Client.Transport = guardedTransport{next: h.transport}
+@@ -89 +92,2 @@
+-		InsecureSkipVerify: true,
++		InsecureSkipVerify: false,
++                MinVersion: tls.VersionTLS12,
+--- a/requester/dial.go
++++ b/requester/dial.go
+@@ -217 +217,2 @@
+-			InsecureSkipVerify: !h.https,
++			InsecureSkipVerify: false,
++            MinVersion: tls.VersionTLS12,
+--- a/requester/fetch.go
++++ b/requester/fetch.go
+@@ -16 +16 @@
+-	resp, err := DefaultClient.Get(urlStr)
++	resp, err := DefaultClient.Req("GET", urlStr, nil, nil)
+@@ -76 +76 @@
+-			return nil, fmt.Errorf("requester.Req: unknown post type: %s", value)
++			return nil, ErrRequestPolicy
+@@ -121 +121,5 @@
+-	return h.Client.Do(req)
++	resp, err = h.Client.Do(req)
++    if err != nil {
++        return nil, ErrRequestFailed // Never propagate a URL/header/body-bearing error.
++    }
++    return resp, nil
+--- a/internal/pcsconfig/baidu.go
++++ b/internal/pcsconfig/baidu.go
+@@ -91,0 +92 @@
++    if err = RequireVerifiedIdentityBinding(); err != nil { return nil, err }
+@@ -111,0 +113 @@
++    if err = RequireVerifiedIdentityBinding(); err != nil { return nil, err }
+--- a/internal/pcsconfig/maniper.go
++++ b/internal/pcsconfig/maniper.go
+@@ -118,0 +119 @@
++    if err = RequireVerifiedIdentityBinding(); err != nil { return nil, err }
+--- a/internal/pcsconfig/pcsconfig.go
++++ b/internal/pcsconfig/pcsconfig.go
+@@ -100,0 +101 @@
++    if len(c.BaiduUserList) != 0 { return RequireVerifiedIdentityBinding() }
+--- a/main.go
++++ b/main.go
+@@ -422 +422,2 @@
+-				var bduss, ptoken, stoken, cookies string
++				if err := pcsconfig.RequireVerifiedIdentityBinding(); err != nil { return err }
++                var bduss, ptoken, stoken, cookies string
+--- /dev/null
++++ b/requester/security_policy.go
+@@ -0,0 +1,50 @@
++// Security patch candidate: no live binding or permission is supplied here.
++package requester
++
++import (
++    "crypto/tls"
++    "errors"
++    "net/http"
++    "net/url"
++    "strings"
++)
++
++var ErrRequestPolicy = errors.New("request_policy_rejected")
++var ErrRequestFailed = errors.New("request_failed_redacted")
++
++func denyRedirect(req *http.Request, via []*http.Request) error {
++    return ErrRequestPolicy // No Location is followed, even on the same host.
++}
++
++type guardedTransport struct { next http.RoundTripper }
++
++func (g guardedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
++    if req == nil || req.URL == nil { return nil, ErrRequestPolicy }
++    u := req.URL
++    host := u.Hostname()
++    if u.Scheme != "https" || u.User != nil || u.Fragment != "" ||
++       (u.Port() != "" && u.Port() != "443") || req.Host != "" && req.Host != u.Host ||
++       !(host == "baidu.com" || strings.HasSuffix(host, ".baidu.com") ||
++         host == "baidupcs.com" || strings.HasSuffix(host, ".baidupcs.com")) {
++        return nil, ErrRequestPolicy
++    }
++    query, queryError := url.ParseQuery(u.RawQuery)
++    if queryError != nil { return nil, ErrRequestPolicy }
++    for key := range query {
++        switch strings.ToLower(key) {
++        case "bduss", "stoken", "ptoken", "cookie", "access_token", "refresh_token", "password", "authorization", "client_secret":
++            return nil, ErrRequestPolicy
++        }
++    }
++    // Protect the actual concrete network transport as well as its constructor.
++    if transport, ok := g.next.(*http.Transport); ok {
++        config := transport.TLSClientConfig
++        if config == nil || config.InsecureSkipVerify || config.MinVersion < tls.VersionTLS12 {
++            return nil, ErrRequestPolicy
++        }
++    }
++    if g.next == nil { return nil, ErrRequestPolicy }
++    response, failure := g.next.RoundTrip(req)
++    if failure != nil { return nil, ErrRequestFailed }
++    return response, nil
++}
+--- /dev/null
++++ b/requester/security_policy_test.go
+@@ -0,0 +1,42 @@
++package requester
++
++import (
++    "crypto/tls"
++    "io"
++    "net/http"
++    "strings"
++    "testing"
++)
++
++type fixtureRoundTripper struct { calls int; redirect bool }
++func (f *fixtureRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
++    f.calls++
++    header := make(http.Header)
++    code := 200
++    if f.redirect { code = 302; header.Set("Location", "https://other.baidu.com/offline-fixture") }
++    return &http.Response{StatusCode: code, Header: header,
++        Body: io.NopCloser(strings.NewReader("fixture")), Request: req}, nil
++}
++func TestRejectBeforeTransport(t *testing.T) {
++    for _, address := range []string{"http://pan.baidu.com/fixture", "https://pan.baidu.com/fixture?BDUSS=FAKE_ONLY",
++        "https://FAKE_ONLY@pan.baidu.com/fixture", "https://pan.baidu.com.evil.invalid/fixture"} {
++        next := &fixtureRoundTripper{}
++        request, _ := http.NewRequest("POST", address, strings.NewReader("BDUSS=FAKE_ONLY"))
++        if _, err := (guardedTransport{next: next}).RoundTrip(request); err != ErrRequestPolicy { t.Fatal("policy not enforced") }
++        if next.calls != 0 { t.Fatal("request reached transport") }
++    }
++}
++func TestRedirectIsNotFollowed(t *testing.T) {
++    next := &fixtureRoundTripper{redirect: true}
++    client := &http.Client{Transport: guardedTransport{next: next}, CheckRedirect: denyRedirect}
++    request, _ := http.NewRequest("POST", "https://pan.baidu.com/fixture", strings.NewReader("BDUSS=FAKE_ONLY"))
++    request.Header.Set("Cookie", "BDUSS=FAKE_ONLY")
++    response, err := client.Do(request)
++    if response != nil { response.Body.Close() }
++    if err == nil || next.calls != 1 { t.Fatal("redirect followed or silently accepted") }
++}
++func TestRejectInsecureConcreteTransport(t *testing.T) {
++    next := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
++    request, _ := http.NewRequest("GET", "https://pan.baidu.com/fixture", nil)
++    if _, err := (guardedTransport{next: next}).RoundTrip(request); err != ErrRequestPolicy { t.Fatal("insecure transport accepted") }
++}
+--- /dev/null
++++ b/internal/pcsconfig/identity_gate.go
+@@ -0,0 +1,10 @@
++// No supported trusted identity endpoint has been bound or verified.
++package pcsconfig
++
++import "errors"
++
++// RequireVerifiedIdentityBinding intentionally rejects all login/persistence.
++// Do not replace it with force-login, fixed UID or optional profile data.
++func RequireVerifiedIdentityBinding() error {
++    return errors.New("verified_identity_binding_unavailable")
++}

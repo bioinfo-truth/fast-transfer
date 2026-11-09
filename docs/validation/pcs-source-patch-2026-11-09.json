@@ -1,0 +1,25 @@
+{
+  "baseline_hashes": "passed",
+  "patch_applicability": "passed",
+  "audited_static_constraints": "passed",
+  "go_compilation": "not_run_no_toolchain",
+  "go_tests": "not_run_no_toolchain",
+  "upstream_client_executed": false,
+  "account_requests": 0,
+  "date": "2026-11-09",
+  "baseline_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+  "go_targeted_tests_supplied": 3,
+  "go_targeted_tests_passed": null,
+  "workspace_python_regression_passed": 148,
+  "clean_python_regression_expected": 144,
+  "identity_binding": "unavailable_default_deny",
+  "live_login_verified": false,
+  "share_verified": false,
+  "artifact_sha256": {
+    "patches/baidupcs-go-v4.0.2/README.md": "f32229b8ebb1d67c407ca79c607ef25cd7644bf5602ec74b548feaa68f5ab331",
+    "patches/baidupcs-go-v4.0.2/security-candidate.patch": "45152056c597d7f8a32704947adacccb1d8991d9091cb33808e81b623570e19f",
+    "patches/baidupcs-go-v4.0.2/verify_patch.py": "b9bf461a4532af22948599502fa76491f07bad8d01b457f554384d678603ee10",
+    "patches/baidupcs-go-v4.0.2/baseline.json": "0dd5eeeb6163af7c967336f077f19ff6f146967f8fc965762dc0e0fea13c5b29"
+  },
+  "clean_python_regression_passed": 144
+}

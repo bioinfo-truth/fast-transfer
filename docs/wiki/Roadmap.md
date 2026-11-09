@@ -113,3 +113,8 @@ bdpan 保留为自动化候选，尚未安装、授权或实测；正式 API 的
 PCS-Go 登录安全方案已形成独立离线模型：固定假凭据、仅内存 FakeTransport，检查严格 TLS/HTTPS、可信身份与可选资料解耦；身份无效/未知/错配时拒绝，只有模拟身份已建立后才容许资料超时降级；禁用 force-login 成功语义，输出固定安全状态码。12 项针对性及工作区全套 148 项测试通过，旧未提交实验保留。模型路径为虚构标签，不是百度接口；未修改或接入真实 PCS-Go、网络/认证设置，真实认证与分享资格始终为 false。
 
 自动分享仍是目标，M4 尚未真实验收。后续需审查实际客户端补丁、可信身份接口、依赖/TLS/秘密全链路，并先具备允许渠道和对具体主机/构建/凭据范围的授权；不绕过既有站点拒绝。此轮无真实凭据或账户请求、无上传/建链/部署。详见[离线模型、测试与真实接线限制](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/pcs-auth-simulation.md)。
+
+
+### M4：固定上游安全补丁候选
+
+已保存针对 BaiduPCS-Go v4.0.2 提交 `225bdd3b6cb298601c4d5ef7104c3e08cd1d692d` 的实际源码补丁：请求层严格 TLS、HTTP/重定向保护及身份未接线时登录/force-login/账号保存默认拒绝。逐文件基线、补丁适用性、实际离线应用和静态约束检查通过；主机无 Go 工具链，Go 编译及三项假 transport 测试未运行，不能称真实客户端已修复。身份接口仍未核实，资料降级没有真实成功路径；现有 Python 回归通过仅证明本项目未回归。无凭据、完整客户端执行或账户请求，既有站点安全拒绝不变，M4 尚未验收。见[补丁、调用链、验证与剩余风险](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/patches/baidupcs-go-v4.0.2/README.md)。
