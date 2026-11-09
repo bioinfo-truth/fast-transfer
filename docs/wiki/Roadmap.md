@@ -106,3 +106,10 @@ bdpan 保留为自动化候选，尚未安装、授权或实测；正式 API 的
 当前正式 release v4.0.2 固定提交 `225bdd3b6cb298601c4d5ef7104c3e08cd1d692d` 的登录支持 BDUSS/Cookies 和用户名密码分支，未找到此版扫码入口；源码存在不证明服务当前接受。用户初始化依赖贴吧资料查询，超时可向上传播阻断登录；这与旧错误相符，但不能倒推旧凭据有效。`force_login_username` 跳过校验并使用固定示例身份，不算可信认证，不执行。
 
 同一版本默认跳过 TLS 证书校验，依赖中含带 BDUSS 的 HTTP 登录检查，账号会话会写入本地 JSON；与现有 Xtransfer OAuth 临时令牌范围不同。下一步可设计身份/资料解耦、证书/凭据 HTTP 防护、格式校验及假 transport 诊断，尚未实现。当前仅只读公开源码/非敏感记录，不运行客户端、读凭据或重试登录；此前站点安全拒绝仍有效，不能用工具切换绕过。真实登录、持久访问及指定对象分享须先有允许渠道并按工具/主机/凭据范围明确授权。详细固定来源、历史证据缺口和风险见[登录优先诊断](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/baidu-share-service.md)。
+
+
+## 2026-11-09：M4 优先安全设计离线验证
+
+PCS-Go 登录安全方案已形成独立离线模型：固定假凭据、仅内存 FakeTransport，检查严格 TLS/HTTPS、可信身份与可选资料解耦；身份无效/未知/错配时拒绝，只有模拟身份已建立后才容许资料超时降级；禁用 force-login 成功语义，输出固定安全状态码。12 项针对性及工作区全套 148 项测试通过，旧未提交实验保留。模型路径为虚构标签，不是百度接口；未修改或接入真实 PCS-Go、网络/认证设置，真实认证与分享资格始终为 false。
+
+自动分享仍是目标，M4 尚未真实验收。后续需审查实际客户端补丁、可信身份接口、依赖/TLS/秘密全链路，并先具备允许渠道和对具体主机/构建/凭据范围的授权；不绕过既有站点拒绝。此轮无真实凭据或账户请求、无上传/建链/部署。详见[离线模型、测试与真实接线限制](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/pcs-auth-simulation.md)。
