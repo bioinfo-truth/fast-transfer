@@ -34,6 +34,17 @@ def verify(source):
         assert 'url.ParseQuery(u.RawQuery)' in policy
         assert 'config.InsecureSkipVerify' in policy
         assert 'return ErrRequestPolicy // No Location' in policy
+        fetch = (work / 'requester/fetch.go').read_text()
+        assert 'http.NewRequest(method, urlStr, obody)' not in fetch
+        assert 'newPolicyRequest(method, urlStr, obody)' in fetch
+        assert 'ioutil.ReadAll(resp.Body)' not in fetch
+        assert fetch.count('redactedReadAll(resp.Body)') == 2
+        assert 'return nil, ErrRequestPolicy' in policy
+        assert 'if err != nil { return nil, ErrRequestFailed }' in policy
+        tests = (work / 'requester/security_policy_test.go').read_text()
+        assert tests.count('func Test') == 6
+        assert policy.count('func newPolicyRequest(') == 1
+        assert policy.count('func redactedReadAll(') == 1
         setup = (work / 'internal/pcsconfig/maniper.go').read_text()
         start = setup.index('func (c *PCSConfig) SetupUserByBDUSS')
         assert setup.index('RequireVerifiedIdentityBinding()', start) < setup.index('regexp.Compile', start)

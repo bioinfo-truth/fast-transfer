@@ -23,19 +23,32 @@
 +            MinVersion: tls.VersionTLS12,
 --- a/requester/fetch.go
 +++ b/requester/fetch.go
-@@ -16 +16 @@
+@@ -8,2 +8 @@
+-	"io/ioutil"
+-	"net/http"
++		"net/http"
+@@ -16 +15 @@
 -	resp, err := DefaultClient.Get(urlStr)
 +	resp, err := DefaultClient.Req("GET", urlStr, nil, nil)
-@@ -76 +76 @@
+@@ -23 +22 @@
+-	return ioutil.ReadAll(resp.Body)
++	return redactedReadAll(resp.Body)
+@@ -76 +75 @@
 -			return nil, fmt.Errorf("requester.Req: unknown post type: %s", value)
 +			return nil, ErrRequestPolicy
-@@ -121 +121,5 @@
+@@ -93 +92 @@
+-	req, err = http.NewRequest(method, urlStr, obody)
++	req, err = newPolicyRequest(method, urlStr, obody)
+@@ -121 +120,5 @@
 -	return h.Client.Do(req)
 +	resp, err = h.Client.Do(req)
 +    if err != nil {
 +        return nil, ErrRequestFailed // Never propagate a URL/header/body-bearing error.
 +    }
 +    return resp, nil
+@@ -138 +141 @@
+-	return ioutil.ReadAll(resp.Body)
++	return redactedReadAll(resp.Body)
 --- a/internal/pcsconfig/baidu.go
 +++ b/internal/pcsconfig/baidu.go
 @@ -91,0 +92 @@
@@ -58,13 +71,15 @@
 +                var bduss, ptoken, stoken, cookies string
 --- /dev/null
 +++ b/requester/security_policy.go
-@@ -0,0 +1,50 @@
+@@ -0,0 +1,66 @@
 +// Security patch candidate: no live binding or permission is supplied here.
 +package requester
 +
 +import (
 +    "crypto/tls"
 +    "errors"
++    "io"
++    "io/ioutil"
 +    "net/http"
 +    "net/url"
 +    "strings"
@@ -109,13 +124,28 @@
 +    if failure != nil { return nil, ErrRequestFailed }
 +    return response, nil
 +}
++
++// Errors from URL parsing/method validation can contain the original input.
++func newPolicyRequest(method, address string, body io.Reader) (*http.Request, error) {
++    request, err := http.NewRequest(method, address, body)
++    if err != nil { return nil, ErrRequestPolicy }
++    return request, nil
++}
++
++// Drop partial bytes as well as raw errors on body read failure.
++func redactedReadAll(reader io.Reader) ([]byte, error) {
++    data, err := ioutil.ReadAll(reader)
++    if err != nil { return nil, ErrRequestFailed }
++    return data, nil
++}
 --- /dev/null
 +++ b/requester/security_policy_test.go
-@@ -0,0 +1,42 @@
+@@ -0,0 +1,73 @@
 +package requester
 +
 +import (
 +    "crypto/tls"
++    "errors"
 +    "io"
 +    "net/http"
 +    "strings"
@@ -153,6 +183,36 @@
 +    next := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
 +    request, _ := http.NewRequest("GET", "https://pan.baidu.com/fixture", nil)
 +    if _, err := (guardedTransport{next: next}).RoundTrip(request); err != ErrRequestPolicy { t.Fatal("insecure transport accepted") }
++}
++
++func TestConstructionErrorsAreRedacted(t *testing.T) {
++    for _, test := range [][2]string{{"GET", "https://pan.baidu.com/%zzFAKE_ONLY"},
++        {"BAD\nFAKE_ONLY", "https://pan.baidu.com/fixture"}, {"GET", "https://pan.baidu.com/FAKE_ONLY\n"}} {
++        request, err := newPolicyRequest(test[0], test[1], nil)
++        if request != nil || err != ErrRequestPolicy || strings.Contains(err.Error(), "FAKE_ONLY") {
++            t.Fatal("construction error not redacted")
++        }
++    }
++}
++
++type errorBody struct {}
++func (errorBody) Read(p []byte) (int, error) {
++    copy(p, "FAKE_ONLY")
++    return 1, errors.New("FAKE_ONLY body error")
++}
++func TestReadFailureDropsPartialDataAndError(t *testing.T) {
++    data, err := redactedReadAll(errorBody{})
++    if data != nil || err != ErrRequestFailed { t.Fatal("read failure leaked") }
++}
++
++type errorTransport struct {}
++func (errorTransport) RoundTrip(*http.Request) (*http.Response, error) {
++    return nil, errors.New("FAKE_ONLY transport error")
++}
++func TestTransportErrorRedacted(t *testing.T) {
++    request, _ := http.NewRequest("GET", "https://pan.baidu.com/fixture", nil)
++    response, err := (guardedTransport{next: errorTransport{}}).RoundTrip(request)
++    if response != nil || err != ErrRequestFailed { t.Fatal("transport error leaked") }
 +}
 --- /dev/null
 +++ b/internal/pcsconfig/identity_gate.go

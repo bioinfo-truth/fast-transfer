@@ -118,3 +118,10 @@ PCS-Go 登录安全方案已形成独立离线模型：固定假凭据、仅内�
 ### M4：固定上游安全补丁候选
 
 已保存针对 BaiduPCS-Go v4.0.2 提交 `225bdd3b6cb298601c4d5ef7104c3e08cd1d692d` 的实际源码补丁：请求层严格 TLS、HTTP/重定向保护及身份未接线时登录/force-login/账号保存默认拒绝。逐文件基线、补丁适用性、实际离线应用和静态约束检查通过；主机无 Go 工具链，Go 编译及三项假 transport 测试未运行，不能称真实客户端已修复。身份接口仍未核实，资料降级没有真实成功路径；现有 Python 回归通过仅证明本项目未回归。无凭据、完整客户端执行或账户请求，既有站点安全拒绝不变，M4 尚未验收。见[补丁、调用链、验证与剩余风险](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/patches/baidupcs-go-v4.0.2/README.md)。
+
+
+### M4 最后一轮审查与条件决策
+
+固定源码存在 HTTPS Cookie 账号查询 `UK → PrepareUK`，调用链无需贴吧资料；但未核实当前受支持契约或本账号可用性。官方 OAuth uinfo 是另一授权通道，不能用于证明 BDUSS。补丁已补齐请求构造/响应读取错误脱敏，并明确回调、公开可变客户端及独立依赖不在完整保护保证内。补丁应用/基线/静态检查通过；Go 工具链缺失，现六项 Go 源码测试与编译均未执行。
+
+确定结论：保留 PCS-Go 为候选，不选为 MVP 已可用自动分享后端。M4.1 诊断/模型完成；M4.2 缺源码级编译测试；M4.3 受控登录/对象访问、M4.4 自动分享均未执行。有限下一步是本项目主机经审查工具链上的离线补丁测试，随后才评估允许渠道与具体凭据/对象范围授权。无新安装、秘密、账户请求或对象操作；不绕过已有站点拒绝，不用旧 Python 回归充当 Go 补丁验证。详见[证据与条件决策](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/baidu-share-service.md)。
