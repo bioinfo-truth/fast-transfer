@@ -191,3 +191,8 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 ### 拒绝元数据回填（2026-11-09）
 
 协调方已核回：用户 Mac 的 Chrome 调用 `cua.createBrowserTab` 打开 `https://pan.baidu.com/` 返回 `isError=true`，拒绝来自 **Browser Use site safety gate**；未授予观察页面，未进入用户授权或 auto-review 流程，且明确禁止通过其他浏览器、间接执行、CDP 等实现同一被拒目的。规则 ID、具体维护方和正式复核路径仍未知。这不证明百度自身拒绝或所有 API 均被禁止，也不是替代通道许可。拟议 Cookie 身份/对象/分享请求仍未尝试。严格候选验证层已实现，生产可信接线未实现；此次仅回填事实，不重跑测试、不索取凭据、不重试或绕过。
+
+
+### M5 本地进程与持久化窗口验收（2026-11-09）
+
+新增 13 项真实子进程/合成故障窗口测试；独立预期提交副本中，工作流、space、upload_stage 必要回归共 65 项通过，排除历史未提交四项。SIGKILL 重开、两进程竞争及 fsync/replace 注入验证未重放已持久意图，残留 state.new 保留；新增只读 diagnose 返回固定原因，不修复/删除/重置或调用后端。5 GiB 保留线与真实后端关闭不变；未测试断电或真实远端 exactly-once，M5 整体及真实 MVP 仍未验收。 详见[工作流矩阵与复现](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mvp-workflow.md)、[执行证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/m5-process-recovery-2026-11-09.json)。本轮不涉及百度账户或解除既有站点限制。

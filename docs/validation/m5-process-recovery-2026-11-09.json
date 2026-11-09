@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-09",
+  "base_commit": "53cb040755bed3abe76dacdd115fc1891fe4be58",
+  "scope": "M5 local process/persistence acceptance only",
+  "implementation_sha256": {
+    "fast_transfer/workflow.py": "7b99c400ea10ff58f58801d5e696b76a784ace94ed72fedcf4457d9624486f62",
+    "tests/test_workflow_process.py": "f01db4926bd88aa10dcf38fb343e8ab33c7da6bebb7525740b406111f58eb003",
+    "tests/support/workflow_process_worker.py": "32533dc99fa07c9364378b95de8b24bd9744a2a11e84335ba2b92345c624462a",
+    "tests/support/run_workflow_isolated.py": "35c6c7f51266a1030a8c308c31aaed0c34aa83e9918921094607f1b68a35d0da",
+    "tests/test_workflow.py": "cf5c656fb91e59931eb27749ca19289897577916378c5036ee29d1fd1b26805a",
+    "tests/test_space.py": "74d3b98f73f639da7ef840846c1becfb899fc62eee3267739f700bddeec74deb",
+    "tests/test_upload_stage.py": "e1376de543627025acb57a0a6acb96a5d182878581b6e50b3f426c412eba92d5"
+  },
+  "command": "env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_isolated.py test_workflow_process test_workflow test_space test_upload_stage",
+  "clean_tree": "tracked base files plus this change; historical untracked experiments and four tests excluded",
+  "results": {
+    "new_tests": 13,
+    "existing_workflow_tests": 8,
+    "necessary_clean_regressions_total": 65,
+    "exit_code": 0,
+    "log_sha256": "29bff5a58e4ee0bb7572fe3504e8cd34860fb0949ee7b97f55a9e74d0e92806b",
+    "first_harness_run": "18 tests, one harness JSONDecodeError normalization failure; fixed harness, then 21 passed; additional fault windows included in final 65",
+    "unguarded_discovery": "13 process tests skip without kernel guard; acceptance log executes all without skips",
+    "final_repeat_reason": "test-discovery guard changed to skip unguarded invocation; final clean regression rerun"
+  },
+  "isolation": {
+    "kernel_seccomp_inherited_by_children": true,
+    "worker_socket_probe": "EPERM before workflow import",
+    "clean_environment_and_empty_home": true,
+    "python_flags": [
+      "-I",
+      "-S",
+      "-B"
+    ],
+    "filesystem_sandbox": false,
+    "dependencies_downloaded": 0,
+    "real_network_or_account_calls": 0,
+    "credentials_read": false
+  },
+  "actual_process_termination_windows": [
+    "before_intent_save",
+    "new_flushed_before_file_fsync",
+    "after_replace_before_directory_fsync",
+    "after_durable_intent_before_backend",
+    "during_synthetic_backend",
+    "after_backend_before_terminal_save",
+    "lock_holder_competition_and_exit"
+  ],
+  "injected_failures": [
+    "intent_file_fsync_ENOSPC",
+    "intent_replace_EIO",
+    "intent_directory_fsync_EIO",
+    "terminal_file_fsync_ENOSPC"
+  ],
+  "synthetic_records": [
+    "corrupt_json",
+    "wrong_type",
+    "partial_state",
+    "missing_state",
+    "residual_state_new",
+    "pending_symlink_to_test_sentinel"
+  ],
+  "findings": [
+    "no duplicate synthetic backend invocation after persisted intent",
+    "state.new retained and blocks subsequent save before backend",
+    "read-only diagnose added; does not repair reset delete or invoke backend",
+    "5GiB reserve and live gate unchanged",
+    "all tested loaded claims remain in simulation, no real delivery eligibility"
+  ],
+  "not_proven": [
+    "power_loss_durability",
+    "remote_exactly_once",
+    "real_backend_recovery",
+    "hostile_local_owner_or_lock_inode_replacement",
+    "M5_overall_MVP_acceptance"
+  ]
+}

@@ -59,3 +59,36 @@ link 只做 HTTPS 主机/路径格式检查，接受 pan.baidu.com/s/… 或保�
 | 隔离与空间 | JSON true 不授予权限，资格恒 false；原空间保护保留 | 真实全过程空间和停止边界 |
 
 新增 8 项离线聚合测试，合成载荷仅 1 KiB，禁用 socket；没有重新下载 NCBI 文件或跑旧性能基准。工作区 119 项通过，干净提交应为 115 项（四项历史未提交测试保留在工作区）。证据见 `docs/validation/mvp-workflow-2026-11-08.json`。M4/M5 仅本地独立部分完成，不能标整体验收通过。
+
+## M5 进程中断与持久化窗口验收（2026-11-09）
+
+本次复用现有 Job/flock/先存意图/原子替换，没有新增工作流或分享账本，也没有改动写入流程、5 GiB 保留线或默认关闭的真实后端。增加只读 `diagnose`：在原锁内检查残留 `state.new`（只 lstat，不跟随或读其内容）、加载并验证状态，返回固定原因码、可选 phase 和人工检查建议；不输出 mapping、状态自由文本或异常，不删除、修复、重置、重试或调用后端。可读记录也保持 `automatic_retry_allowed=false`，这只是诊断建议，不改变 `source_pending` 原有一次入口。
+
+```sh
+python3 -m fast_transfer.workflow --jobs-dir /tmp/ft-jobs --job-id job-workflow diagnose
+env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_isolated.py test_workflow_process test_workflow test_space test_upload_stage
+```
+
+`diagnose` 成功返回结构化诊断时退出 0，包括需人工处理的状态；自动化必须检查 reason/status，不能用退出 0 当作任务成功。固定原因包括 `workflow_pending_state_file`、`workflow_incomplete_or_unknown_outcome`、`workflow_busy`、`workflow_state_missing`、`workflow_state_unreadable_or_invalid`、`workflow_record_readable`；其他访问错误归一为 `workflow_local_input_or_io_failure`。复用现有锁需要已有有效 lock、私有可写任务目录；目录不可用时只给出归一原因，不创建锁或修复目录。`show` 保留原清单语义，不是恢复诊断。
+
+| 新增测试窗口 | 实际执行方式 | 结果 |
+| --- | --- | --- |
+| 意图写入前 | save 边界暂停，真实 SIGKILL，另起进程 | 旧状态不变、后端零次；第一次后续调用可执行，第二次被拒绝 |
+| state.new flush 后、文件 fsync 前 | fsync 边界暂停并 SIGKILL | 保留 state.new 与旧状态，再启动不调用后端 |
+| replace 后、目录 fsync 前 | replace 返回后暂停并 SIGKILL | 重开读到 running；后端零次，不重放 |
+| 意图完成文件/目录 fsync 后、后端前 | save 返回后暂停并 SIGKILL | 重开 running，后端零次，不重放 |
+| 后端调用中及竞争启动 | 合成后端记一次调用并暂停；第二进程竞争；再 SIGKILL | 竞争 busy，重开仍不重复调用 |
+| 后端返回后、终态保存前 | 终态 save 前暂停并 SIGKILL | 后端一次，重开为未完成/未知，不冒充成功 |
+| 意图文件 fsync 失败 | Python 注入 ENOSPC；不是填满真实磁盘 | 旧状态不变、保留残留、后端零次 |
+| 意图 replace 失败 | Python 注入 EIO | 保留残留、后端零次 |
+| 意图目录 fsync 失败 | Python 注入 EIO | replace 已可见，但后端零次，重开 running 拒绝重放 |
+| 后端返回后终态文件 fsync 失败 | Python 注入 ENOSPC | 后端一次，保留 running 及残留，不重复 |
+| 独立持锁者与启动者 | 两个真实子进程；仅杀测试持锁者 | busy；退出后内核释放锁，可诊断并执行首次入口 |
+| 损坏/部分/缺失状态 | 测试目录构造不完整 JSON、错类型、缺字段及缺文件 | 固定诊断、无敏感合成哨兵回显、后端零次 |
+| 残留为符号链接 | 链接到本轮合成哨兵 | 不跟随、不覆盖哨兵、后端零次 |
+
+每个新子进程使用 `-I -S -B`、显式空 HOME/配置目录和最小环境、DEVNULL stdin、关闭额外 FD。runner 先加载子进程继承的 libseccomp socket 系统调用拒绝；worker 在导入工作流之前实际验证 socket=EPERM 及 HOME 为空。只读取仓库固定 fixture 和本轮临时输入，后端替换为本地调用计数器/未知返回值。普通 unittest 发现但未启用内核保护时，新进程测试会跳过；正式验收日志中 13 项均执行、无跳过。runner 自身及原工作流回归也受内核禁网；没有文件系统沙箱，文件范围由审查后的代码约束，不声称隐藏本机全部文件或提供完整恶意代码隔离。
+
+本次新测试 **13 项**，原工作流回归 8 项；独立的预期提交代码副本（仅原已跟踪文件加本轮文件）中，连同受影响 space/upload_stage 回归共 **65 项通过**，退出 0。历史未提交四项未拷贝、未运行，也没有报作本次通过数。首次 18 项运行有一项 harness 未归一 JSONDecodeError，修正测试 worker 并增加窗口后 21 项通过；最终干净必要回归为 65 项，不改写初次失败。最终输出与代码哈希见 [JSON 证据](validation/m5-process-recovery-2026-11-09.json)及[测试日志](validation/m5-process-recovery-2026-11-09.txt)。
+
+局限：真实的是本地进程 SIGKILL/重开和 flock，不是断电、内核崩溃或存储故障实测；fsync/replace 错误仅 Python 故障注入。未对真实后端、远端未知结果、磁盘控制器持久性或跨任务/主机并发作保证，计数器不证明远端 exactly-once。锁依赖同一未被替换的 inode，不能防私有目录拥有者恶意改状态/换锁；诊断也不认证状态。意图前未发生后端调用的任务仍可能首次执行，不能概括为所有重开一律不可执行。没有自动清理残留或恢复调度；人工检查之后也没有 reset-runnable 命令。**M5 仅本地验收范围补齐，真实 MVP 整体仍未通过。** 最小下一步是按诊断人工核对未完成记录；真实端到端阶段继续等待其各自可信接线、允许通道和交付验收条件，本轮不解除 M4 限制。

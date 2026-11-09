@@ -216,6 +216,42 @@ class Job:
             # Manual continuation is a local checklist; never resets to runnable.
             self.save(s);return s
 
+    def diagnose(self):
+        """Read-only, bounded recovery status; never repairs or invokes a backend."""
+        out = {'mode': 'simulation', 'status': 'manual_review',
+               'delivery_eligible': False, 'automatic_retry_allowed': False,
+               'reason': 'workflow_local_input_or_io_failure',
+               'next_action': 'inspect_local_records_without_retry_or_deletion'}
+        try:
+            with self.locked():
+                try:
+                    (self.root/'state.new').lstat()
+                except FileNotFoundError:
+                    pass
+                else:
+                    out['reason'] = 'workflow_pending_state_file'
+                    return out
+                try:
+                    s = self.read()
+                except FileNotFoundError:
+                    out['reason'] = 'workflow_state_missing'
+                    return out
+                except (InputProblem, ValueError, TypeError, KeyError, OSError):
+                    out['reason'] = 'workflow_state_unreadable_or_invalid'
+                    return out
+                out['phase'] = s['phase']
+                if s['phase'] == 'simulation_running' or s.get('mutation_outcome_unknown'):
+                    out['reason'] = 'workflow_incomplete_or_unknown_outcome'
+                else:
+                    out['status'] = 'local_record_only'
+                    out['reason'] = 'workflow_record_readable'
+        except InputProblem as exc:
+            if exc.code == 'workflow_busy':
+                out['reason'] = 'workflow_busy'
+        except OSError:
+            pass
+        return out
+
     def view(self, now=None):
         with self.locked():s=self.read()
         now=int(time.time()) if now is None else now
@@ -238,6 +274,7 @@ def main():
     c=sub.add_parser('create');c.add_argument('manifest',type=Path);c.add_argument('--index',type=int,default=0)
     c=sub.add_parser('simulate');c.add_argument('manifest',type=Path);c.add_argument('--source-dir',type=Path,required=True);c.add_argument('--backend-dir',type=Path,required=True)
     sub.add_parser('show')
+    sub.add_parser('diagnose')
     c=sub.add_parser('record-share');c.add_argument('form',type=Path)
     c=sub.add_parser('manual');c.add_argument('action',choices=['inspect_commit_outcome','verify_source','verify_share','cancel'])
     a=p.parse_args()
@@ -247,6 +284,7 @@ def main():
         elif a.command=='simulate':out=job.simulate(load_manifest(a.manifest),a.source_dir,a.backend_dir)
         elif a.command=='record-share':out=job.share_draft(bounded_json(a.form))
         elif a.command=='manual':out=job.manual(a.action)
+        elif a.command=='diagnose':out=job.diagnose()
         else:out=job.view()
         print(json.dumps(out));return 0
     except InputProblem as exc:reason=exc.code
