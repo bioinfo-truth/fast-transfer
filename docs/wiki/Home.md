@@ -201,3 +201,8 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 ### M2/M3 协作停止边界（2026-11-09）
 
 新增进程内协作取消/deadline 检查，HTTP 停止确认追踪在途请求/读取/关闭；20 项新增测试、23 个合成场景及干净副本必要回归 122 项通过（零失败/跳过，排除历史未提交四项）。低空间后拒绝新载荷；故意忽略取消的 fake 分片仍实际晚写 4 字节，说明阻塞调用无法被检查点抢占。永久阻塞无结果可用，不冒充停止成功；真实网络停止时限、后台写入上界及 M2/M3 整体验收仍未证实。 仅测试自有微小合成文件与禁网子进程，5 GiB 保留线、M4 登录/分享关闭不变。详见[停止契约和复现](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mvp-stop-boundaries.md)及[机器证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/m2-m3-stop-boundaries-2026-11-09.json)。
+
+
+### M4 官方 MCP 无凭据候选（2026-11-09）
+
+官方 MCP 的无凭据候选已实现：只验证固定16字节合成任务与 README 字段，复用现有 Job 锁/持久意图，不新建账本、不解码未知 MCP 信封。新增17项及干净副本必要回归38项通过（零失败/跳过，排除历史未提交四项）；创建后注入超时，新进程重开同 Job 不再调用模拟创建。字段合格仍未验证，身份/应用范围及分享对象映射不被合成观察证明，live 始终关闭。 用户要求尝试原已回读样例建链，本次实际分享仍未尝试；未迁移/重传/读凭据/连服务器。真实阶段须先取得原控制允许依据及服务/应用/对象映射契约，不能借 MCP 绕行。详见[实现、测试与单次审批范围](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-share-candidate.md)、[机器证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/mcp-share-candidate-2026-11-09.json)。

@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-09",
+  "base_commit": "02b2606dff179eb91839a1be47a10ed175d5d35c",
+  "scope": "MCP fixture candidate only; existing Job persistence reused; no wire/client/auth implementation",
+  "source": {
+    "repository": "https://github.com/baidu-netdisk/mcp",
+    "commit": "b3983d330fea79c7b72e6b7014803e1830148d2c",
+    "README_git_blob": "aebcff89265d8948be9e6dc7147cc2998b4e5d61",
+    "evidence": "trusted coordinator re-read fixed public README fields; no source execution or new fetch this turn"
+  },
+  "implementation_sha256": {
+    "fast_transfer/mcp_share.py": "723fc576ba5ac60a337fd7d25dee858d5c7d3fc45d96d3302c86f7ec0858c399",
+    "tests/test_mcp_share.py": "9b352b12b25fc04f7236052a92aa735737f85cb5accd2f2bcd57e107c331cdf2",
+    "fast_transfer/workflow.py": "7b99c400ea10ff58f58801d5e696b76a784ace94ed72fedcf4457d9624486f62",
+    "tests/support/run_workflow_isolated.py": "35c6c7f51266a1030a8c308c31aaed0c34aa83e9918921094607f1b68a35d0da"
+  },
+  "command": "env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_isolated.py test_mcp_share test_workflow test_workflow_process",
+  "results": {
+    "new_tests": 17,
+    "clean_necessary_regressions_total": 38,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "elapsed_seconds": 5.092,
+    "initial_targeted_tests": 17,
+    "initial_targeted_passed": true,
+    "historical_untracked_four_tests_included": false,
+    "log_sha256": "be6750b28ef4a6d5040eb57c7c84ff9236c5d5aa206e068913999a2366356d4c",
+    "final_repeat_reason": "prior unknown remains true on reopen; persistence timeout before dispatch is not mistaken for post-create timeout"
+  },
+  "isolation": {
+    "kernel_seccomp_inherited_by_children": true,
+    "socket_probe": "EPERM",
+    "clean_HOME_and_minimal_environment": true,
+    "filesystem_sandbox": false,
+    "fixture_source_bytes": 16,
+    "dependencies_downloaded": 0,
+    "MCP_servers_connected": 0,
+    "credentials_read_or_persisted": false,
+    "real_account_or_share_calls": 0,
+    "original_upload_relocated_or_repeated": false
+  },
+  "boundaries": {
+    "official_MCP_envelope_implemented": false,
+    "official_permission_error_code_assumed": false,
+    "trusted_live_identity_or_scope_available": false,
+    "precise_share_owner_object_mapping_available": false,
+    "live_connect": "always rejected",
+    "all_fixture_eligibility_flags": false,
+    "same_Job_timeout_reopen_share_calls": 0,
+    "new_generic_ledger": false,
+    "share_results_in_public_log": false,
+    "5GiB_reserve_changed": false,
+    "prior_unknown_outcome_preserved_on_reopen": true
+  },
+  "real_share_request_followup": {
+    "user_intent": "try share for original validated NCBI sample",
+    "actual_action": "not attempted",
+    "access_channel": "blocked pending original control explanation/allowed channel evidence",
+    "service_entitlement_and_cross_app_access": "unverified",
+    "exact_real_MCP_endpoint_runtime_and_secret_flow": "not selected or reviewed",
+    "new_credential_or_persistent_authorization_permission": "not granted",
+    "next": "resolve allowed channel, service/application/mapping contract, then precise per-stage review; no Cookie/token request"
+  }
+}
