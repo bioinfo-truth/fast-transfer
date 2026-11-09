@@ -83,3 +83,10 @@ M4.2 的完整纯编译阻碍已解除，先前缺依赖失败保留为历史证
 对选中的 74 包初始化继续审查，定位 GetConfigDir 的绝对隔离路径早退、NewConfig 纯内存构造、非自动执行的 PCSConfig.init 方法，以及 protobuf 读取当前测试二进制等具体行为；不再以包数量本身作为阻碍。专用测试目标与 Landlock/禁网限制在初始化前生效、清空环境后，身份门和假账号保存两项实际包测试通过；默认配置无账号、越界文件/符号链接读取与 socket 被拒绝，HOME 运行后仍为空。先前“仅编译”是历史阶段，不再是当前状态。
 
 M4.2 现有完整纯编译、requester 七项和配置两项受限运行证据；真实身份入口继续默认拒绝，M4.3/M4.4 未执行，不代表可登录或自动分享。此次无新依赖、账户请求、真实凭据或主机安全设置变更。见[初始化清单/文件摘要与结果](validation/pcs-config-runtime-2026-11-09.json)。
+
+
+## M4.3/M4.4 接入契约与分阶段范围候选
+
+已追踪固定源码 UK/PrepareUK、Cookie/UID/UK、精确对象定位和 path_list 建链链路，形成[身份与分享接入方案](pcs-identity-share-plan.md)。新增实际 baidupcs 源码特征测试（内存 transport、Landlock/seccomp）两个顶层/十二个子场景通过，确认 UK 缺 errno/非正 uk 以及 ShareSet 缺成功码/ID、非法 URL 仍可被宽容接受等缺口；不是安全条件通过或真实建链。默认包测试编译被上游已有 int→string vet 诊断阻止，明确 -vet=off 后才编译特征测试，不声称 vet 通过。
+
+最小候选是默认 unavailable 的独立身份/对象/分享适配器，严格 Principal/预期账号/对象证据与一次建链意图，资料不参与认证；尚未实现，不开启 live 门。既有 Xtransfer 对象不能凭同账号或旧 fs_id 推定新会话可访问，Cookie 与 OAuth 不互换。现有访问拒绝仍有效，先需可验证的允许渠道，再分别审阅短期只读身份/指定对象、一次分享、结果核验与清理范围；无秘密索取或真实请求。执行记录见[特征测试证据](validation/pcs-identity-share-contract-2026-11-09.json)。

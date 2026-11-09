@@ -167,3 +167,10 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 对 74 包初始化按选中文件和实际调用继续审查，明确绝对隔离配置路径早退、NewConfig 不加载文件、PCSConfig.init 并非自动函数，以及 protobuf 只读取当前受允许测试二进制等具体行为。专用配置测试目标在 Landlock 文件白名单、seccomp 禁网及空环境下执行，两项均通过：身份入口拒绝、假账号保存拒绝且未创建配置。越界假文件/符号链接与 socket 探针均被拒绝，独立 HOME 仍为空，无客户端 main、真实凭据/账户请求或新依赖。
 
 先前配置测试“仅编译”缺口已解除；M4.2 有完整构建及 requester 七项/配置两项运行证据，仍不能推导真实身份或分享资格。M4.3/M4.4 未执行，默认拒绝和原站点安全边界不变。见[配置初始化审查与执行证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/pcs-config-runtime-2026-11-09.json)。
+
+
+### M4.3/M4.4 接入契约候选与特征测试
+
+已追踪 Cookie UK、贴吧 UID/现有 OAuth 的不同通道以及按 path_list 建链；新方案要求严格身份/预期账号与精确对象绑定，默认 unavailable 的可注入适配器和一次意图/unknown 核查，尚未实现或开启真实访问。实际固定源码的假响应特征测试两个顶层/十二子场景通过，确认 UK 可接受缺 errno/非正 uk、ShareSet 可接受缺成功码/ID 或非法链接等宽容缺口，不能当作安全或服务能力通过。编译需显式 -vet=off 避开已有无关路径诊断，未宣称默认 vet 通过。
+
+现有 Xtransfer 对象访问、客户端 Cookie 契约/商用支持仍未验证；既有站点拒绝有效，先确认可验证的允许渠道，之后再分别审阅精确主机/构建、短期只读身份/对象、单次建链与清理范围。无真实秘密、账户请求或链接生成。见[源码依据、适配器契约和阶段方案](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/pcs-identity-share-plan.md)。

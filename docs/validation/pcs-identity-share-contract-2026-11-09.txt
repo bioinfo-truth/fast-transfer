@@ -1,0 +1,29 @@
+=== RUN   TestFTCharacterizeUKResponse
+=== RUN   TestFTCharacterizeUKResponse/valid_fixture
+=== RUN   TestFTCharacterizeUKResponse/missing_errno_is_accepted_gap
+=== RUN   TestFTCharacterizeUKResponse/zero_uk_is_accepted_gap
+=== RUN   TestFTCharacterizeUKResponse/negative_uk_is_accepted_gap
+=== RUN   TestFTCharacterizeUKResponse/expired_rejected
+=== RUN   TestFTCharacterizeUKResponse/two_records_rejected
+=== RUN   TestFTCharacterizeUKResponse/string_type_rejected
+--- PASS: TestFTCharacterizeUKResponse (0.00s)
+    --- PASS: TestFTCharacterizeUKResponse/valid_fixture (0.00s)
+    --- PASS: TestFTCharacterizeUKResponse/missing_errno_is_accepted_gap (0.00s)
+    --- PASS: TestFTCharacterizeUKResponse/zero_uk_is_accepted_gap (0.00s)
+    --- PASS: TestFTCharacterizeUKResponse/negative_uk_is_accepted_gap (0.00s)
+    --- PASS: TestFTCharacterizeUKResponse/expired_rejected (0.00s)
+    --- PASS: TestFTCharacterizeUKResponse/two_records_rejected (0.00s)
+    --- PASS: TestFTCharacterizeUKResponse/string_type_rejected (0.00s)
+=== RUN   TestFTCharacterizeShareResponse
+=== RUN   TestFTCharacterizeShareResponse/fixture_success
+=== RUN   TestFTCharacterizeShareResponse/missing_errno_id_accepted_gap
+=== RUN   TestFTCharacterizeShareResponse/unsafe_link_accepted_gap
+=== RUN   TestFTCharacterizeShareResponse/empty_link_rejected
+=== RUN   TestFTCharacterizeShareResponse/business_denial_rejected
+--- PASS: TestFTCharacterizeShareResponse (0.00s)
+    --- PASS: TestFTCharacterizeShareResponse/fixture_success (0.00s)
+    --- PASS: TestFTCharacterizeShareResponse/missing_errno_id_accepted_gap (0.00s)
+    --- PASS: TestFTCharacterizeShareResponse/unsafe_link_accepted_gap (0.00s)
+    --- PASS: TestFTCharacterizeShareResponse/empty_link_rejected (0.00s)
+    --- PASS: TestFTCharacterizeShareResponse/business_denial_rejected (0.00s)
+PASS

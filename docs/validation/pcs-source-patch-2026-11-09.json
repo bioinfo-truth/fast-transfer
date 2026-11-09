@@ -14,7 +14,7 @@
   "live_login_verified": false,
   "share_verified": false,
   "artifact_sha256": {
-    "patches/baidupcs-go-v4.0.2/README.md": "e5c047c9bf09a1bc736c28fc2636c47f287e7ca0dfb64dbbc3319fbe0aea9da7",
+    "patches/baidupcs-go-v4.0.2/README.md": "20ba04bcacf9d672977b9f0f4dcc3b66449b8c3726d84cebdcb1c9c2675fa981",
     "patches/baidupcs-go-v4.0.2/offline_exec.py": "411e798ef3a0dd8f90bb091c309f1e08af3c1623da694d6a48bb815802612406",
     "patches/baidupcs-go-v4.0.2/security-candidate.patch": "b7a189e791bd037ecf43785399891a0c0c0a9af7750df137bdc795087212c018",
     "patches/baidupcs-go-v4.0.2/verify_patch.py": "a8f1807ea95c317ffd676fa66b033a817757b28ed581c2836bd0f1b560f8a560",
@@ -50,5 +50,6 @@
   "actual_requester_package_tests_passed": 7,
   "configuration_regression": "two_runtime_passed_after_specific_init_review",
   "package_runtime_evidence": "pcs-package-regression-2026-11-09.json",
-  "configuration_runtime_evidence": "pcs-config-runtime-2026-11-09.json"
+  "configuration_runtime_evidence": "pcs-config-runtime-2026-11-09.json",
+  "identity_share_contract_evidence": "pcs-identity-share-contract-2026-11-09.json"
 }

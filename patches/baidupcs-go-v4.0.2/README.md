@@ -114,3 +114,8 @@ go build -mod=readonly -o <isolated>/pcs-never-execute .
 ## 配置包初始化缺口已在两项假值路径解除
 
 进一步审查实际选中的 74 包初始化：GetConfigDir 使用绝对隔离目录提前返回；PCSConfig.init 是有 receiver 的普通方法，不自动加载配置；protobuf binaryHash 只读取受允许的当前测试二进制，其他构造/环境/注册路径受已记录限制。专用目标白名单、Landlock 和 seccomp 在目标初始化前生效后，实际配置包两项测试运行通过，证明身份入口默认拒绝及假账号 Save 在建文件前拒绝；运行后 HOME 仍为空。当前完整构建、requester 七项及配置两项均有证据，但没有真实身份/登录/分享。详情见[配置审查与执行说明](regression/README.md)和 `docs/validation/pcs-config-runtime-2026-11-09.json`。
+
+
+## 身份/分享链路契约候选与宽容解析缺口
+
+后续在实际 baidupcs 包中以假响应确认 UK 和 ShareSet 的解析边界：两个特征测试/十二子场景复现了缺成功码、非正身份、缺分享 ID 与非法链接等接受行为。测试源码及专用 runtime wrapper 在 `contracts/`，设计与阶段范围见[身份/对象/分享方案](../../docs/pcs-identity-share-plan.md)。普通 go test -c 遇到已有 PrepareBDStoken int→string vet 诊断，特征测试明确 -vet=off 编译后在原级别 Landlock/seccomp 下运行；未更改真实身份门或实现适配器。此证据表明不能直接把原 parser/CLI 当成可信交付，不代表真实服务验证或资格通过。
