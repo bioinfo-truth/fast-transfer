@@ -401,5 +401,7 @@
   "account_requests": 0,
   "real_credentials_used": false,
   "module_wrapper_sha256": "b9fbce4106483f341a0dbda21a57fbf97107aed7c0cd84c352f0d8c9b3ac4166",
-  "next_action": "Seek specific authorization to acquire and verify fixed public dependency archives into isolated cache, then repeat pure offline build; do not fetch now."
+  "next_action": "Seek specific authorization to acquire and verify fixed public dependency archives into isolated cache, then repeat pure offline build; do not fetch now.",
+  "historical_attempt_before_dependency_acquisition": true,
+  "followup_success_evidence": "pcs-full-build-2026-11-09.json"
 }

@@ -14,7 +14,7 @@
   "live_login_verified": false,
   "share_verified": false,
   "artifact_sha256": {
-    "patches/baidupcs-go-v4.0.2/README.md": "b9086a96ddba3e9eb7c0aa9d28a2df57db3e196ab284d28cf17b9427cbb7377a",
+    "patches/baidupcs-go-v4.0.2/README.md": "bacfc172d56cac8daed87893935edd4c2e86c39a20693901b2b1f04f76930434",
     "patches/baidupcs-go-v4.0.2/offline_exec.py": "411e798ef3a0dd8f90bb091c309f1e08af3c1623da694d6a48bb815802612406",
     "patches/baidupcs-go-v4.0.2/security-candidate.patch": "b7a189e791bd037ecf43785399891a0c0c0a9af7750df137bdc795087212c018",
     "patches/baidupcs-go-v4.0.2/verify_patch.py": "a8f1807ea95c317ffd676fa66b033a817757b28ed581c2836bd0f1b560f8a560",
@@ -33,7 +33,7 @@
     "account_probe_sent": false
   },
   "mvp_backend_decision": "not_ready_candidate_only",
-  "full_client_compilation": "attempted_blocked_missing_dependencies",
+  "full_client_compilation": "passed_pure_build_with_locked_dependencies_binary_not_executed",
   "current_execution_evidence": "pcs-go-offline-2026-11-09.json",
   "prior_toolchain_absence_check": {
     "PATH_go": "absent",
@@ -45,5 +45,6 @@
     "prior_absence_note": "Before approved isolated official toolchain installation; see pcs-go-offline-2026-11-09.json"
   },
   "approved_isolated_toolchain_installed": true,
-  "package_build_evidence": "pcs-package-build-2026-11-09.json"
+  "package_build_evidence": "pcs-package-build-2026-11-09.json",
+  "full_build_evidence": "pcs-full-build-2026-11-09.json"
 }
