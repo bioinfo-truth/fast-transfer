@@ -187,3 +187,8 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 ### M5 本地进程与持久化窗口验收（2026-11-09）
 
 新增 13 项真实子进程/合成故障窗口测试；独立预期提交副本中，工作流、space、upload_stage 必要回归共 65 项通过，排除历史未提交四项。SIGKILL 重开、两进程竞争及 fsync/replace 注入验证未重放已持久意图，残留 state.new 保留；新增只读 diagnose 返回固定原因，不修复/删除/重置或调用后端。5 GiB 保留线与真实后端关闭不变；未测试断电或真实远端 exactly-once，M5 整体及真实 MVP 仍未验收。 详见[工作流矩阵与复现](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mvp-workflow.md)、[执行证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/m5-process-recovery-2026-11-09.json)。本轮不涉及百度账户或解除既有站点限制。
+
+
+### M2/M3 协作停止边界（2026-11-09）
+
+新增进程内协作取消/deadline 检查，HTTP 停止确认追踪在途请求/读取/关闭；20 项新增测试、23 个合成场景及干净副本必要回归 122 项通过（零失败/跳过，排除历史未提交四项）。低空间后拒绝新载荷；故意忽略取消的 fake 分片仍实际晚写 4 字节，说明阻塞调用无法被检查点抢占。永久阻塞无结果可用，不冒充停止成功；真实网络停止时限、后台写入上界及 M2/M3 整体验收仍未证实。 仅测试自有微小合成文件与禁网子进程，5 GiB 保留线、M4 登录/分享关闭不变。详见[停止契约和复现](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mvp-stop-boundaries.md)及[机器证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/m2-m3-stop-boundaries-2026-11-09.json)。

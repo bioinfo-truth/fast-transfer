@@ -2,6 +2,7 @@
 import ipaddress
 import socket
 import time
+import threading
 import urllib.parse
 from dataclasses import dataclass, field
 
@@ -144,7 +145,9 @@ class HTTPReply:
                 if time.monotonic() >= self.deadline:
                     fail('http_deadline')
                 data = self.reader(min(chunk_bytes, limit-total+1))
-                if self.closed or time.monotonic() >= self.deadline:
+                if self.closed:
+                    fail('http_stopped')
+                if time.monotonic() >= self.deadline:
                     fail('http_deadline')
                 if not data:
                     break
@@ -191,6 +194,10 @@ class PinnedBaiduHTTPClient:
         self.active, self.reply, self.stopped = None, None, False
         self._credential = None
         self._close_failed = False
+        self._inflight = False
+        self._reads_inflight = 0
+        self._stops_inflight = 0
+        self._exchange_lock = threading.Lock()
 
     def _discard(self, response, connection):
         for resource in (response, connection):
@@ -214,8 +221,11 @@ class PinnedBaiduHTTPClient:
         if req.method != 'GET' or req.purpose == 'upload':
             self.authorize_write(req)
         u = destination(req.url, req.purpose)
-        if self.active is not None:
-            fail('http_concurrent_request')
+        with self._exchange_lock:
+            if self.stopped: fail('http_stopped')
+            if self.active is not None or self._inflight:
+                fail('http_concurrent_request')
+            self._inflight = True
         connection = response = None
         try:
             params = dict(req.params)
@@ -226,7 +236,9 @@ class PinnedBaiduHTTPClient:
                     credential = self.provider()
                     if not isinstance(credential, str) or not credential or len(credential) > 4096:
                         fail('http_auth_missing')
-                    self._credential = credential
+                    with self._exchange_lock:
+                        if self.stopped: fail('http_stopped')
+                        self._credential = credential
                 params['access_token'] = self._credential
             addresses = self.resolver(u.hostname)
             if not addresses or any(not ipaddress.ip_address(x).is_global or ipaddress.ip_address(x).is_multicast for x in addresses):
@@ -245,10 +257,16 @@ class PinnedBaiduHTTPClient:
             if len(path.encode()) > 16384:
                 fail('http_limit_exceeded')
             self.active = connection
+            if self.stopped: fail('http_stopped')
+            if time.monotonic() >= deadline: fail('http_deadline')
             connection.request(req.method, path, body=req.body or None,
                                headers={'User-Agent': 'pan.baidu.com', 'Accept-Encoding': 'identity',
                                         'Content-Type': req.content_type})
+            if self.stopped: fail('http_stopped')
+            if time.monotonic() >= deadline: fail('http_deadline')
             response = connection.getresponse()
+            if self.stopped: fail('http_stopped')
+            if time.monotonic() >= deadline: fail('http_deadline')
             def close():
                 try:
                     try:
@@ -263,14 +281,23 @@ class PinnedBaiduHTTPClient:
                         self.active = None
                         self.reply = None
             def read(n):
-                if self.stopped:
-                    fail('http_stopped')
-                if connection.sock:
-                    connection.sock.settimeout(min(IO_TIMEOUT, max(.001, deadline-time.monotonic())))
-                return response.read1(n)
+                with self._exchange_lock:
+                    if self.stopped:
+                        fail('http_stopped')
+                    self._reads_inflight += 1
+                try:
+                    if connection.sock:
+                        connection.sock.settimeout(min(IO_TIMEOUT, max(.001, deadline-time.monotonic())))
+                    return response.read1(n)
+                finally:
+                    with self._exchange_lock:
+                        self._reads_inflight -= 1
             reply = HTTPReply(response.status, response.getheaders(), read, close, deadline)
-            self.reply = reply
+            with self._exchange_lock:
+                if self.stopped: fail('http_stopped')
+                self.reply = reply
             response_headers(reply)
+            if self.stopped: fail('http_stopped')
             return reply
         except StageFailure:
             self._discard(response, connection)
@@ -278,19 +305,33 @@ class PinnedBaiduHTTPClient:
         except Exception:
             self._discard(response, connection)
             fail('http_io_failure')
+        finally:
+            with self._exchange_lock:
+                self._inflight = False
 
     def stop(self):
-        self.stopped = True
-        self._credential = None  # Release this job's reference; not a secure-erasure claim.
-        connection, self.active = self.active, None
-        if connection is not None:
-            try:
-                if connection.sock:
-                    connection.sock.shutdown(socket.SHUT_RDWR)
-            finally:
-                if self.reply is not None:
-                    self.reply.close()
-                else:
-                    connection.close()
-        self.reply = None
-        return not self._close_failed
+        with self._exchange_lock:
+            self.stopped = True
+            self._credential = None  # Reference release, not guaranteed erasure.
+            self._stops_inflight += 1
+            connection, self.active = self.active, None
+            reply, self.reply = self.reply, None
+        try:
+            if connection is not None:
+                try:
+                    if connection.sock:
+                        connection.sock.shutdown(socket.SHUT_RDWR)
+                finally:
+                    if reply is not None:
+                        reply.close()
+                    else:
+                        connection.close()
+        except Exception:
+            self._close_failed = True
+            raise
+        finally:
+            with self._exchange_lock:
+                self._stops_inflight -= 1
+        with self._exchange_lock:
+            return (not self._close_failed and not self._inflight
+                    and not self._reads_inflight and not self._stops_inflight)

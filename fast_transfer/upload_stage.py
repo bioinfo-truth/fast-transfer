@@ -1,9 +1,12 @@
 """Shared M3 verification flow; offline entry and one explicit sample lane."""
 import hashlib
 import json
+import math
 import os
 import re
 import stat
+import threading
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -13,6 +16,7 @@ from .space import SpaceGuard, preflight_workspace
 MAX_RECORD = 16 * 1024
 MAX_SIMULATION_BYTES = 16 * 1024**2
 SAFE_REASONS = frozenset('''
+    transfer_cancelled transfer_deadline
     unknown_or_invalid_transfer_limits local_buffer_or_part_limit file_exceeds_transfer_limits
     unsafe_source_or_receipt source_size_mismatch source_changed job_record_limit job_record_conflict
     reserved_adapter_filename simulation_file_limit unsupported_adapter_storage_contract
@@ -50,6 +54,25 @@ class StageFailure(Exception):
     def __init__(self, code):
         self.code = code
         super().__init__(code)
+
+
+class TransferControl:
+    """Cooperative checkpoints only; cannot interrupt an arbitrary blocking call."""
+    def __init__(self, *, deadline=None):
+        if deadline is not None and (type(deadline) not in (int, float)
+                                     or not math.isfinite(deadline)):
+            raise ValueError('invalid_transfer_deadline')
+        self.deadline = deadline
+        self._cancelled = threading.Event()
+
+    def cancel(self):
+        self._cancelled.set()
+
+    def checkpoint(self):
+        if self._cancelled.is_set():
+            raise StageFailure('transfer_cancelled')
+        if self.deadline is not None and time.monotonic() >= self.deadline:
+            raise StageFailure('transfer_deadline')
 
 
 @dataclass(frozen=True)
@@ -132,7 +155,8 @@ class JobRecord:
 
 
 class AdapterContext:
-    def __init__(self, root, guard):
+    def __init__(self, root, guard, control=None):
+        self.control = control
         self.root, self.guard, self.stage = root, guard, 'upload'
 
     def register_temporary(self, name):
@@ -145,15 +169,17 @@ class AdapterContext:
         return path
 
     def checkpoint(self):
+        if self.control is not None: self.control.checkpoint()
         return self.guard.check(self.stage)
 
     def before_temporary_write(self, bytes_upper_bound):
+        if self.control is not None: self.control.checkpoint()
         return self.guard.check(self.stage, growth={'backend_extra': bytes_upper_bound})
 
 
 def _run_upload(entry, source_path, receipt_path, backend_root, job_id,
                          app_name, transport, needs, limits, *, probe=None,
-                         expected_layout='auto', _approved_sample=None):
+                         expected_layout='auto', _approved_sample=None, control=None):
     """Transport contract: reserve_new/begin_new/put_part/commit_new/metadata/readback/stop.
 
     All calls are synchronous and cooperative. The public simulation entry rejects
@@ -168,7 +194,14 @@ def _run_upload(entry, source_path, receipt_path, backend_root, job_id,
     live = False
     source = record = guard = None
     started = False
+    def checkpoint(stage):
+        if control is not None: control.checkpoint()
+        value = guard.check(stage)
+        if control is not None: control.checkpoint()
+        return value
+
     try:
+        if control is not None: control.checkpoint()
         require_accepted({'schema_version': 1, 'files': [entry]})
         if entry['size'] > MAX_SIMULATION_BYTES:
             raise StageFailure('simulation_file_limit')
@@ -207,7 +240,7 @@ def _run_upload(entry, source_path, receipt_path, backend_root, job_id,
         guard = SpaceGuard({entry['name']: entry['size']}, source_path.parent, needs,
                            root, source_extra_files=[receipt_path], probe=probe,
                            expected_layout=expected_layout)
-        guard.check('download')
+        checkpoint('download')
         with open_regular(receipt_path) as f:
             raw = f.read(MAX_RECORD+1)
         if len(raw) > MAX_RECORD:
@@ -217,7 +250,7 @@ def _run_upload(entry, source_path, receipt_path, backend_root, job_id,
         except (ValueError, UnicodeError):
             raise StageFailure('invalid_source_receipt') from None
         source = open_regular(source_path)
-        identity, blocks, stamp = source_identity(source, lambda: guard.check('download'),
+        identity, blocks, stamp = source_identity(source, lambda: checkpoint('download'),
                                                   limits.part_bytes, entry['size'])
         if (not isinstance(receipt, dict) or receipt.get('status') != 'source_verified'
                 or type(receipt.get('bytes')) is not int
@@ -226,17 +259,18 @@ def _run_upload(entry, source_path, receipt_path, backend_root, job_id,
         if any(entry.get(k) and entry[k].lower() != identity[k] for k in ('md5', 'sha256')):
             raise StageFailure('source_checksum_mismatch')
         result['source'] = identity
-        guard.check('upload')
+        checkpoint('upload')
         record = JobRecord(root, guard)
         record.save(result, 'upload')
-        context = AdapterContext(root, guard)
+        context = AdapterContext(root, guard, control)
         result['phase'] = 'remote_reservation'
         started = True
         transport.attach(context)
-        guard.check('upload')
+        checkpoint('upload')
         transport.reserve_new(target_dir)
-        guard.check('upload')
+        checkpoint('upload')
         session = transport.begin_new(target, identity['bytes'], tuple(blocks))
+        checkpoint('upload')
         required = tuple(transport.required_parts(session)) if hasattr(transport, 'required_parts') else tuple(range(len(blocks)))
         if (any(type(i) is not int or not 0 <= i < len(blocks) for i in required)
                 or len(set(required)) != len(required)):
@@ -245,7 +279,7 @@ def _run_upload(entry, source_path, receipt_path, backend_root, job_id,
         result['phase'] = 'upload'
         for index in required:
             md5 = blocks[index]
-            guard.check('upload')
+            checkpoint('upload')
             if file_stamp(source) != stamp:
                 raise StageFailure('source_changed')
             source.seek(index*limits.part_bytes)
@@ -256,30 +290,31 @@ def _run_upload(entry, source_path, receipt_path, backend_root, job_id,
             receipt_md5 = transport.put_part(session, index, data)
             if receipt_md5 != md5:
                 raise StageFailure('part_receipt_mismatch')
-            guard.check('upload')
+            checkpoint('upload')
             result['confirmed_parts'].append(index)
             record.save(result, 'upload')
         if file_stamp(source) != stamp:
             raise StageFailure('source_changed')
-        guard.check('upload')
+        checkpoint('upload')
         transport.commit_new(session)
-        guard.check('upload')
+        checkpoint('upload')
         metadata = transport.metadata(target)
+        checkpoint('upload')
         if not isinstance(metadata, dict) or type(metadata.get('size')) is not int or metadata['size'] != identity['bytes']:
             raise StageFailure('remote_size_mismatch')
         result['phase'] = 'readback'
-        guard.check('readback')
+        checkpoint('readback')
         context.stage = 'readback'
         md, sha, total = hashlib.md5(), hashlib.sha256(), 0
         iterator = iter(transport.readback(target, limits.readback_bytes))
         try:
             while True:
-                guard.check('readback')
+                checkpoint('readback')
                 try:
                     data = next(iterator)
                 except StopIteration:
                     break
-                guard.check('readback')
+                checkpoint('readback')
                 if type(data) is not bytes or not 0 < len(data) <= limits.readback_bytes:
                     raise StageFailure('invalid_readback_chunk')
                 total += len(data)
@@ -318,6 +353,10 @@ def _run_upload(entry, source_path, receipt_path, backend_root, job_id,
                 result['stop_confirmed'] = False
             if not result['stop_confirmed']:
                 result.update(reason=result['reason'] or 'adapter_stop_unconfirmed', status='manual_review')
+        if control is not None:
+            try: control.checkpoint()
+            except StageFailure as exc:
+                result.update(reason=safe_reason(exc.code), verification_complete=False)
         if result['reason'] is None and result['verification_complete'] and result['stop_confirmed']:
             result['simulated_delivery_eligible'] = not live
             result['cloud_verified'] = live
@@ -337,8 +376,8 @@ def _run_upload(entry, source_path, receipt_path, backend_root, job_id,
 
 def run_simulated_upload(entry, source_path, receipt_path, backend_root, job_id,
                          app_name, transport, needs, limits, *, probe=None,
-                         expected_layout='auto'):
+                         expected_layout='auto', control=None):
     """Offline public entry; cannot be switched to live via JSON or a boolean."""
     return _run_upload(entry, source_path, receipt_path, backend_root, job_id,
                        app_name, transport, needs, limits, probe=probe,
-                       expected_layout=expected_layout)
+                       expected_layout=expected_layout, control=control)
