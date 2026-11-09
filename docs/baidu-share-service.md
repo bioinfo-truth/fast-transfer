@@ -231,3 +231,10 @@ M4.2 现有完整纯编译、requester 七项和配置两项受限运行证据�
 已追踪固定源码 UK/PrepareUK、Cookie/UID/UK、精确对象定位和 path_list 建链链路，形成[身份与分享接入方案](pcs-identity-share-plan.md)。新增实际 baidupcs 源码特征测试（内存 transport、Landlock/seccomp）两个顶层/十二个子场景通过，确认 UK 缺 errno/非正 uk 以及 ShareSet 缺成功码/ID、非法 URL 仍可被宽容接受等缺口；不是安全条件通过或真实建链。默认包测试编译被上游已有 int→string vet 诊断阻止，明确 -vet=off 后才编译特征测试，不声称 vet 通过。
 
 最小候选是默认 unavailable 的独立身份/对象/分享适配器，严格 Principal/预期账号/对象证据与一次建链意图，资料不参与认证；尚未实现，不开启 live 门。既有 Xtransfer 对象不能凭同账号或旧 fs_id 推定新会话可访问，Cookie 与 OAuth 不互换。现有访问拒绝仍有效，先需可验证的允许渠道，再分别审阅短期只读身份/指定对象、一次分享、结果核验与清理范围；无秘密索取或真实请求。执行记录见[特征测试证据](validation/pcs-identity-share-contract-2026-11-09.json)。
+
+
+## 严格验证层的无凭据实现已完成
+
+新增独立 Go 候选响应适配层与 fixture-only 意图账本，格式/编译/vet 及十五项受限运行测试通过：拒绝原库宽容接受的缺码/非正身份/非法分享 URL，核对预期账号/namespace/session/task/精确对象与期限，未知创建不重试、错配隔离、停止不可重放。源码与[实现边界](../patches/baidupcs-go-v4.0.2/adapter/README.md)、[验证证据](validation/pcs-strict-adapter-2026-11-09.json)已保存。
+
+此组件测试完成，但不是生产适配器接线：原 UK/ShareSet 未被自动替换，真实连接/资格始终关闭，没有账户请求或新依赖。M4.3/M4.4 的具体剩余阻碍是允许渠道依据和可信 Cookie 身份/样例对象访问/分享映射契约未证实，不能用假响应或同账号推导。未来单次请求/对象/时限/保存及风险范围见[阶段方案](pcs-identity-share-plan.md)；此轮不索取秘密或泛化授权。

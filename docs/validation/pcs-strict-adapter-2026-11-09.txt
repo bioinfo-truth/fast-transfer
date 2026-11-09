@@ -1,0 +1,31 @@
+=== RUN   TestFTStrictIdentityRejectsSourceGaps
+--- PASS: TestFTStrictIdentityRejectsSourceGaps (0.00s)
+=== RUN   TestFTDuplicateTrailingAndBudgetRejected
+--- PASS: TestFTDuplicateTrailingAndBudgetRejected (0.00s)
+=== RUN   TestFTExpectedOwnerSessionNamespaceAndExpiry
+--- PASS: TestFTExpectedOwnerSessionNamespaceAndExpiry (0.00s)
+=== RUN   TestFTExactObjectBoundAcrossTaskAndSession
+--- PASS: TestFTExactObjectBoundAcrossTaskAndSession (0.00s)
+=== RUN   TestFTObjectMismatchAndDuplicateRejected
+--- PASS: TestFTObjectMismatchAndDuplicateRejected (0.00s)
+=== RUN   TestFTShareRejectsMissingFieldsAndUnsafeURL
+--- PASS: TestFTShareRejectsMissingFieldsAndUnsafeURL (0.00s)
+=== RUN   TestFTShareOutputRedacted
+--- PASS: TestFTShareOutputRedacted (0.00s)
+=== RUN   TestFTUnknownCreationConsumesIntentAndNoRetry
+--- PASS: TestFTUnknownCreationConsumesIntentAndNoRetry (0.00s)
+=== RUN   TestFTMappingMismatchQuarantinesAndNoLiveEligibility
+--- PASS: TestFTMappingMismatchQuarantinesAndNoLiveEligibility (0.00s)
+=== RUN   TestFTFixtureSuccessRemainsOfflineAndStopTerminal
+--- PASS: TestFTFixtureSuccessRemainsOfflineAndStopTerminal (0.00s)
+=== RUN   TestFTPasswordPeriodAndFreshness
+--- PASS: TestFTPasswordPeriodAndFreshness (0.00s)
+=== RUN   TestFTRuntimeBoundaries
+--- PASS: TestFTRuntimeBoundaries (0.00s)
+=== RUN   TestFTPrincipalCannotBeReboundOrExtended
+--- PASS: TestFTPrincipalCannotBeReboundOrExtended (0.00s)
+=== RUN   TestFTMappingAllFieldsAndExpiry
+--- PASS: TestFTMappingAllFieldsAndExpiry (0.00s)
+=== RUN   TestFTNonFixtureLedgerAndForgedObjectRejected
+--- PASS: TestFTNonFixtureLedgerAndForgedObjectRejected (0.00s)
+PASS

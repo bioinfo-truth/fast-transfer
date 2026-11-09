@@ -119,3 +119,8 @@ go build -mod=readonly -o <isolated>/pcs-never-execute .
 ## 身份/分享链路契约候选与宽容解析缺口
 
 后续在实际 baidupcs 包中以假响应确认 UK 和 ShareSet 的解析边界：两个特征测试/十二子场景复现了缺成功码、非正身份、缺分享 ID 与非法链接等接受行为。测试源码及专用 runtime wrapper 在 `contracts/`，设计与阶段范围见[身份/对象/分享方案](../../docs/pcs-identity-share-plan.md)。普通 go test -c 遇到已有 PrepareBDStoken int→string vet 诊断，特征测试明确 -vet=off 编译后在原级别 Landlock/seccomp 下运行；未更改真实身份门或实现适配器。此证据表明不能直接把原 parser/CLI 当成可信交付，不代表真实服务验证或资格通过。
+
+
+## 严格候选验证层已实现，十五项拒绝测试通过
+
+`adapter/contract.go` 已把原 parser 缺口实现为无网络的 Go wire 验证层及仅 fixture 的单意图账本，格式/编译/vet 和十五项受限测试通过，涵盖 JSON 歧义/预算、身份/对象/时限范围、分享 URL、unknown 不重试、映射冲突隔离、停止重放及系统边界。没有修改原库 UK/ShareSet 或默认身份门，没有真实凭据/provider，LiveConnect 与真实资格始终关闭。它不是对服务支持或身份真实性的证明。实现、复现和真实契约/允许渠道的具体阻碍见[adapter 说明](adapter/README.md)。

@@ -174,3 +174,10 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 已追踪 Cookie UK、贴吧 UID/现有 OAuth 的不同通道以及按 path_list 建链；新方案要求严格身份/预期账号与精确对象绑定，默认 unavailable 的可注入适配器和一次意图/unknown 核查，尚未实现或开启真实访问。实际固定源码的假响应特征测试两个顶层/十二子场景通过，确认 UK 可接受缺 errno/非正 uk、ShareSet 可接受缺成功码/ID 或非法链接等宽容缺口，不能当作安全或服务能力通过。编译需显式 -vet=off 避开已有无关路径诊断，未宣称默认 vet 通过。
 
 现有 Xtransfer 对象访问、客户端 Cookie 契约/商用支持仍未验证；既有站点拒绝有效，先确认可验证的允许渠道，之后再分别审阅精确主机/构建、短期只读身份/对象、单次建链与清理范围。无真实秘密、账户请求或链接生成。见[源码依据、适配器契约和阶段方案](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/pcs-identity-share-plan.md)。
+
+
+### 严格验证层实现与十五项测试完成
+
+原 UK/ShareSet 缺口已形成独立 Go 候选响应验证层及 fixture-only 单意图账本，格式/编译/vet 和十五项受限运行测试通过，涵盖 JSON/身份/精确对象/期限绑定、规范 URL、未知不重试、映射冲突隔离与停止重放。原解析函数和真实入口未被打开或自动替换，无凭据/provider/账户请求/新依赖；候选 Principal/映射输入不算服务认证。
+
+本组件的无凭据测试范围已完成。M4.3/M4.4 真实验证仍缺允许渠道依据和可信 Cookie 身份/指定 Xtransfer 对象/分享内容映射契约，不能用模拟或换工具推定放行。精确后续阶段范围见[接入方案](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/pcs-identity-share-plan.md)，实现/测试见[适配层说明](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/patches/baidupcs-go-v4.0.2/adapter/README.md)。
