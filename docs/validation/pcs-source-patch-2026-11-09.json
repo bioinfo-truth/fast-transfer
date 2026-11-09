@@ -2,22 +2,23 @@
   "baseline_hashes": "passed",
   "patch_applicability": "passed",
   "audited_static_constraints": "passed",
-  "go_compilation": "not_run_no_toolchain",
-  "go_tests": "not_run_no_toolchain",
+  "go_compilation": "passed_two_stdlib_files_only",
+  "go_tests": "passed_six_in_memory_tests",
   "upstream_client_executed": false,
   "account_requests": 0,
   "date": "2026-11-09",
   "baseline_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
   "go_targeted_tests_supplied": 6,
-  "go_targeted_tests_passed": null,
+  "go_targeted_tests_passed": 6,
   "identity_binding": "unavailable_default_deny",
   "live_login_verified": false,
   "share_verified": false,
   "artifact_sha256": {
-    "patches/baidupcs-go-v4.0.2/README.md": "98d9c737c4606e6527a64837db5d221da0a935a5572348b197254050377a0ae3",
-    "patches/baidupcs-go-v4.0.2/security-candidate.patch": "84f5cb4b0e472b74fe8491725119af78f059f6f5c9599abc19897f59ce3ee372",
-    "patches/baidupcs-go-v4.0.2/verify_patch.py": "774feaa872c435419acfb9c010af8b2c66c7af46d484017a547d2dd87daaa985",
-    "patches/baidupcs-go-v4.0.2/baseline.json": "1d11f99e88886e86d405b0c5d7e21dd0ef8c69f4fab13063e065d1399691a41c"
+    "patches/baidupcs-go-v4.0.2/README.md": "f7003f36628f9cf7fa37c995f395e1ae1f4455a70df0c4ecfe612f10c99d4719",
+    "patches/baidupcs-go-v4.0.2/offline_exec.py": "411e798ef3a0dd8f90bb091c309f1e08af3c1623da694d6a48bb815802612406",
+    "patches/baidupcs-go-v4.0.2/security-candidate.patch": "cb82a06c3222e852fa0fda28cb6e86588de7fa360b4ec43f2f09bc3b4dee02cf",
+    "patches/baidupcs-go-v4.0.2/verify_patch.py": "a8f1807ea95c317ffd676fa66b033a817757b28ed581c2836bd0f1b560f8a560",
+    "patches/baidupcs-go-v4.0.2/baseline.json": "a41bf2fdcc52b8e753469205a4566df8c010e98d6696245c8956e29a9401b8d4"
   },
   "prior_patch_commit": "13a20e59e4510b046d9a76e296623991ecc79dc9",
   "revision": "construction_and_body_read_errors_redacted; candidate_identity_and_final_decision_review",
@@ -25,19 +26,23 @@
   "prior_workspace_python_regression_passed": 148,
   "prior_clean_python_regression_expected": 144,
   "prior_clean_python_regression_passed": 144,
-  "toolchain_checked": {
-    "PATH_go": "absent",
-    "/usr/local/go/bin/go": "absent",
-    "/usr/lib/go/bin/go": "absent",
-    "/usr/bin/go": "absent",
-    "upstream_go_mod": "1.23",
-    "installation_attempted": false
-  },
   "identity_candidate": {
     "cookie": "fixed_source_UK_PrepareUK_no_tieba_call_required",
     "current_service_support": "unverified",
     "oauth_uinfo": "documented_separate_auth_channel_not_cookie_proof",
     "account_probe_sent": false
   },
-  "mvp_backend_decision": "not_ready_candidate_only"
+  "mvp_backend_decision": "not_ready_candidate_only",
+  "full_client_compilation": "not_run",
+  "current_execution_evidence": "pcs-go-offline-2026-11-09.json",
+  "prior_toolchain_absence_check": {
+    "PATH_go": "absent",
+    "/usr/local/go/bin/go": "absent",
+    "/usr/lib/go/bin/go": "absent",
+    "/usr/bin/go": "absent",
+    "upstream_go_mod": "1.23",
+    "installation_attempted": false,
+    "prior_absence_note": "Before approved isolated official toolchain installation; see pcs-go-offline-2026-11-09.json"
+  },
+  "approved_isolated_toolchain_installed": true
 }

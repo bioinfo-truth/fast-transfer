@@ -1,8 +1,8 @@
 # BaiduPCS-Go v4.0.2：默认拒绝的安全补丁候选
 
-基线 `qjfoidnh/BaiduPCS-Go` tag v4.0.2，commit `225bdd3b6cb298601c4d5ef7104c3e08cd1d692d`。这是对实际固定源码的补丁，不是另一个 Python 登录模型。尚未编译、部署或验证真实能力，不能直接作为可安全登录的发行版。
+基线 `qjfoidnh/BaiduPCS-Go` tag v4.0.2，commit `225bdd3b6cb298601c4d5ef7104c3e08cd1d692d`。这是对实际固定源码的补丁，不是另一个 Python 登录模型。现已完成两个标准库依赖文件的编译和六项离线测试；完整补丁包/客户端仍未编译、部署或验证真实能力，不能直接作为可安全登录的发行版。
 
-`security-candidate.patch` 使用零上下文 diff，必须对 `baseline.json` 中逐文件 SHA-256 完全匹配的源码应用，并显式使用 `--unidiff-zero`。不能对未知版本宽松套用。补丁同时添加六项 Go 内存 transport 测试；它们本轮未运行。
+`security-candidate.patch` 使用零上下文 diff，必须对 `baseline.json` 中逐文件 SHA-256 完全匹配的源码应用，并显式使用 `--unidiff-zero`。不能对未知版本宽松套用。补丁添加六项 Go 离线测试，已在下述隔离范围通过。
 
 ## 实际变更与调用链
 
@@ -32,19 +32,38 @@
 python3 patches/baidupcs-go-v4.0.2/verify_patch.py --source /path/to/reviewed/fixed-source
 ```
 
-这不是行为测试：静态文本约束不能证明 Go 编译或运行正确性。主机 PATH 及常规 Go 位置无工具链，**Go 编译、gofmt、六项补丁内 Go 测试均未运行**；没有安装软件绕过限制。待已有审查工具链可用，可在禁止联网的隔离环境仅编译/测试 `requester/security_policy.go` 和 `security_policy_test.go`（标准库、假 RoundTripper，无完整客户端初始化）；之后另行审查实际 requester 包及依赖的构建测试，不自动扩展到完整客户端执行。
+静态验证器本身不编译/运行 Go，因此输出 `not_run_by_this_static_verifier`；真实执行证据独立保存。用户随后明确批准了本项目隔离官方工具链安装及两个文件的离线编译测试，当前结果见下节；不能把文件级通过扩大为整个补丁包验证。
 
-本仓库现有 Python 回归工作区 148 项通过，干净归档 144 项通过；这是本项目回归，不是上述 Go 补丁测试。补丁适用性、基线/补丁哈希及静态检查通过，未进行 TLS 握手、真实登录或分享。证据见 `docs/validation/pcs-source-patch-2026-11-09.json`。
+本仓库既有 Python 回归工作区 148 项/干净归档 144 项是此前结果，本轮没有重复运行替代 Go 检查。
 
 此前百度站点安全拒绝继续有效。真实接线前需要允许的渠道，以及指定主机/审查构建、凭据类别/请求目的、存储期限/清理范围和指定对象分享的具体批准；不能通过本补丁、客户端或改变 TLS 绕过拒绝。此次无账户请求、真实凭据、云端对象操作、系统配置变更或新授权。
 
 
 ## 最后一轮审查修订与条件决策
 
-13a20e5 的错误脱敏说明过宽：`http.NewRequest` 失败仍原样返回，`HTTPGet`/`Fetch` 的 `ioutil.ReadAll` 也可能传播原始 reader 错误。本轮补丁将两者移入标准库依赖的固定错误 helper，新增构造错误、响应读取失败（含部分数据）和自定义 transport 错误三项测试，合计六项 **尚未运行**。补丁应用及针对这些修改的静态约束再次通过，不能据此断言 Go 行为正确。
+13a20e5 的错误脱敏说明过宽：`http.NewRequest` 失败仍原样返回，`HTTPGet`/`Fetch` 的 `ioutil.ReadAll` 也可能传播原始 reader 错误。本轮补丁将两者移入标准库依赖的固定错误 helper，新增构造错误、响应读取失败（含部分数据）和自定义 transport 错误三项测试，当时合计六项尚未运行；本次已在下述文件级隔离范围全部通过。补丁应用及针对这些修改的静态约束也已再次通过，仍不能证明完整客户端正确。
 
 边界仍存在：Req 中 ContentLength/ContentType/Reader 等调用者回调可执行任意代码或 panic；错误 helper 不构成不可信回调沙箱。成功响应正文/响应头不是自动脱敏输出；上层解析、verbose、分享输出和任何绕过 Req 的 Client 调用仍需独立处理。公开可变 Client/Transport/CheckRedirect 可以被调用者替换，独立客户端不继承保护，不能称整个依赖树已被阻断。此补丁是受审入口上的默认拒绝候选，不是可运行安全产品。
 
 身份候选与最终 MVP 决策见[分享调研结论](../../docs/baidu-share-service.md)。当前未具备可用性证据，不选为已可用自动分享后端。有限下一步首先是编译/执行这些源码级离线测试，再决定是否值得准备受控真实身份验证，不能继续用模型或旧 Python 回归替代。
 
-工具链实际检查：PATH 无 `go`；`/usr/local/go/bin/go`、`/usr/lib/go/bin/go`、`/usr/bin/go` 均不存在。基线 go.mod 声明 Go 1.23。下一个最小动作是在本项目主机提供经审查的 Go 1.23 或更高版本工具链，再以 `GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off GOWORK=off`、隔离临时缓存/目录执行仅两个标准库依赖文件的 `go test security_policy.go security_policy_test.go`；不运行 main 或完整 requester 包初始化，不访问依赖服务器。这是待执行计划，本轮没有下载、安装、容器或切换主机。若需新安装，应先明确官方来源、固定版本、摘要验证与隔离路径并取得批准；此处未给出未经核实的版本或校验和。
+## 获准官方工具链安装与文件级 Go 验证
+
+此前 PATH 和三个常规路径无 Go 的检查保留为历史事实；本次用户已明确批准安装。安装前再次确认 Linux x86_64、无同次安装，使用官方 `https://go.dev/dl/?mode=json` 稳定发行元数据，选择 **go1.27.3 linux/amd64**。归档 `go1.27.3.linux-amd64.tar.gz` 为 **70,588,678 字节**，SHA-256 **65efbc80fdc1fa2cd2631cad5b481777a68e8725f34e89f50fc6ac714e379b40**；下载入口 `https://go.dev/dl/go1.27.3.linux-amd64.tar.gz` 最终为官方 `https://dl.google.com/go/go1.27.3.linux-amd64.tar.gz`。先验证大小/摘要，再安全解压及执行，没有安装脚本。
+
+隔离根目录为仓库忽略的 `scratch/pcs-go-offline-20261109/`；工具链、归档、HOME/缓存/临时目录和测试二进制都留在其中，没有修改系统 PATH、profile 或其他项目。未覆盖已存在目录。安装前可用 170,824,728,576 字节，解压后 170,457,743,360 字节，编译后检查 170,334,629,888 字节，均大于 5 GiB。它们是检查点数值，不是连续采样最低值。
+
+网络命名空间尝试因 uid_map 权限被系统拒绝，没有重试或调整系统设置。改用已存在的 libseccomp，对每个工具/测试**子进程**施加继承性过滤，禁止 socket/socketpair/connect/bind/listen/accept/accept4/sendto/sendmsg/sendmmsg/recvfrom/recvmsg/recvmmsg；每次 exec 前实测 socket 创建返回 EPERM。仅增加本次进程限制，不修改主机安全配置。过滤器见 `offline_exec.py`（与实际执行副本字节一致）。这是进程网络限制，不是文件系统沙箱；没有把用户配置目录设为输入。
+
+运行以清空继承环境后的显式环境进行：独立 HOME、XDG_CONFIG_HOME、GOCACHE、GOPATH、TMPDIR/GOTMPDIR；GOTOOLCHAIN=local、GOPROXY=off、GOSUMDB=off、GOWORK=off、GOENV=off、GO111MODULE=off、CGO_ENABLED=0、GOTELEMETRY=off。仅工具链绝对路径和局部 PATH，禁止自动下载依赖或工具链。当前操作未读取真实认证配置。
+
+在基线隔离副本应用补丁后，**只传入 `security_policy.go` 与 `security_policy_test.go`**：
+
+1. 绝对路径 `go version` 返回 go1.27.3 linux/amd64。
+2. `gofmt -w security_policy.go security_policy_test.go` 成功；最终 patch 已同步此格式化结果。
+3. `go test -c -o <isolated>/security_policy.test security_policy.go security_policy_test.go` 成功。
+4. 同一网络/配置隔离下运行生成的二进制 `-test.v`，六项全部通过。
+
+复现时须将本目录的 `offline_exec.py` 复制到专用隔离根目录（脚本以自身位置确定工具链/HOME/缓存），通过 `/usr/bin/python3 <isolated>/offline_exec.py <absolute-go-or-gofmt-or-test-binary> <args>` 分别执行上述步骤。脚本不是账户操作授权或通用第三方程序沙箱，不应用来运行完整客户端。编译输入、执行文件摘要、公开安装元数据及逐项结果见 `docs/validation/pcs-go-offline-2026-11-09.json` 和对应测试日志；验证器重新确认最终 patch 的基线/适用性与静态约束。
+
+未执行完整 requester 包、CLI main、身份门/配置包及外部依赖初始化；未编译整个补丁包，未做真实 TLS 握手或百度账户请求。六项只证明已审查 helper/guard 在假请求/内存 transport 下的行为。完整依赖安全、实际身份响应与商用/分享资格仍未确定。当前“保留候选、暂不选作已可用 MVP 自动分享后端”的结论不变。

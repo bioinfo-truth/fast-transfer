@@ -71,148 +71,183 @@
 +                var bduss, ptoken, stoken, cookies string
 --- /dev/null
 +++ b/requester/security_policy.go
-@@ -0,0 +1,66 @@
+@@ -0,0 +1,78 @@
 +// Security patch candidate: no live binding or permission is supplied here.
 +package requester
 +
 +import (
-+    "crypto/tls"
-+    "errors"
-+    "io"
-+    "io/ioutil"
-+    "net/http"
-+    "net/url"
-+    "strings"
++	"crypto/tls"
++	"errors"
++	"io"
++	"io/ioutil"
++	"net/http"
++	"net/url"
++	"strings"
 +)
 +
 +var ErrRequestPolicy = errors.New("request_policy_rejected")
 +var ErrRequestFailed = errors.New("request_failed_redacted")
 +
 +func denyRedirect(req *http.Request, via []*http.Request) error {
-+    return ErrRequestPolicy // No Location is followed, even on the same host.
++	return ErrRequestPolicy // No Location is followed, even on the same host.
 +}
 +
-+type guardedTransport struct { next http.RoundTripper }
++type guardedTransport struct{ next http.RoundTripper }
 +
 +func (g guardedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-+    if req == nil || req.URL == nil { return nil, ErrRequestPolicy }
-+    u := req.URL
-+    host := u.Hostname()
-+    if u.Scheme != "https" || u.User != nil || u.Fragment != "" ||
-+       (u.Port() != "" && u.Port() != "443") || req.Host != "" && req.Host != u.Host ||
-+       !(host == "baidu.com" || strings.HasSuffix(host, ".baidu.com") ||
-+         host == "baidupcs.com" || strings.HasSuffix(host, ".baidupcs.com")) {
-+        return nil, ErrRequestPolicy
-+    }
-+    query, queryError := url.ParseQuery(u.RawQuery)
-+    if queryError != nil { return nil, ErrRequestPolicy }
-+    for key := range query {
-+        switch strings.ToLower(key) {
-+        case "bduss", "stoken", "ptoken", "cookie", "access_token", "refresh_token", "password", "authorization", "client_secret":
-+            return nil, ErrRequestPolicy
-+        }
-+    }
-+    // Protect the actual concrete network transport as well as its constructor.
-+    if transport, ok := g.next.(*http.Transport); ok {
-+        config := transport.TLSClientConfig
-+        if config == nil || config.InsecureSkipVerify || config.MinVersion < tls.VersionTLS12 {
-+            return nil, ErrRequestPolicy
-+        }
-+    }
-+    if g.next == nil { return nil, ErrRequestPolicy }
-+    response, failure := g.next.RoundTrip(req)
-+    if failure != nil { return nil, ErrRequestFailed }
-+    return response, nil
++	if req == nil || req.URL == nil {
++		return nil, ErrRequestPolicy
++	}
++	u := req.URL
++	host := u.Hostname()
++	if u.Scheme != "https" || u.User != nil || u.Fragment != "" ||
++		(u.Port() != "" && u.Port() != "443") || req.Host != "" && req.Host != u.Host ||
++		!(host == "baidu.com" || strings.HasSuffix(host, ".baidu.com") ||
++			host == "baidupcs.com" || strings.HasSuffix(host, ".baidupcs.com")) {
++		return nil, ErrRequestPolicy
++	}
++	query, queryError := url.ParseQuery(u.RawQuery)
++	if queryError != nil {
++		return nil, ErrRequestPolicy
++	}
++	for key := range query {
++		switch strings.ToLower(key) {
++		case "bduss", "stoken", "ptoken", "cookie", "access_token", "refresh_token", "password", "authorization", "client_secret":
++			return nil, ErrRequestPolicy
++		}
++	}
++	// Protect the actual concrete network transport as well as its constructor.
++	if transport, ok := g.next.(*http.Transport); ok {
++		config := transport.TLSClientConfig
++		if config == nil || config.InsecureSkipVerify || config.MinVersion < tls.VersionTLS12 {
++			return nil, ErrRequestPolicy
++		}
++	}
++	if g.next == nil {
++		return nil, ErrRequestPolicy
++	}
++	response, failure := g.next.RoundTrip(req)
++	if failure != nil {
++		return nil, ErrRequestFailed
++	}
++	return response, nil
 +}
 +
 +// Errors from URL parsing/method validation can contain the original input.
 +func newPolicyRequest(method, address string, body io.Reader) (*http.Request, error) {
-+    request, err := http.NewRequest(method, address, body)
-+    if err != nil { return nil, ErrRequestPolicy }
-+    return request, nil
++	request, err := http.NewRequest(method, address, body)
++	if err != nil {
++		return nil, ErrRequestPolicy
++	}
++	return request, nil
 +}
 +
 +// Drop partial bytes as well as raw errors on body read failure.
 +func redactedReadAll(reader io.Reader) ([]byte, error) {
-+    data, err := ioutil.ReadAll(reader)
-+    if err != nil { return nil, ErrRequestFailed }
-+    return data, nil
++	data, err := ioutil.ReadAll(reader)
++	if err != nil {
++		return nil, ErrRequestFailed
++	}
++	return data, nil
 +}
 --- /dev/null
 +++ b/requester/security_policy_test.go
-@@ -0,0 +1,73 @@
+@@ -0,0 +1,96 @@
 +package requester
 +
 +import (
-+    "crypto/tls"
-+    "errors"
-+    "io"
-+    "net/http"
-+    "strings"
-+    "testing"
++	"crypto/tls"
++	"errors"
++	"io"
++	"net/http"
++	"strings"
++	"testing"
 +)
 +
-+type fixtureRoundTripper struct { calls int; redirect bool }
++type fixtureRoundTripper struct {
++	calls    int
++	redirect bool
++}
++
 +func (f *fixtureRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
-+    f.calls++
-+    header := make(http.Header)
-+    code := 200
-+    if f.redirect { code = 302; header.Set("Location", "https://other.baidu.com/offline-fixture") }
-+    return &http.Response{StatusCode: code, Header: header,
-+        Body: io.NopCloser(strings.NewReader("fixture")), Request: req}, nil
++	f.calls++
++	header := make(http.Header)
++	code := 200
++	if f.redirect {
++		code = 302
++		header.Set("Location", "https://other.baidu.com/offline-fixture")
++	}
++	return &http.Response{StatusCode: code, Header: header,
++		Body: io.NopCloser(strings.NewReader("fixture")), Request: req}, nil
 +}
 +func TestRejectBeforeTransport(t *testing.T) {
-+    for _, address := range []string{"http://pan.baidu.com/fixture", "https://pan.baidu.com/fixture?BDUSS=FAKE_ONLY",
-+        "https://FAKE_ONLY@pan.baidu.com/fixture", "https://pan.baidu.com.evil.invalid/fixture"} {
-+        next := &fixtureRoundTripper{}
-+        request, _ := http.NewRequest("POST", address, strings.NewReader("BDUSS=FAKE_ONLY"))
-+        if _, err := (guardedTransport{next: next}).RoundTrip(request); err != ErrRequestPolicy { t.Fatal("policy not enforced") }
-+        if next.calls != 0 { t.Fatal("request reached transport") }
-+    }
++	for _, address := range []string{"http://pan.baidu.com/fixture", "https://pan.baidu.com/fixture?BDUSS=FAKE_ONLY",
++		"https://FAKE_ONLY@pan.baidu.com/fixture", "https://pan.baidu.com.evil.invalid/fixture"} {
++		next := &fixtureRoundTripper{}
++		request, _ := http.NewRequest("POST", address, strings.NewReader("BDUSS=FAKE_ONLY"))
++		if _, err := (guardedTransport{next: next}).RoundTrip(request); err != ErrRequestPolicy {
++			t.Fatal("policy not enforced")
++		}
++		if next.calls != 0 {
++			t.Fatal("request reached transport")
++		}
++	}
 +}
 +func TestRedirectIsNotFollowed(t *testing.T) {
-+    next := &fixtureRoundTripper{redirect: true}
-+    client := &http.Client{Transport: guardedTransport{next: next}, CheckRedirect: denyRedirect}
-+    request, _ := http.NewRequest("POST", "https://pan.baidu.com/fixture", strings.NewReader("BDUSS=FAKE_ONLY"))
-+    request.Header.Set("Cookie", "BDUSS=FAKE_ONLY")
-+    response, err := client.Do(request)
-+    if response != nil { response.Body.Close() }
-+    if err == nil || next.calls != 1 { t.Fatal("redirect followed or silently accepted") }
++	next := &fixtureRoundTripper{redirect: true}
++	client := &http.Client{Transport: guardedTransport{next: next}, CheckRedirect: denyRedirect}
++	request, _ := http.NewRequest("POST", "https://pan.baidu.com/fixture", strings.NewReader("BDUSS=FAKE_ONLY"))
++	request.Header.Set("Cookie", "BDUSS=FAKE_ONLY")
++	response, err := client.Do(request)
++	if response != nil {
++		response.Body.Close()
++	}
++	if err == nil || next.calls != 1 {
++		t.Fatal("redirect followed or silently accepted")
++	}
 +}
 +func TestRejectInsecureConcreteTransport(t *testing.T) {
-+    next := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
-+    request, _ := http.NewRequest("GET", "https://pan.baidu.com/fixture", nil)
-+    if _, err := (guardedTransport{next: next}).RoundTrip(request); err != ErrRequestPolicy { t.Fatal("insecure transport accepted") }
++	next := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
++	request, _ := http.NewRequest("GET", "https://pan.baidu.com/fixture", nil)
++	if _, err := (guardedTransport{next: next}).RoundTrip(request); err != ErrRequestPolicy {
++		t.Fatal("insecure transport accepted")
++	}
 +}
 +
 +func TestConstructionErrorsAreRedacted(t *testing.T) {
-+    for _, test := range [][2]string{{"GET", "https://pan.baidu.com/%zzFAKE_ONLY"},
-+        {"BAD\nFAKE_ONLY", "https://pan.baidu.com/fixture"}, {"GET", "https://pan.baidu.com/FAKE_ONLY\n"}} {
-+        request, err := newPolicyRequest(test[0], test[1], nil)
-+        if request != nil || err != ErrRequestPolicy || strings.Contains(err.Error(), "FAKE_ONLY") {
-+            t.Fatal("construction error not redacted")
-+        }
-+    }
++	for _, test := range [][2]string{{"GET", "https://pan.baidu.com/%zzFAKE_ONLY"},
++		{"BAD\nFAKE_ONLY", "https://pan.baidu.com/fixture"}, {"GET", "https://pan.baidu.com/FAKE_ONLY\n"}} {
++		request, err := newPolicyRequest(test[0], test[1], nil)
++		if request != nil || err != ErrRequestPolicy || strings.Contains(err.Error(), "FAKE_ONLY") {
++			t.Fatal("construction error not redacted")
++		}
++	}
 +}
 +
-+type errorBody struct {}
++type errorBody struct{}
++
 +func (errorBody) Read(p []byte) (int, error) {
-+    copy(p, "FAKE_ONLY")
-+    return 1, errors.New("FAKE_ONLY body error")
++	copy(p, "FAKE_ONLY")
++	return 1, errors.New("FAKE_ONLY body error")
 +}
 +func TestReadFailureDropsPartialDataAndError(t *testing.T) {
-+    data, err := redactedReadAll(errorBody{})
-+    if data != nil || err != ErrRequestFailed { t.Fatal("read failure leaked") }
++	data, err := redactedReadAll(errorBody{})
++	if data != nil || err != ErrRequestFailed {
++		t.Fatal("read failure leaked")
++	}
 +}
 +
-+type errorTransport struct {}
++type errorTransport struct{}
++
 +func (errorTransport) RoundTrip(*http.Request) (*http.Response, error) {
-+    return nil, errors.New("FAKE_ONLY transport error")
++	return nil, errors.New("FAKE_ONLY transport error")
 +}
 +func TestTransportErrorRedacted(t *testing.T) {
-+    request, _ := http.NewRequest("GET", "https://pan.baidu.com/fixture", nil)
-+    response, err := (guardedTransport{next: errorTransport{}}).RoundTrip(request)
-+    if response != nil || err != ErrRequestFailed { t.Fatal("transport error leaked") }
++	request, _ := http.NewRequest("GET", "https://pan.baidu.com/fixture", nil)
++	response, err := (guardedTransport{next: errorTransport{}}).RoundTrip(request)
++	if response != nil || err != ErrRequestFailed {
++		t.Fatal("transport error leaked")
++	}
 +}
 --- /dev/null
 +++ b/internal/pcsconfig/identity_gate.go

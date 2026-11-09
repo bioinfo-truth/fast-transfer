@@ -40,7 +40,8 @@ def verify(source):
         assert 'ioutil.ReadAll(resp.Body)' not in fetch
         assert fetch.count('redactedReadAll(resp.Body)') == 2
         assert 'return nil, ErrRequestPolicy' in policy
-        assert 'if err != nil { return nil, ErrRequestFailed }' in policy
+        compact = ''.join(policy.split())
+        assert 'iferr!=nil{returnnil,ErrRequestFailed}' in compact
         tests = (work / 'requester/security_policy_test.go').read_text()
         assert tests.count('func Test') == 6
         assert policy.count('func newPolicyRequest(') == 1
@@ -58,7 +59,7 @@ def verify(source):
         assert login.index('RequireVerifiedIdentityBinding()') < login.index('var bduss, ptoken, stoken, cookies string')
     return {'baseline_hashes': 'passed', 'patch_applicability': 'passed',
             'audited_static_constraints': 'passed',
-            'go_compilation': 'not_run_no_toolchain', 'go_tests': 'not_run_no_toolchain',
+            'go_compilation': 'not_run_by_this_static_verifier', 'go_tests': 'not_run_by_this_static_verifier',
             'upstream_client_executed': False, 'account_requests': 0}
 
 
