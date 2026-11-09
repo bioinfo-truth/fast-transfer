@@ -36,6 +36,12 @@
       "git_blob": "ef8b677a6c38894f796b6b7931e5a3ad4bb3cbfc",
       "sha256": "b978c02b73bc0446a3daa6e66d602204005d43397e1c0a46d839adc8f0f87224",
       "bytes": 292
+    },
+    {
+      "path": "src/baidu-netdisk/uv.lock",
+      "git_blob": "a792c3d7eb17925a76e82af04d94050ef290fe1b",
+      "sha256": "e4aaf6e1beea1087c6905d7210be78e00953a0f93737a3c97006dbe75efee7e8",
+      "bytes": 96472
     }
   ],
   "date": "2026-11-09",
@@ -70,12 +76,16 @@
   "local_reuse": {
     "python_version": "3.14.4",
     "official_python_minimum": "3.12",
-    "official_dependencies_locked": false,
+    "official_dependencies_locked": true,
     "project_tracked_MCP_lock_present": false,
     "MCP_SDK_runtime_availability": "not probed or imported",
     "live_connector": "unimplemented, live_connect remains rejected",
     "stdio_tool_registered": "upload_file only in reviewed file",
-    "existing_offline_runner_not_a_live_client": true
+    "existing_offline_runner_not_a_live_client": true,
+    "official_lock_present": true,
+    "official_lock_adopted_by_project": false,
+    "official_lock_fully_reviewed_by_project": false,
+    "Python_3_14_dependency_and_runtime_compatibility": "not verified"
   },
   "issues": [
     {
@@ -149,5 +159,59 @@
       "sha256": "723fc576ba5ac60a337fd7d25dee858d5c7d3fc45d96d3302c86f7ec0858c399"
     }
   ],
-  "source_main_rechecked": "b3983d330fea79c7b72e6b7014803e1830148d2c"
+  "source_main_rechecked": "b3983d330fea79c7b72e6b7014803e1830148d2c",
+  "lock_correction": {
+    "date": "2026-11-10",
+    "previous_statement": "official_dependencies_locked=false was incorrect as a statement about the official repository",
+    "verification": "fixed public lock bytes, Git blob and SHA-256 checked; TOML parsed; no packages downloaded or executed",
+    "lock": {
+      "path": "src/baidu-netdisk/uv.lock",
+      "git_blob": "a792c3d7eb17925a76e82af04d94050ef290fe1b",
+      "sha256": "e4aaf6e1beea1087c6905d7210be78e00953a0f93737a3c97006dbe75efee7e8",
+      "bytes": 96472,
+      "version": 1,
+      "revision": 1,
+      "requires_python": ">=3.12",
+      "selected_packages": [
+        {
+          "name": "aiohttp",
+          "version": "3.11.16",
+          "source": {
+            "registry": "https://pypi.org/simple"
+          },
+          "sdist_sha256": "sha256:16f8a2c9538c14a557b4d309ed4d0a7c60f0253e8ed7b6c9a2859a7582f8b1b8",
+          "wheel_hashes_present": true
+        },
+        {
+          "name": "httpx",
+          "version": "0.28.1",
+          "source": {
+            "registry": "https://pypi.org/simple"
+          },
+          "sdist_sha256": "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc",
+          "wheel_hashes_present": true
+        },
+        {
+          "name": "mcp",
+          "version": "1.6.0",
+          "source": {
+            "registry": "https://pypi.org/simple"
+          },
+          "sdist_sha256": "sha256:d9324876de2c5637369f43161cd71eebfd803df5a95e46225cab8d280e366723",
+          "wheel_hashes_present": true
+        },
+        {
+          "name": "python-dotenv",
+          "version": "1.1.0",
+          "source": {
+            "registry": "https://pypi.org/simple"
+          },
+          "sdist_sha256": "sha256:41f90bc6f5f177fb41f53e87666db362025010eb28f60a01c9143bfa33a2b2d5",
+          "wheel_hashes_present": true
+        }
+      ]
+    },
+    "artifact_hashes": "declared in lock only; not independently checked against downloaded artifacts",
+    "scope": "project adoption/full review and Python3.14 runtime compatibility remain unverified; SSE/LLM/logging/retry/access blockers unchanged"
+  }
 }

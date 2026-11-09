@@ -202,3 +202,8 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 ### MCP 接入静态核查（2026-11-09）
 
 公开固定源码现已确认 MCP SSE 入口 https://mcp-pan.baidu.com/sse 及 access_token 查询参数认证；demo 会向千帆发送 messages/工具结果、记录参数并异常自动重试，不能原样用于建链。stdio 注册的是上传工具。当前 token 有效期/scope、应用与分享权益仍未无凭据确认；真实连接器未实现，原控制允许依据仍缺。此次仅静态审查，未改代码/重跑测试/读凭据/连 SSE/建链或领取。 已知 endpoint 不等于允许绕行；下一步先取得原控制允许依据，再确认兼容应用/响应映射并审阅单次内存凭据使用。详见[静态审查与真实阶段](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-share-candidate.md)、[机器证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/mcp-access-static-2026-11-09.json)。
+
+
+### 官方 MCP 锁文件证据纠正（2026-11-10）
+
+纠正官方依赖证据：固定提交确有 uv.lock（96,472字节，blob a792c3d7eb17925a76e82af04d94050ef290fe1b），锁定 mcp1.6.0/httpx0.28.1/python-dotenv1.1.0/aiohttp3.11.16等并声明PyPI制品哈希。pyproject 是范围约束，不能据此说官方无锁；本项目尚未采用/完整审查该锁，也未验证Python3.14运行兼容。仅读取公开锁并修正文档/JSON，没有依赖下载、执行或重跑测试；真实接入阻碍不变。 详见[环境复用与纠错依据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-share-candidate.md)。

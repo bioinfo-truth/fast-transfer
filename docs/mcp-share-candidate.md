@@ -92,7 +92,9 @@ env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_i
 
 ### 现有环境可复用到哪一步
 
-已确认本项目 Python 为3.14.4；官方 [pyproject](https://github.com/baidu-netdisk/mcp/blob/b3983d330fea79c7b72e6b7014803e1830148d2c/src/baidu-netdisk/pyproject.toml)声明 Python≥3.12，但 aiohttp、mcp[cli] 等是下界依赖，不能当固定可复现锁。demo 还导入 httpx/dotenv；本次未安装、导入或探查这些库运行时是否可用，不从 Python 版本达标推断协议兼容。本项目没有跟踪的 MCP 依赖锁或真实 SSE 连接器，mcp_share.live_connect 仍直接拒绝。
+已确认本项目 Python 为3.14.4。官方 [pyproject](https://github.com/baidu-netdisk/mcp/blob/b3983d330fea79c7b72e6b7014803e1830148d2c/src/baidu-netdisk/pyproject.toml)声明 Python≥3.12及依赖范围约束；**官方仓库同时存在 [uv.lock](https://github.com/baidu-netdisk/mcp/blob/b3983d330fea79c7b72e6b7014803e1830148d2c/src/baidu-netdisk/uv.lock)**，不能据 pyproject 的下界写成官方无锁。2026-11-10已独立读取固定锁文件：96,472字节，Git blob `a792c3d7eb17925a76e82af04d94050ef290fe1b`，version=1/revision=1、requires-python≥3.12；锁定 mcp 1.6.0、httpx 0.28.1、python-dotenv 1.1.0、aiohttp 3.11.16等，列有 PyPI 来源和制品 SHA-256。这里只核对锁文件及其声明，未下载制品验证其哈希，也未完整审查依赖闭包。
+
+**本项目尚未采用或完整审查该锁，没有跟踪的 MCP 依赖锁或真实 SSE 连接器**；未安装、导入、验证 dr-who-server Python3.14下的依赖/协议兼容或客户端运行时。锁文件存在与最低 Python 范围不等于已有可执行的受审客户端，mcp_share.live_connect 仍直接拒绝。原静态证据中的 official_dependencies_locked=false 已更正，并保留此次纠错说明；其余 SSE、LLM、日志、重试和真实阶段阻碍结论不变。
 
 可复用的是已审 fixture 字段/隐私校验、Job 锁/持久意图、默认关闭的真实门及脱敏/停止的设计；禁网 runner 只用于离线测试，不能充当联网 MCP 客户端。现有 PinnedBaiduHTTPClient 的 REST 允许列表/流接口也不是 SSE/MCP 传输，不能把主机加入允许列表就宣称已有完整安全会话。现有代码没有一条可直接安全建链的真实 MCP 路径；本轮不为填补它新增未经允许的依赖或客户端。
 
