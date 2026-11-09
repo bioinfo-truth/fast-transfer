@@ -79,3 +79,12 @@ M3 当前状态：单次获准真实 NCBI 小文件已完成上传及完整回�
 分享服务的官方开通步骤、商务入口及费用待确认项见[开通备选说明](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/baidu-share-service.md)。当前没有可用分享链接，建链后仍须私密回填并核验访问状态。
 
 本轮分享自动操作已停止：原项目主机无可操作的已登录官方页面；协调方在用户 Mac 上访问百度网盘被浏览器站点安全策略拒绝。无链接，分享请求未发出，不绕过限制；用户可自行在官方客户端为精确样例建链。此限制与已成功的上传/回读分别记录。
+
+
+## 2026-11-09：自动建链资料核对与候选
+
+公开文档确认当前新接口为 `POST /apaas/1.0/share/set`，使用 `fsid_list`（JSON 字符串数组）、`period`（天数）、`pwd`（四位数字/小写字母），成功结果位于 `data`；不能直接采用外部资料的 `filemetashare`、`fid_list`、`expired_type` 或将令牌拼到 baidu.com 的代码。企业认证、服务购买/权限仍是正式接入条件；每日“几百次”及错误码 11000 的单一含义没有核实，不作为实现依据。
+
+BaiduPCS-Go 指定版本源码有 `share set`，不是 `share create`；它使用客户端登录通道的 `/share/pset`，不能假设复用现有 OAuth 上传令牌。另发现百度官方 MCP README 列有 `file_sharelink_set`，但工具清单和个人限时体验不证明本应用具备分享权益，暂列候选，未安装、授权或调用。
+
+当前仍由用户在官方客户端为精确样例手动建链并私密回填后核验；不恢复本轮自动分享或绕过此前浏览器安全拒绝。未来官方接入候选应加入任务/文件绑定、私有结果持久化及防重；未知创建结果先核查，不盲目重发。目录聚合交付可减少操作，但隔离/内容变化和平台支持仍待验证。详见[核对表、固定版本源码及候选边界](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/baidu-share-service.md)。
