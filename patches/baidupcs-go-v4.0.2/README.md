@@ -1,6 +1,6 @@
 # BaiduPCS-Go v4.0.2：默认拒绝的安全补丁候选
 
-基线 `qjfoidnh/BaiduPCS-Go` tag v4.0.2，commit `225bdd3b6cb298601c4d5ef7104c3e08cd1d692d`。这是对实际固定源码的补丁，不是另一个 Python 登录模型。现已完成两个标准库依赖文件的编译和六项离线测试；完整补丁包/客户端仍未编译、部署或验证真实能力，不能直接作为可安全登录的发行版。
+基线 `qjfoidnh/BaiduPCS-Go` tag v4.0.2，commit `225bdd3b6cb298601c4d5ef7104c3e08cd1d692d`。这是对实际固定源码的补丁，不是另一个 Python 登录模型。现已完成两个标准库依赖文件的编译和六项离线测试；完整补丁包纯编译已尝试但因缺依赖失败，未部署或验证真实能力，不能直接作为可安全登录的发行版。
 
 `security-candidate.patch` 使用零上下文 diff，必须对 `baseline.json` 中逐文件 SHA-256 完全匹配的源码应用，并显式使用 `--unidiff-zero`。不能对未知版本宽松套用。补丁添加六项 Go 离线测试，已在下述隔离范围通过。
 
@@ -66,4 +66,23 @@ python3 patches/baidupcs-go-v4.0.2/verify_patch.py --source /path/to/reviewed/fi
 
 复现时须将本目录的 `offline_exec.py` 复制到专用隔离根目录（脚本以自身位置确定工具链/HOME/缓存），通过 `/usr/bin/python3 <isolated>/offline_exec.py <absolute-go-or-gofmt-or-test-binary> <args>` 分别执行上述步骤。脚本不是账户操作授权或通用第三方程序沙箱，不应用来运行完整客户端。编译输入、执行文件摘要、公开安装元数据及逐项结果见 `docs/validation/pcs-go-offline-2026-11-09.json` 和对应测试日志；验证器重新确认最终 patch 的基线/适用性与静态约束。
 
-未执行完整 requester 包、CLI main、身份门/配置包及外部依赖初始化；未编译整个补丁包，未做真实 TLS 握手或百度账户请求。六项只证明已审查 helper/guard 在假请求/内存 transport 下的行为。完整依赖安全、实际身份响应与商用/分享资格仍未确定。当前“保留候选、暂不选作已可用 MVP 自动分享后端”的结论不变。
+未执行完整 requester 包、CLI main、身份门/配置包及外部依赖初始化；后续完整源码纯编译因依赖缓存缺失而停止（下节），未获得完整构建产物，未做真实 TLS 握手或百度账户请求。六项只证明已审查 helper/guard 在假请求/内存 transport 下的行为。完整依赖安全、实际身份响应与商用/分享资格仍未确定。当前“保留候选、暂不选作已可用 MVP 自动分享后端”的结论不变。
+
+
+## 完整补丁的构建条件检查：缺失依赖，纯编译失败
+
+沿用同一个已核验官方工具链，先检查无编译/目标进程运行，工作树仅保留历史未提交实验。新的隔离公开源码副本中应用最终补丁，对全部 **10 个受影响 Go 文件** 执行 gofmt：首次有 8 个文件需格式化，格式化成功，二次 `gofmt -l` 输出为空。最终 patch 已包含这些格式修正；这证明语法可解析/格式一致，不证明类型检查或链接成功。此前编译通过的两个文件摘要未变，因此没有重跑六项测试。
+
+检查固定基线的 go.mod/go.sum：go.mod 声明 **34 个固定模块**（直接和 indirect），专用 GOPATH 的模块源码缓存没有这些包。模块清单、固定版本、公开来源地址和现有 go.sum 的 h1 记录已保存到 `docs/validation/pcs-package-build-2026-11-09.json`；这 34 项不一定是完整传递依赖闭包，不能将首次报错清单当成全部所需依赖。
+
+使用同一禁网子进程 wrapper 的局部副本，仅将 `GO111MODULE=off` 改为 `on` 以读取上游 go.mod，其他清空继承环境、独立 HOME/缓存、GOTOOLCHAIN=local、GOPROXY=off、GOSUMDB=off、GOWORK=off、CGO_ENABLED=0 和 seccomp 拒绝保持不变；在固定源码根目录执行：
+
+```text
+go build -mod=readonly -o <isolated>/pcs-never-execute .
+```
+
+退出码 **1**：15 个模块被首次报告缺失，具体导入位置均返回 `module lookup disabled by GOPROXY=off`。例如 urfave/cli v1.22.5、tablewriter v0.0.4、liner v1.2.2、json-iterator v1.1.12、Baidu-Login v1.4.1、baidu-tools v1.2.0 和 dnscache 固定伪版本。日志中 Go 的 “downloading” 行表示尝试解析缺失缓存，**不表示实际下载成功**；代理关闭且子进程 socket 被拒绝，没有获得依赖、没有生成客户端二进制。未运行包初始化或任何目标程序。失败日志见 `docs/validation/pcs-package-build-2026-11-09.txt`。
+
+确定剩余阻碍是依赖来源/获取范围和模块闭包审查，而非再次安装 Go。此次许可不包含新依赖下载，因此停止同类构建尝试，不使用 stub、用户 HOME 缓存、其他设备或容器替代。当前可独立做的补丁应用、语法/格式、现有缓存和声明依赖核对均已完成；没有已知可在当前空缓存中继续完成的相关包纯编译步骤。
+
+若继续，下一动作需具体批准：只为该固定源码取得已列固定版本的公开依赖归档及必要 go.mod/传递依赖元数据，来源限定维护者官方公开仓库或经确认的 Go 模块发行服务，进入本项目隔离模块缓存，按已有 go.sum 验证且不更新版本/不执行安装脚本；审查闭包后再恢复禁网纯编译。新增代码供应链/依赖完整性需核验，编译成功也不授权执行客户端或账户操作。若依赖图要求未列版本或 go.sum 缺失，应先列差异，而非自行扩大获取范围。**未代为下载或申请真实认证。**

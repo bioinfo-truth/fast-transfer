@@ -14,11 +14,11 @@
   "live_login_verified": false,
   "share_verified": false,
   "artifact_sha256": {
-    "patches/baidupcs-go-v4.0.2/README.md": "f7003f36628f9cf7fa37c995f395e1ae1f4455a70df0c4ecfe612f10c99d4719",
+    "patches/baidupcs-go-v4.0.2/README.md": "b9086a96ddba3e9eb7c0aa9d28a2df57db3e196ab284d28cf17b9427cbb7377a",
     "patches/baidupcs-go-v4.0.2/offline_exec.py": "411e798ef3a0dd8f90bb091c309f1e08af3c1623da694d6a48bb815802612406",
-    "patches/baidupcs-go-v4.0.2/security-candidate.patch": "cb82a06c3222e852fa0fda28cb6e86588de7fa360b4ec43f2f09bc3b4dee02cf",
+    "patches/baidupcs-go-v4.0.2/security-candidate.patch": "b7a189e791bd037ecf43785399891a0c0c0a9af7750df137bdc795087212c018",
     "patches/baidupcs-go-v4.0.2/verify_patch.py": "a8f1807ea95c317ffd676fa66b033a817757b28ed581c2836bd0f1b560f8a560",
-    "patches/baidupcs-go-v4.0.2/baseline.json": "a41bf2fdcc52b8e753469205a4566df8c010e98d6696245c8956e29a9401b8d4"
+    "patches/baidupcs-go-v4.0.2/baseline.json": "a792891fd49ea6d7b17e74b4783a0c68fd4a3bfecd027cf8461dd29edb19e0da"
   },
   "prior_patch_commit": "13a20e59e4510b046d9a76e296623991ecc79dc9",
   "revision": "construction_and_body_read_errors_redacted; candidate_identity_and_final_decision_review",
@@ -33,7 +33,7 @@
     "account_probe_sent": false
   },
   "mvp_backend_decision": "not_ready_candidate_only",
-  "full_client_compilation": "not_run",
+  "full_client_compilation": "attempted_blocked_missing_dependencies",
   "current_execution_evidence": "pcs-go-offline-2026-11-09.json",
   "prior_toolchain_absence_check": {
     "PATH_go": "absent",
@@ -44,5 +44,6 @@
     "installation_attempted": false,
     "prior_absence_note": "Before approved isolated official toolchain installation; see pcs-go-offline-2026-11-09.json"
   },
-  "approved_isolated_toolchain_installed": true
+  "approved_isolated_toolchain_installed": true,
+  "package_build_evidence": "pcs-package-build-2026-11-09.json"
 }

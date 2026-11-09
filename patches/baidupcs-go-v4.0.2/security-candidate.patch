@@ -1,32 +1,32 @@
 --- a/requester/http_client.go
 +++ b/requester/http_client.go
-@@ -23,0 +24 @@
-+            CheckRedirect: denyRedirect,
+@@ -23 +23,2 @@
+-			Timeout: 50 * time.Second,
++			Timeout:       50 * time.Second,
++			CheckRedirect: denyRedirect,
 @@ -27,0 +29 @@
 +	h.lazyInit()
 @@ -38 +40,2 @@
 -				InsecureSkipVerify: true,
 +				InsecureSkipVerify: false,
-+                MinVersion: tls.VersionTLS12,
++				MinVersion:         tls.VersionTLS12,
 @@ -50 +53 @@
 -		h.Client.Transport = h.transport
 +		h.Client.Transport = guardedTransport{next: h.transport}
 @@ -89 +92,2 @@
 -		InsecureSkipVerify: true,
 +		InsecureSkipVerify: false,
-+                MinVersion: tls.VersionTLS12,
++		MinVersion:         tls.VersionTLS12,
 --- a/requester/dial.go
 +++ b/requester/dial.go
 @@ -217 +217,2 @@
 -			InsecureSkipVerify: !h.https,
 +			InsecureSkipVerify: false,
-+            MinVersion: tls.VersionTLS12,
++			MinVersion:         tls.VersionTLS12,
 --- a/requester/fetch.go
 +++ b/requester/fetch.go
-@@ -8,2 +8 @@
+@@ -8 +7,0 @@
 -	"io/ioutil"
--	"net/http"
-+		"net/http"
 @@ -16 +15 @@
 -	resp, err := DefaultClient.Get(urlStr)
 +	resp, err := DefaultClient.Req("GET", urlStr, nil, nil)
@@ -42,33 +42,44 @@
 @@ -121 +120,5 @@
 -	return h.Client.Do(req)
 +	resp, err = h.Client.Do(req)
-+    if err != nil {
-+        return nil, ErrRequestFailed // Never propagate a URL/header/body-bearing error.
-+    }
-+    return resp, nil
++	if err != nil {
++		return nil, ErrRequestFailed // Never propagate a URL/header/body-bearing error.
++	}
++	return resp, nil
 @@ -138 +141 @@
 -	return ioutil.ReadAll(resp.Body)
 +	return redactedReadAll(resp.Body)
 --- a/internal/pcsconfig/baidu.go
 +++ b/internal/pcsconfig/baidu.go
-@@ -91,0 +92 @@
-+    if err = RequireVerifiedIdentityBinding(); err != nil { return nil, err }
-@@ -111,0 +113 @@
-+    if err = RequireVerifiedIdentityBinding(); err != nil { return nil, err }
+@@ -25 +25 @@
+-//BaiduBase Baidu基
++// BaiduBase Baidu基
+@@ -91,0 +92,3 @@
++	if err = RequireVerifiedIdentityBinding(); err != nil {
++		return nil, err
++	}
+@@ -111,0 +115,3 @@
++	if err = RequireVerifiedIdentityBinding(); err != nil {
++		return nil, err
++	}
 --- a/internal/pcsconfig/maniper.go
 +++ b/internal/pcsconfig/maniper.go
-@@ -118,0 +119 @@
-+    if err = RequireVerifiedIdentityBinding(); err != nil { return nil, err }
+@@ -118,0 +119,3 @@
++	if err = RequireVerifiedIdentityBinding(); err != nil {
++		return nil, err
++	}
 --- a/internal/pcsconfig/pcsconfig.go
 +++ b/internal/pcsconfig/pcsconfig.go
-@@ -100,0 +101 @@
-+    if len(c.BaiduUserList) != 0 { return RequireVerifiedIdentityBinding() }
+@@ -100,0 +101,3 @@
++	if len(c.BaiduUserList) != 0 {
++		return RequireVerifiedIdentityBinding()
++	}
 --- a/main.go
 +++ b/main.go
-@@ -422 +422,2 @@
--				var bduss, ptoken, stoken, cookies string
-+				if err := pcsconfig.RequireVerifiedIdentityBinding(); err != nil { return err }
-+                var bduss, ptoken, stoken, cookies string
+@@ -421,0 +422,3 @@
++				if err := pcsconfig.RequireVerifiedIdentityBinding(); err != nil {
++					return err
++				}
 --- /dev/null
 +++ b/requester/security_policy.go
 @@ -0,0 +1,78 @@
@@ -260,5 +271,5 @@
 +// RequireVerifiedIdentityBinding intentionally rejects all login/persistence.
 +// Do not replace it with force-login, fixed UID or optional profile data.
 +func RequireVerifiedIdentityBinding() error {
-+    return errors.New("verified_identity_binding_unavailable")
++	return errors.New("verified_identity_binding_unavailable")
 +}

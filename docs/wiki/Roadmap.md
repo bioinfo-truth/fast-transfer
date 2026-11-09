@@ -132,3 +132,8 @@ PCS-Go 登录安全方案已形成独立离线模型：固定假凭据、仅内�
 在用户明确批准后，项目隔离目录内的官方 Go 1.27.3 linux/amd64 完成归档大小/摘要核验。两个已审查标准库依赖文件通过 gofmt、编译和六项离线测试；使用独立配置/缓存与子进程 seccomp 禁网，没有运行完整客户端、账户请求或真实凭据/对象操作。磁盘检查点均高于 5 GiB，未改系统配置。此结果替代此前“工具链缺失、六项未运行”的阶段状态，最终补丁已同步格式化结果。
 
 M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M4.4 未执行。PCS-Go 仍是候选，尚不足选作已可用 MVP 自动分享后端，既有站点拒绝和真实操作授权边界不变。见[安装、隔离与测试证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/pcs-go-offline-2026-11-09.json)及[补丁说明](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/patches/baidupcs-go-v4.0.2/README.md)。
+
+
+### M4.2 包级构建阻碍已定位
+
+同一获准工具链/禁网环境中，全部 10 个补丁文件完成语法解析和格式检查，已测 helper 摘要未变、六项测试未重复。完整根包纯编译退出 1：隔离模块缓存缺依赖，GOPROXY=off 阻止模块查找；未生成/执行客户端，也未下载新依赖。固定 go.mod 声明 34 个模块，首次报错列 15 项；需先明确取得固定公开依赖/元数据及闭包核验的范围，才可继续离线包级编译。不能用 stub、用户缓存、其他设备或 helper 通过替代；M4.3/M4.4 未执行，后端候选结论不变。见[固定依赖清单与失败证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/pcs-package-build-2026-11-09.json)。
