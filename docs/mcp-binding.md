@@ -28,3 +28,5 @@ env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_i
 | 分享对象映射与结果核实 | README 的 link/short_url/period/pwd 不包含 shareid/owner/fsids 映射或明确查询核实接口；候选结果保持未核实，真实分享 gate 未放开，也不编造撤销/重查能力 |
 
 浏览器打开网盘网页的既有拒绝不能泛化为官方 MCP API 被拒；不重试被拒网页，官方具体操作若获新的拒绝则停止，不绕路。本轮未收到官方业务拒绝，也未发生需要补偿的真实创建。用户分享意图已明确；下一步应确认上述具体输入和权限，不泛问是否想分享、不要求在聊天贴令牌、不新建 OAuth。
+
+后续状态：[官方端点无凭据可及性已实测](mcp-reachability.md)，HTTP200事件流响应头已收到，认证/业务仍未尝试。
