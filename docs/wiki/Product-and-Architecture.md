@@ -138,3 +138,11 @@ VPS对两个MCP IPv4目标有单播出站路由，IPv6路由查询失败；nft�
 ### 2026-11-11 域名路径差异与入口补查
 
 同业务VPS原生pan.baidu.com接口成功、mcp-pan.baidu.com在TCP阶段失败，地域原因未证实。官方仓库新查Issue #2为社区HTTP405/SSE协议混用报告，无维护者答复，不能解释本项目尚未建TCP的失败；当前驱动已用SSE。新增审阅stdio示例及Python生成API，未发现备用官方分享域名或分享本地实现；已查远端入口仍为官方SSE地址。无VPS探测/凭据/设置变更/分享，本轮未找到解决入口或资格疑点的新方案。[来源与有限结论](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/sharing-alternatives-readonly.md)。
+
+
+### 2026-11-11 候选：海外上传、境内仅建链
+
+用户提出将建链放在境内，文件无需回传或重传；这是可拆分架构，尚未运行成功/选为默认。境内仅检查当前PATH、三个常见安装位置及当前用户默认配置metadata：未发现BaiduPCS-Go安装或默认配置，专用配置目录环境变量未设置；没有扩大搜索、读取秘密或启动CLI。现有项目安全补丁仍为未部署的候选，不能当作实际客户端版本或认证成功。账号/原对象境内核验及分享请求均0；具体缺口为已知安装来源/安全版本和既有本机认证，VPS令牌不迁移。[架构及前置证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/domestic-sharing-candidate.md)。
+
+
+同轮安装进展：用户明确授权安装并确认两端同账号；境内已安装固定v4.0.2源码的项目安全候选构建，版本输出v4.0.2-dev，产物哈希与历史构建收据一致。PATH入口目前仅允许隔离空配置、内核禁网的版本/帮助；四项实际启动/命令拒绝检查通过。**不是可正常登录分享的正式版**，真实认证/分享接线仍缺，用户账号确认不代替境内会话核验。未读取/复制凭据、登录、新授权或分享，不重传原样例。[安装事实与限制](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/domestic-sharing-candidate.md)。

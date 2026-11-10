@@ -1,0 +1,62 @@
+{
+  "checked_at_utc": "2026-11-10T16:34:38.995093+00:00",
+  "installation": {
+    "baseline_repository": "qjfoidnh/BaiduPCS-Go",
+    "baseline_tag": "v4.0.2",
+    "baseline_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+    "build_type": "project_patched_safety_candidate_not_official_release_binary",
+    "binary_sha256": "41b3182106fe0de3591be0e03d59063268db78886a3fe94c54ca24e0f0963186",
+    "binary_bytes": 20870517,
+    "go_toolchain": "go1.27.3",
+    "architecture": "linux/amd64",
+    "credential_support": "not_enabled",
+    "network_runtime": "kernel_denied",
+    "commands": [
+      "--version",
+      "--help"
+    ],
+    "launcher_sha256": "6be37f7cb5a461b0d961390ebed9ad5274f197092e4f9aaef1cf9476c60e4741"
+  },
+  "runtime_version": "BaiduPCS-Go version v4.0.2-dev",
+  "path_lookup_finds_wrapper": true,
+  "checks": [
+    {
+      "case": "version",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "passed": true,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "help",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "passed": true,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "login_rejected",
+      "exit_code": 2,
+      "expected_exit": 2,
+      "passed": true,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "share_rejected",
+      "exit_code": 2,
+      "expected_exit": 2,
+      "passed": true,
+      "no_synthetic_secret_echo": true
+    }
+  ],
+  "real_configuration_created": false,
+  "real_credentials_read": false,
+  "credentials_copied": false,
+  "network_requests": 0,
+  "new_login_or_oauth": false,
+  "share_requests": 0,
+  "old_configuration_overwritten": false,
+  "user_reports_same_account": true,
+  "domestic_account_or_object_verified": false,
+  "prior_history_tests_not_repeated": true
+}

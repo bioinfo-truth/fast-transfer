@@ -322,3 +322,11 @@ DNS调用者等待有界，但系统解析线程不能强制取消，超时后�
 ### 官方替代路径只读复核（2026-11-10）
 
 VPS对两个MCP IPv4目标有单播出站路由，IPv6路由查询失败；nft表清单为空，legacy IPv4表清单为空，未见已查范围内显式本机拒绝，供应商/上游仍未知。未重复连接测试或改设置。原生REST分享是独立官方候选，但既有资料要求服务开通，用户历史未开通；现有Xtransfer资格/应用绑定/最新收费未确认。当前官方Go SDK未提供Share服务。不能把MCP网络失败归纳为全部官方路径不可行，也不能仅凭有REST接口就试建链；最小下一步是既有供应商出站策略或Xtransfer服务列表的只读事实核实，若须企业认证/付费开通则由用户决定。[依据、边界与缺口](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/sharing-alternatives-readonly.md)。本轮凭据读取/分享请求/网络设置变更均0。
+
+
+### 2026-11-11 候选：海外上传、境内仅建链
+
+用户提出将建链放在境内，文件无需回传或重传；这是可拆分架构，尚未运行成功/选为默认。境内仅检查当前PATH、三个常见安装位置及当前用户默认配置metadata：未发现BaiduPCS-Go安装或默认配置，专用配置目录环境变量未设置；没有扩大搜索、读取秘密或启动CLI。现有项目安全补丁仍为未部署的候选，不能当作实际客户端版本或认证成功。账号/原对象境内核验及分享请求均0；具体缺口为已知安装来源/安全版本和既有本机认证，VPS令牌不迁移。[架构及前置证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/domestic-sharing-candidate.md)。
+
+
+同轮安装进展：用户明确授权安装并确认两端同账号；境内已安装固定v4.0.2源码的项目安全候选构建，版本输出v4.0.2-dev，产物哈希与历史构建收据一致。PATH入口目前仅允许隔离空配置、内核禁网的版本/帮助；四项实际启动/命令拒绝检查通过。**不是可正常登录分享的正式版**，真实认证/分享接线仍缺，用户账号确认不代替境内会话核验。未读取/复制凭据、登录、新授权或分享，不重传原样例。[安装事实与限制](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/domestic-sharing-candidate.md)。

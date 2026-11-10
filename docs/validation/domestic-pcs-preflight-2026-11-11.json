@@ -1,0 +1,44 @@
+{
+  "checked_at_utc": "2026-11-10T16:25:41.092799+00:00",
+  "host_role": "domestic_development_host",
+  "config_contents_read": false,
+  "client_executed": false,
+  "account_calls": 0,
+  "share_requests": 0,
+  "explicit_config_dir_env_present": false,
+  "config_metadata": [
+    {
+      "role": "current_user_default",
+      "present": false
+    }
+  ],
+  "expected_domestic_host_confirmed": true,
+  "path_lookup_found": false,
+  "known_binary_locations": [
+    {
+      "role": "user_local_bin",
+      "present": false
+    },
+    {
+      "role": "system_local_bin",
+      "present": false
+    },
+    {
+      "role": "system_bin",
+      "present": false
+    }
+  ],
+  "other_users_or_directories_searched": false,
+  "binary_executed": false,
+  "binary_version_verified": false,
+  "installed_security_patch_verified": false,
+  "existing_authenticated_session_confirmed": false,
+  "existing_account_matched": false,
+  "exact_original_object_matched": false,
+  "credentials_read": false,
+  "credentials_copied": false,
+  "credentials_transmitted": false,
+  "new_login_attempted": false,
+  "oauth_attempted": false,
+  "cloud_file_changed": false
+}
