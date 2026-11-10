@@ -120,3 +120,6 @@ VPS 硬盘有限，优先逐文件处理，限制缓冲和保留系统空间；�
 ### 原样例绑定证据复核（2026-11-10，仅文档）
 
 历史脱敏收据确认当时账号指纹匹配、上传及完整双哈希回读成功；未公开实际指纹/文件ID/完整随机路径。现有代码指向原任务私有恢复结果和会话检查点，但本轮未读取它们，当前可用性不作保证。目录ID不替代最终文件ID；旧账号哈希不能直接替代当前MCP接口的原始账号ID输入。下一候选是明确私有收据来源并原地核对，然后在MCP用途/权限成立时精确只读核验原对象，不重传或重复完整回读。分享的实际信封、对象映射和真实持久接线仍待完成。[字段来源与最小依赖](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/original-sample-binding-evidence.md)。本轮外部业务请求零。
+
+
+后续补齐（2026-11-10 23:03 UTC+8）：官方会话历史已定位原任务目录；业务VPS原地核验五份指定私有记录，账号哈希与最终文件ID存在，任务/目标/目录/源及历史回读摘要一致，私有值未导出。此前“尚未读取”是上一阶段状态。MCP mapping摘要未记录，账号哈希适配、当前账号匹配、当前对象及MCP权限仍待核验；本轮百度/MCP请求及凭据读取均0，无重传。[核验结果](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/original-sample-binding-evidence.md)。
