@@ -1,5 +1,7 @@
 # Fast Transfer 项目 Wiki
 
+> 当前验收目标是海外业务VPS。既有Xtransfer上传/完整回读历史通过；当前原授权仅核实文件元数据，实时有效性及分享权限未验证。不要用开发机授权代替VPS验收，也不重做上传或新grant；当前决策见[路线图](https://github.com/bioinfo-truth/fast-transfer/wiki/Roadmap)。
+
 面向中国境内科研用户，提供海外公开生物信息数据的代下载和百度网盘交付服务。
 
 ## 当前 MVP 方向（2026-11-08）
