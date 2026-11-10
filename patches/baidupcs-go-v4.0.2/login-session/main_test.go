@@ -174,7 +174,7 @@ func TestIdentityMismatchNotDeclaredMatch(t *testing.T) {
 	}
 }
 func TestOnlyFixedHTTPSRoutes(t *testing.T) {
-	for _, address := range []string{"http://wappass.baidu.com/wp/api/login", "https://wappass.baidu.com:443/wp/api/login", "https://wappass.baidu.com/wp/api/login?extra=x", "https://pan.baidu.com/share/pset", "https://tieba.baidu.com/c/s/login", "https://wappass.baidu.com/wp/api/login#x"} {
+	for _, address := range []string{"http://wappass.baidu.com/wp/api/login", "https://wappass.baidu.com:443/wp/api/login", "https://wappass.baidu.com/wp/api/login?extra=x", "https://tieba.baidu.com/c/s/login", "https://wappass.baidu.com/wp/api/login#x"} {
 		u, _ := url.Parse(address)
 		if permitted("POST", u) {
 			t.Fatal("route allowed")

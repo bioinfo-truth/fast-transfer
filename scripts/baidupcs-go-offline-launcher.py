@@ -66,13 +66,14 @@ def guards(root,binary,canary,link):
 
 def main():
     install=Path(__file__).resolve().parent
-    if sys.argv[1:] in (['login','--session-only'],['login','--session-only','--help']):
+    if sys.argv[1:] in (['login','--session-only'],['login','--session-only','--help']) or sys.argv[1:3]==['share','--session-only']:
         frontend=install/'login-session.py'
         info=frontend.lstat()
         if not stat.S_ISREG(info.st_mode) or info.st_uid!=os.geteuid() or info.st_mode&0o022:fail('frontend_file_rejected')
         manifest=json.loads((install/'installation.json').read_text())
         if hashlib.sha256(frontend.read_bytes()).hexdigest()!=manifest['login_session_frontend_sha256']:fail('frontend_hash_mismatch')
-        args=['--help'] if sys.argv[-1]=='--help' else ['--session-only']
+        if sys.argv[1:3]==['share','--session-only']:args=['--share-original',*sys.argv[3:]]
+        else:args=['--help'] if sys.argv[-1]=='--help' else ['--session-only']
         # Session mode is a separate reviewed implementation, not a relaxation
         # of the upstream CLI's real-config or identity/save protections.
         os.execve('/usr/bin/python3',['/usr/bin/python3','-I','-S',str(frontend),*args],{})

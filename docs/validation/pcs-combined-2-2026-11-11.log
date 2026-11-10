@@ -1,0 +1,11 @@
+=== RUN   TestLocalTLSValidCertificateAndFixedHost
+--- PASS: TestLocalTLSValidCertificateAndFixedHost (0.00s)
+=== RUN   TestLocalTLSWrongHostnameAndUntrustedChainNeverReachHTTP
+--- PASS: TestLocalTLSWrongHostnameAndUntrustedChainNeverReachHTTP (0.01s)
+=== RUN   TestLocalTLSDroppedPostReplyIsUnknownAndNeverRepeated
+--- PASS: TestLocalTLSDroppedPostReplyIsUnknownAndNeverRepeated (0.01s)
+=== RUN   TestLocalTLSRedirectIsNotFollowed
+--- PASS: TestLocalTLSRedirectIsNotFollowed (0.00s)
+=== RUN   TestLocalTLSWorkflowOneLoginThroughMappedShare
+--- PASS: TestLocalTLSWorkflowOneLoginThroughMappedShare (0.01s)
+PASS

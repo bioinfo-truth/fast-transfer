@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-11",
+  "real_authentication": false,
+  "real_sharing": false,
+  "tests": {
+    "go_top_level": 21,
+    "go_child_entry_included": true,
+    "local_tls": 5,
+    "frontend": 14
+  },
+  "go_build": "pass",
+  "go_vet": "pass",
+  "installation": {
+    "baseline_repository": "qjfoidnh/BaiduPCS-Go",
+    "baseline_tag": "v4.0.2",
+    "baseline_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+    "build_type": "project_patched_safety_candidate_not_official_release_binary",
+    "binary_sha256": "41b3182106fe0de3591be0e03d59063268db78886a3fe94c54ca24e0f0963186",
+    "binary_bytes": 20870517,
+    "go_toolchain": "go1.27.3",
+    "architecture": "linux/amd64",
+    "credential_support": "explicit_in_memory_session_only_no_persistence",
+    "network_runtime": "upstream_kernel_denied_explicit_companion_fixed_https_routes",
+    "commands": [
+      "--version",
+      "--help",
+      "login --help",
+      "help login",
+      "login --session-only --help",
+      "login --session-only (explicit owner TTY confirmation)",
+      "share --session-only --help",
+      "share --session-only --expectations PRIVATE_JSON --period DAYS --allow-own-share-page (explicit owner TTY confirmation)"
+    ],
+    "launcher_sha256": "61bdda019c43c03f8590eb28e03d9f584f3a636e769921769b7cc3ee64a2adab",
+    "login_session_sha256": "bc55810cfd9d2aece2e3f43cbc45cdd8ffe278216760ad4d46012c78647b2f35",
+    "login_session_frontend_sha256": "27f16d51706f5ad425e4b05f171f38e230bd88aba677dfc952a86b8aacba01b7",
+    "login_session_support": "prepared_single_attempt_no_persistence_real_compatibility_unverified",
+    "combined_share_support": "installed_synthetic_and_local_tls_verified_live_unverified"
+  },
+  "sources": {
+    "patches/baidupcs-go-v4.0.2/login-session/main.go": "9626efcd35f8b5675e292ab7230b9c0d1c81d31565e9f5995a73473d1ac603e5",
+    "patches/baidupcs-go-v4.0.2/login-session/workflow.go": "a57a02096a7d23c015010f5060c690a91072d99d35cb9f06b1b950eda92c8b7a",
+    "patches/baidupcs-go-v4.0.2/login-session/workflow_test.go": "0bd2bcaec18fabe58371aac8c2ac76b09acbd86c0d161225a22d5daed3c0f136",
+    "patches/baidupcs-go-v4.0.2/login-session/profile.go": "2b715ef1c7ba11221f6943e1db6875c538c5da2e8266a167a0077f45b02a2db9",
+    "patches/baidupcs-go-v4.0.2/login-session/local_tls_test.go": "3de0c6a1d4d81f494a0ff9294d28af7d89d0163b8586041d2106359c6a1ebab8",
+    "patches/baidupcs-go-v4.0.2/login-session/main_test.go": "93b4578ad9977cff740bd973651878b3eab875be2a7c4ebede3968dda94ab8d3",
+    "scripts/baidupcs-go-login-session.py": "27f16d51706f5ad425e4b05f171f38e230bd88aba677dfc952a86b8aacba01b7",
+    "scripts/baidupcs-go-offline-launcher.py": "61bdda019c43c03f8590eb28e03d9f584f3a636e769921769b7cc3ee64a2adab"
+  }
+}

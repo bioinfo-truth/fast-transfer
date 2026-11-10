@@ -1,0 +1,19 @@
+test_new_frontend_argv_or_pipe_rejected_before_helper (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_argv_or_pipe_rejected_before_helper) ... ok
+test_new_frontend_cancel (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_cancel) ... ok
+test_new_frontend_echo_and_restoration (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_echo_and_restoration) ... ok
+test_new_frontend_noninteractive_has_no_fallback (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_noninteractive_has_no_fallback) ... ok
+test_new_frontend_rejects_reflected_or_extra_fields (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_rejects_reflected_or_extra_fields) ... ok
+test_new_frontend_timeout (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_timeout) ... ok
+test_combined_frontend_pipe_keeps_link_off_status_stdout (test_pcs_login_frontend.PCSShareFrontendTests.test_combined_frontend_pipe_keeps_link_off_status_stdout) ... ok
+test_consumed_intent_stops_before_login (test_pcs_login_frontend.PCSShareFrontendTests.test_consumed_intent_stops_before_login) ... ok
+test_directory_symlink_is_not_followed (test_pcs_login_frontend.PCSShareFrontendTests.test_directory_symlink_is_not_followed) ... ok
+test_history_consent_precedes_all_credentials (test_pcs_login_frontend.PCSShareFrontendTests.test_history_consent_precedes_all_credentials) ... ok
+test_private_link_never_falls_back_to_stdout (test_pcs_login_frontend.PCSShareFrontendTests.test_private_link_never_falls_back_to_stdout) ... ok
+test_private_source_shape_and_mapping (test_pcs_login_frontend.PCSShareFrontendTests.test_private_source_shape_and_mapping) ... ok
+test_public_permission_and_symlink_rejected (test_pcs_login_frontend.PCSShareFrontendTests.test_public_permission_and_symlink_rejected) ... ok
+test_share_status_does_not_authorize_other_commands (test_pcs_login_frontend.PCSShareFrontendTests.test_share_status_does_not_authorize_other_commands) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.469s
+
+OK

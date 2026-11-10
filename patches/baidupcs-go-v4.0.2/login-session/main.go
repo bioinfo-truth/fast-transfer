@@ -1,6 +1,7 @@
 // One-attempt, in-memory login preparation; not an upstream release command.
 // WAP form and RSA usage adapted from Baidu-Login v1.4.1 (MIT, Copyright iikira).
-// No PCSConfig, Tieba initialization, credential export, persistence or sharing.
+// No PCSConfig, Tieba initialization or credential persistence. Optional sharing
+// is bounded to the single original sample and requires explicit verification scope.
 package main
 
 import (
@@ -30,30 +31,43 @@ var clockPattern = regexp.MustCompile(`"time"\s*:\s*"([0-9a-fA-F]{8,32})"`)
 var keyPattern = regexp.MustCompile(`,rsa:"([0-9a-fA-F]+)",error:`)
 
 type input struct {
-	Username    string `json:"username"`
-	Password    string `json:"password"`
-	Expected    string `json:"expected_account_sha256"`
-	SessionOnly bool   `json:"session_only"`
+	Username    string     `json:"username"`
+	Password    string     `json:"password"`
+	Expected    string     `json:"expected_account_sha256"`
+	SessionOnly bool       `json:"session_only"`
+	Share       *sharePlan `json:"share,omitempty"`
 }
 type report struct {
-	Status               string `json:"status"`
-	Phase                string `json:"phase"`
-	Requests             int    `json:"request_attempts"`
-	AuthPosts            int    `json:"authentication_post_attempts"`
-	AuthCode             string `json:"auth_code,omitempty"`
-	SessionCookiePresent bool   `json:"session_cookie_received"`
-	IdentityAccepted     bool   `json:"netdisk_identity_accepted"`
-	ExpectedChecked      bool   `json:"expected_account_checked"`
-	ExpectedMatch        bool   `json:"expected_account_matches"`
-	CredentialsSaved     bool   `json:"credentials_saved"`
-	ShareRequests        int    `json:"share_requests"`
-	Closed               bool   `json:"closed"`
+	Status                  string `json:"status"`
+	Phase                   string `json:"phase"`
+	Requests                int    `json:"request_attempts"`
+	AuthPosts               int    `json:"authentication_post_attempts"`
+	AuthCode                string `json:"auth_code,omitempty"`
+	SessionCookiePresent    bool   `json:"session_cookie_received"`
+	IdentityAccepted        bool   `json:"netdisk_identity_accepted"`
+	ExpectedChecked         bool   `json:"expected_account_checked"`
+	ExpectedMatch           bool   `json:"expected_account_matches"`
+	CredentialsSaved        bool   `json:"credentials_saved"`
+	ShareRequests           int    `json:"share_requests"`
+	Closed                  bool   `json:"closed"`
+	OriginalObjectMatched   bool   `json:"original_object_matched"`
+	IntentConsumed          bool   `json:"share_intent_consumed"`
+	CreationUnknown         bool   `json:"share_creation_outcome_unknown"`
+	ShareCreated            bool   `json:"share_created"`
+	RecordMatched           bool   `json:"own_share_record_matched"`
+	PasswordConfirmed       bool   `json:"share_password_confirmed"`
+	ExpiryBounded           bool   `json:"share_expiry_bounded"`
+	HistoryRead             bool   `json:"own_share_page_read"`
+	PrivateReady            bool   `json:"private_result_written"`
+	RecipientAccessVerified bool   `json:"recipient_access_verified"`
+	ShareErrno              *int64 `json:"share_errno,omitempty"`
 }
 
 type session struct {
 	client *http.Client
 	result report
 	trace  string
+	bduss  string
 }
 
 // Strict bounded JSON with duplicate keys rejected at every depth. Never returns
@@ -150,7 +164,7 @@ func permitted(method string, u *url.URL) bool {
 	if u.Host == "wappass.baidu.com" && u.RawQuery == "" {
 		return method == "GET" && (u.Path == "/" || u.Path == "/wp/api/security/antireplaytoken" || u.Path == "/static/touch/js/login_d9bffc9.js") || method == "POST" && u.Path == "/wp/api/login"
 	}
-	return u.Host == "pan.baidu.com" && method == "GET" && u.Path == "/api/user/getinfo" && u.RawQuery == "need_selfinfo=1"
+	return u.Host == "pan.baidu.com" && ((method == "GET" && u.Path == "/api/user/getinfo" && u.RawQuery == "need_selfinfo=1") || shareRoutePermitted(method, u))
 }
 
 func productionClient() (*http.Client, *http.Transport) {
@@ -204,7 +218,11 @@ func (s *session) request(ctx context.Context, phase, method, address string, bo
 	req.Header.Set("Accept", "application/json")
 	if method == "POST" {
 		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-		req.Header.Set("Referer", "https://wappass.baidu.com/")
+		if u.Host == "wappass.baidu.com" {
+			req.Header.Set("Referer", "https://wappass.baidu.com/")
+		} else {
+			req.Header.Set("Referer", "https://pan.baidu.com/disk/home")
+		}
 		req.Header.Set("X-Requested-With", "XMLHttpRequest")
 	}
 	client := s.client
@@ -344,6 +362,7 @@ func (s *session) run(ctx context.Context, in input) report {
 	s.result.SessionCookiePresent = true
 	s.result.Status = "login_created_identity_unverified"
 	raw, e = s.request(ctx, "session_identity", "GET", "https://pan.baidu.com/api/user/getinfo?need_selfinfo=1", nil, secret)
+	cookieUsed := secret
 	secret = ""
 	if e != nil {
 		return s.result
@@ -379,14 +398,26 @@ func (s *session) run(ctx context.Context, in input) report {
 		}
 	}
 	s.result.Status = "session_identity_verified_no_persistence"
+	s.bduss = cookieUsed
 	return s.result
 }
 
 func main() {
 	result := report{Status: "input_rejected", Closed: true}
+	var active *session
 	defer func() {
 		if recover() != nil {
-			result = report{Status: "session_internal_failure", Closed: true}
+			if active != nil {
+				result = active.result
+				result.Status = "operation_internal_outcome_unknown"
+				result.Closed = true
+				result.PrivateReady = false
+				result.CreationUnknown = result.ShareRequests > 0 && !result.ShareCreated
+				active.bduss = ""
+				active.client.Jar = nil
+			} else {
+				result = report{Status: "session_internal_failure", Closed: true}
+			}
 		}
 		_ = json.NewEncoder(os.Stdout).Encode(result)
 	}()
@@ -402,24 +433,36 @@ func main() {
 		return
 	}
 	obj, e := object(raw)
-	if e != nil || len(obj) != 4 {
+	if e != nil || (len(obj) != 4 && len(obj) != 5) {
 		return
 	}
 	var in input
-	if e = json.Unmarshal(raw, &in); e != nil || !validInput(in) {
+	d := json.NewDecoder(strings.NewReader(string(raw)))
+	d.DisallowUnknownFields()
+	if e = d.Decode(&in); e != nil || !validInput(in) {
 		return
 	}
 	for k := range obj {
-		if k != "username" && k != "password" && k != "expected_account_sha256" && k != "session_only" {
+		if k != "username" && k != "password" && k != "expected_account_sha256" && k != "session_only" && k != "share" {
 			return
 		}
 	}
 	client, tr := productionClient()
 	defer tr.CloseIdleConnections()
-	ctx, cancel := context.WithTimeout(context.Background(), 45*time.Second)
+	budget := 45 * time.Second
+	if in.Share != nil {
+		budget = 90 * time.Second
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), budget)
 	defer cancel()
 	s := &session{client: client}
-	result = s.run(ctx, in)
+	active = s
+	if in.Share != nil {
+		result = s.runShare(ctx, in)
+	} else {
+		result = s.run(ctx, in)
+	}
+	s.bduss = ""
 	in.Password = ""
 	raw = nil
 	result.Closed = true

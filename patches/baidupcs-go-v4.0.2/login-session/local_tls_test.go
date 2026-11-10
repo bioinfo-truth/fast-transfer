@@ -127,3 +127,33 @@ func TestLocalTLSRedirectIsNotFollowed(t *testing.T) {
 		t.Fatal("redirect followed")
 	}
 }
+
+func TestLocalTLSWorkflowOneLoginThroughMappedShare(t *testing.T) {
+	p, _, reader, writer := planFixture(t)
+	fake := &shareRT{base: &fakeRT{t: t}, t: t, plan: p}
+	s, _ := localClient(t, []string{"wappass.baidu.com", "pan.baidu.com"}, true, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		clone := r.Clone(r.Context())
+		clone.URL.Scheme = "https"
+		clone.URL.Host = r.Host
+		response, e := fake.RoundTrip(clone)
+		if e != nil {
+			t.Error(e)
+			return
+		}
+		for k, values := range response.Header {
+			for _, v := range values {
+				w.Header().Add(k, v)
+			}
+		}
+		w.WriteHeader(response.StatusCode)
+		io.Copy(w, response.Body)
+	}))
+	in := credentials()
+	in.Share = &p
+	result := s.runShare(context.Background(), in)
+	writer.Close()
+	private, _ := io.ReadAll(reader)
+	if !result.PrivateReady || !result.ExpectedMatch || fake.posts != 1 || result.AuthPosts != 1 || !strings.Contains(string(private), fakeLink) {
+		t.Fatalf("local end-to-end failed %+v", result)
+	}
+}
