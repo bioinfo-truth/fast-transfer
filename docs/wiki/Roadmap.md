@@ -265,3 +265,11 @@ DNS调用者等待有界，但系统解析线程不能强制取消，超时后�
 仅检查既有非秘密任务记录及原VPS单个已指定凭据位置的lstat：位置存在、普通文件、非符号链接、root所有、0600；没有打开内容或取得任何令牌值。应用名称Xtransfer来自用户和历史样例记录，当前文件的实际应用/AppID绑定未验证。已检查记录没有实际OAuth授予scope、签发/到期时间的独立证据；过去上传/完整回读成功不能证明当前有效或MCP兼容。
 
 若必要字段只在与秘密混存的JSON里，普通读取会取得秘密，超出本次元数据许可；下一步需独立脱敏元数据记录，或明确批准原VPS一次受审文件读取、只输出白名单元数据且不使用/提交令牌。当前未实施该读取，没有OAuth/刷新/业务请求，私有位置和标识不公开。详见[已知、未知及具体下一步](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/xtransfer-auth-metadata.md)。
+
+## 2026-11-10 服务器终端本人无回显输入入口
+
+新增mcp_terminal_readonly入口，先加载指定私有ExpectedObject记录、隐藏确认READ-ONLY，再由用户本人在前台控制TTY无回显输入已获准短期token；非交互/关闭回显失败拒绝，无stdin/getpass降级，不读旧秘密、不写环境/.env/历史/日志。固定官方TLS目的地、URL查询风险明确，退出释放引用，不承诺内存擦除或终端录制防护。
+
+单会话先发现schema，匹配后至多一次账号及一个精确文件只读核对；未知schema/身份/响应停止。输入token不证明应用权限，真实分享门保持关闭，不写Job或新增账本；原持久单次意图和未知不重发接口保留。此次没有OAuth、真实token、实网服务访问或VPS部署。干净23项新终端检查+17项相关绑定/持久意图回归共40项通过，含真实自有PTY回显/恢复、EOF/取消/超时/SIGTERM、子进程argv/env/文件泄漏检查；都是合成token/禁网验证。详见[用户步骤、前提与限制](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-terminal.md)。
+
+终端入口另有独立 `--discover-only` 模式，隐藏确认DISCOVER-ONLY后本人输入，只发现工具、无账号/文件调用，不需用户猜fsid。代码仅当前项目工作区就绪，解释器Python3.14.4已核实，VPS未部署。精确只读的私有原收据位置仍待明确；恢复收据只保留账号指纹时不能反推原始uk或伪造mapping。扩展测试初轮1项类型门/测试替身不匹配已修正，最终40项通过，初轮日志保留。

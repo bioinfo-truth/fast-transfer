@@ -39,3 +39,5 @@
 [官方实测及已执行源码哈希](validation/mcp-official-discovery-live-2026-11-10.json)、[执行入口](validation/mcp-official-discovery-probe-2026-11-10.py)、[测试摘要](validation/mcp-official-profile-tests-2026-11-10.json)。后续源码仅补充docstring，执行哈希保持原样，未用新文本覆盖实际运行证据。
 
 后续：[原授权非秘密元数据核查](xtransfer-auth-metadata.md)已完成；指定位置存在，但当前实际scope/到期时间/应用绑定仍未知，未读取或发送令牌。
+
+新增[服务器终端本人无回显输入入口](mcp-terminal.md)，本轮仅无凭据开发及合成验证，未启动OAuth/读真实token或访问服务；不因人工输入放开分享门。
