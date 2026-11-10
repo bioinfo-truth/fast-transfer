@@ -1,0 +1,46 @@
+{
+  "observed_at_utc": "2026-11-10T09:56:22.754319+00:00",
+  "scope": "non-secret historical records and lstat of the single known original VPS credential location only",
+  "credential_location_stat": {
+    "exists": true,
+    "regular_file": true,
+    "is_symlink": false,
+    "owner_is_root": true,
+    "mode": "0600",
+    "content_opened": false
+  },
+  "application": {
+    "recorded_name": "Xtransfer",
+    "basis": "user supplied application name and historical approved sample records",
+    "current_credential_file_app_binding_verified": false,
+    "app_id_verified": false
+  },
+  "grant_scope": {
+    "actual_granted_scope_known": false,
+    "note": "historical basic/netdisk description is not an inspected OAuth grant response"
+  },
+  "expiration": {
+    "issued_at_known": false,
+    "expires_in_known": false,
+    "expires_at_known": false,
+    "currently_valid_verified": false
+  },
+  "mcp_compatibility_verified": false,
+  "token_values_obtained": false,
+  "refresh_token_read": false,
+  "cookie_read": false,
+  "client_secret_read": false,
+  "token_submitted_to_service": false,
+  "new_oauth_or_refresh": false,
+  "cloud_business_requests": 0,
+  "other_configuration_scanned": false,
+  "nonsecret_sources_reviewed": [
+    "docs/mvp-live-sample.md",
+    "docs/validation/mvp-live-sample-2026-11-08.json",
+    "docs/mcp-share-candidate.md",
+    "docs/mcp-official-discovery.md",
+    "docs/baidu-share-service.md",
+    "README.md and docs/wiki OAuth metadata keyword check"
+  ],
+  "next_operation_not_performed": "If metadata exists only in the designated mixed-secret JSON, separately approve one reviewed in-place read that extracts only application/scope/issuance/expiry metadata; no token output/use/transmission, no OAuth/refresh. Otherwise obtain an independently redacted metadata record."
+}

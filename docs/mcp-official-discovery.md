@@ -37,3 +37,5 @@
 干净副本：新增路由/发现9项 + 受影响官方driver13项 + 绑定17项 + SSE17项，共 **56项禁网检查通过**；另因共享HTTP/profile改动执行 **21项真实本地TCP/TLS回归通过**，均零失败/跳过。这些测试与上面的正式官方实测单独记录；没有把mock或本地TLS称为认证/业务成功，没有重跑全部旧测试替代进展。
 
 [官方实测及已执行源码哈希](validation/mcp-official-discovery-live-2026-11-10.json)、[执行入口](validation/mcp-official-discovery-probe-2026-11-10.py)、[测试摘要](validation/mcp-official-profile-tests-2026-11-10.json)。后续源码仅补充docstring，执行哈希保持原样，未用新文本覆盖实际运行证据。
+
+后续：[原授权非秘密元数据核查](xtransfer-auth-metadata.md)已完成；指定位置存在，但当前实际scope/到期时间/应用绑定仍未知，未读取或发送令牌。

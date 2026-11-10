@@ -268,3 +268,9 @@ DNS调用者等待有界，但系统解析线程不能强制取消，超时后�
 17:43:57（UTC+8）正式客户端实网：1GET+initialize/initialized/tools-list三次POST，HTTP200/202/202/202，TLS验证通过、383字节、约0.957秒、关闭确认。**无凭据tools/list返回空列表**，不能判断唯一原因或声称认证/账号/原对象/分享已通过。未读token/私有收据/新建OAuth/调用业务，也未测试海外VPS。
 
 干净必要检查56项禁网+21项本地TLS通过，独立于官方实测。继续账号/原文件核验需要明确原VPS既有短期token的指定读取来源、同进程使用/向官方SSE查询提交范围与应用兼容性；禁止扫描/刷新/换应用，保留原对象。详见[真实结果、代码与具体缺口](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-official-discovery.md)。
+
+## 2026-11-10 Xtransfer 授权元数据核查
+
+仅检查既有非秘密任务记录及原VPS单个已指定凭据位置的lstat：位置存在、普通文件、非符号链接、root所有、0600；没有打开内容或取得任何令牌值。应用名称Xtransfer来自用户和历史样例记录，当前文件的实际应用/AppID绑定未验证。已检查记录没有实际OAuth授予scope、签发/到期时间的独立证据；过去上传/完整回读成功不能证明当前有效或MCP兼容。
+
+若必要字段只在与秘密混存的JSON里，普通读取会取得秘密，超出本次元数据许可；下一步需独立脱敏元数据记录，或明确批准原VPS一次受审文件读取、只输出白名单元数据且不使用/提交令牌。当前未实施该读取，没有OAuth/刷新/业务请求，私有位置和标识不公开。详见[已知、未知及具体下一步](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/xtransfer-auth-metadata.md)。
