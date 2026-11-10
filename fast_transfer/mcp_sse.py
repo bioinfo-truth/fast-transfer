@@ -119,13 +119,11 @@ class SSEClient:
         return client
 
     @classmethod
-    def for_official_readonly(cls, driver, *, budget=30):
-        from .mcp_official_http import OfficialHTTPSDriver
-        if type(driver) is not OfficialHTTPSDriver:fail('mcp_sse_driver_unavailable')
-        if type(budget) not in (int,float) or not 0<budget<=30:fail()
-        client=cls.__new__(cls);client._setup(driver,budget)
-        client.origin=driver.origin;client.endpoint=driver.endpoint
-        return client
+    def for_official_readonly(cls, driver, *, expected, budget=30):
+        # A non-fixture object is mandatory; the former factory retained the
+        # fixture-only tool() restriction and could not inspect an actual object.
+        from .mcp_binding import BoundSession
+        return BoundSession.official_readonly(driver,expected,budget=budget)
 
     def __repr__(self): return '<private_sse_session>'
 
@@ -197,8 +195,11 @@ class SSEClient:
         for item in tools['tools']:
             if type(item) is not dict or type(item.get('name')) is not str or item['name'] in descriptors:fail()
             descriptors[item['name']]=item.get('inputSchema')
-        if any(descriptors.get(k)!=v for k,v in schemas().items()):fail('mcp_sse_schema_unproven')
+        self.review_descriptors(descriptors)
         self.connected=True
+
+    def review_descriptors(self,descriptors):
+        if any(descriptors.get(k)!=v for k,v in schemas().items()):fail('mcp_sse_schema_unproven')
 
     def tool(self, name, arguments):
         if type(arguments) is not dict: fail()

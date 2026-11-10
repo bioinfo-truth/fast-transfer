@@ -35,7 +35,9 @@ class OfficialDriverTests(unittest.TestCase):
 
     def test_separate_factory_does_not_relax_fixture_or_default_types(self):
         d=self.driver()
-        client=s.SSEClient.for_official_readonly(d)
+        from fast_transfer.mcp_binding import ExpectedObject
+        expected=ExpectedObject('synthetic','1001','Xtransfer','9999','/apps/Xtransfer/synthetic',16,'a'*32,'b'*64,'c'*64)
+        client=s.SSEClient.for_official_readonly(d,expected=expected)
         self.assertEqual(client.origin,h.ORIGIN)
         with self.assertRaises(m.Rejected):s.SSEClient(d)
         with self.assertRaises(m.Rejected):s.SSEClient.for_local_fixture(d)
