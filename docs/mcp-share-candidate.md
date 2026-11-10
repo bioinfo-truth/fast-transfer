@@ -2,6 +2,8 @@
 
 2026-11-09。`fast_transfer/mcp_share.py` 现在提供固定合成任务的分享参数、内部观察校验和一次创建演练；**不是 MCP 客户端、服务器连接、真实信封解码器或身份认证器**。现有 Go adapter 针对 PCS-Go Cookie 候选，不是同一个服务契约。本轮没有移植它的 errno/owner/shareid 形状，而是复用已有 Python Job 的锁、save 和 manual_review 状态，不建立新的工作流或通用分享账本。
 
+当前补充：2026-11-10已接入[确定性 SSE/JSON-RPC 字节协议层](mcp-sse-protocol.md)，仅执行内存流；标准握手/信封已按固定 SDK 源码实现验证，真实 driver 和百度业务包装/来源认证仍未实现。下述17/38项保留为初轮候选结果，本次新增协议17项与必要回归42项另有证据。
+
 ## 来源、字段与未知项分级
 
 固定来源为[百度 MCP README](https://github.com/baidu-netdisk/mcp/blob/b3983d330fea79c7b72e6b7014803e1830148d2c/README.md)，commit `b3983d330fea79c7b72e6b7014803e1830148d2c`、README Git blob `aebcff89265d8948be9e6dc7147cc2998b4e5d61`。上一轮版本与以下字段来自协调方已重新读取的公开资料，当时未下载或执行官方代码。后续静态审查已独立读取下节六份固定公开文件并核对 Git blob/SHA-256；始终未执行官方代码或访问账户。
@@ -12,7 +14,7 @@
 | 官方文档声明 | file_sharelink_set 的 fsid_list 为字符串，内容是 JSON 字符串 ID 数组；period 默认7天，pwd 四位数字/小写字母 | 构造仅含 fsid_list/period/pwd 的私有参数候选；本轮只允许固定合成 ID 和7天，不声称其他期限不被平台支持 |
 | 官方文档声明 | 返回 link/period/pwd/short_url | 本地候选严格要求四字段、期限/提取码与请求相同、URL 符合保守 allowlist；这是本项目验收政策，不是已证实的全部必填字段/返回类型 |
 | 内部归一契约 | Observation.raw/status/app/session/task/account | 全部是明确的 fixture 元数据，不是 MCP 服务响应信封、可信 provenance 或权限票据；status=permission_denied 仅测试显式拒绝分支，不对应官方错误码 |
-| 未证实 | 完整 MCP 成功/错误信封、字段类型/缺省语义、权限错误映射、分享 owner/shareid/精确对象映射 | 未实现真实 wire decoder；REST 的 errno/data、13998 及 Cookie 返回均不作为 MCP 成功或拒绝事实 |
+| 未证实 | 百度服务真实业务包装、字段类型/缺省语义、权限错误映射、分享 owner/shareid/精确对象映射 | 标准 JSON-RPC/CallToolResult 本地协议解码已实现；不假设百度业务包装，REST errno/data、13998 及 Cookie 返回均不嫁接为 MCP 事实 |
 | 未证实 | 当前账号正式分享资格、现有 Xtransfer token/对象与 MCP 应用兼容性、跨应用范围 | 不探测、不迁移、不重新上传；个人体验应用独立 OAuth、仅测试且不得正式使用，不能借同账号推定互通 |
 
 ## 候选实现及防重、隐私

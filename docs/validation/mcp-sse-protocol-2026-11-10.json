@@ -1,0 +1,119 @@
+{
+  "date": "2026-11-10",
+  "base_commit": "aee0949c552518cbe7726d9c6e8f97b43be9db2d",
+  "scope": "deterministic SSE/JSON-RPC byte-profile integration into existing Job/fixture binding; no live driver",
+  "references": [
+    {
+      "repo": "baidu-netdisk/mcp",
+      "ref": "b3983d330fea79c7b72e6b7014803e1830148d2c",
+      "path": "LICENSE",
+      "git_blob": "7ef56dd12cfff829b408ea7b84400304d518c026",
+      "sha256": "92b317148da69d4659396cc14c599d308c75d40bd2ec27a613e48af2e7a3bce8"
+    },
+    {
+      "repo": "modelcontextprotocol/python-sdk",
+      "ref": "v1.6.0",
+      "path": "src/mcp/client/sse.py",
+      "git_blob": "4f6241a72039fabad76465687d6d78046f61e5fa",
+      "sha256": "0ca932208c2b410f7111152790629cf368ab3c0ba71d2199acf9665a84e8aa19"
+    },
+    {
+      "repo": "modelcontextprotocol/python-sdk",
+      "ref": "v1.6.0",
+      "path": "src/mcp/client/session.py",
+      "git_blob": "65d5e11e2c9cabf5a2af4405af8e569a8e2c078a",
+      "sha256": "5631d6b97176621832a02f18f1cb9a5a14ab0d742157dda4159e1dfae5f32392"
+    },
+    {
+      "repo": "modelcontextprotocol/python-sdk",
+      "ref": "v1.6.0",
+      "path": "src/mcp/types.py",
+      "git_blob": "bd71d51f0f6f12759d85b5a229165f475edcd162",
+      "sha256": "fbb3f8492cbfaaf95b39c5f8b86978d1e6c824beb3ed3347cde170d8fba21fa5"
+    },
+    {
+      "repo": "modelcontextprotocol/python-sdk",
+      "ref": "v1.6.0",
+      "path": "LICENSE",
+      "git_blob": "3d48435454b105021b4f777c11b6b07d8d2ffea3",
+      "sha256": "5e13dbbc1d120fc2a03cecde7c91424ae2d7de11b63d58ded2f4431e261ee50d"
+    }
+  ],
+  "licenses": {
+    "third_party/baidu-netdisk-mcp/LICENSE": "92b317148da69d4659396cc14c599d308c75d40bd2ec27a613e48af2e7a3bce8",
+    "third_party/python-sdk/LICENSE": "5e13dbbc1d120fc2a03cecde7c91424ae2d7de11b63d58ded2f4431e261ee50d",
+    "third_party/NOTICE.md": "3ebc0e5f1c7295b14c07a76355c302c8e9afb9cfdf16e244aa3f5eea81212031"
+  },
+  "implementation_sha256": {
+    "fast_transfer/mcp_sse.py": "87c89edfd37cd9dde420d867b73b94b19940a4b89a74c8ffafb09c9542b2ecc5",
+    "fast_transfer/mcp_share.py": "92587d99fbfb6d938704c94ffb1277b82ee0082e1589ff12ccc537b0dd738e1d",
+    "tests/test_mcp_sse.py": "48547ea4753576d501f888ce0b69240a58b9789a347fa9d9d0641c0835fc349b",
+    "tests/support/run_workflow_isolated.py": "35c6c7f51266a1030a8c308c31aaed0c34aa83e9918921094607f1b68a35d0da"
+  },
+  "dependency_metadata_probe": {
+    "interpreter": "python3 -I, importlib.metadata only",
+    "mcp": "not installed",
+    "httpx": "not installed",
+    "anyio": "not installed",
+    "python-dotenv": "not installed",
+    "SDK_modules_imported": false,
+    "dependencies_installed_or_downloaded": 0
+  },
+  "command": "env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_isolated.py test_mcp_sse test_mcp_share test_workflow",
+  "results": {
+    "new_protocol_tests": 17,
+    "necessary_clean_regressions": 42,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "elapsed_seconds": 0.67,
+    "initial_passed": 41,
+    "expanded_targeted_passed": 42,
+    "historical_untracked_four_tests_included": false,
+    "log_sha256": "f7072ebdfe6cddb110d5dcae9f1833073f0515e3942f108015ac4a2e9cc6201a"
+  },
+  "protocol": {
+    "version": "2024-11-05",
+    "sequence": [
+      "SSE GET/endpoint",
+      "initialize id1",
+      "notifications/initialized",
+      "tools/list id2",
+      "user_info id3",
+      "exact file_meta id4",
+      "single file_sharelink_set id5"
+    ],
+    "symbolic_auth_only": true,
+    "max_event_bytes": 16384,
+    "max_stream_bytes": 262144,
+    "max_lines": 512,
+    "read_request_bytes": 1024,
+    "deadline": "5s cooperative default, <=30s configurable; no hard interruption guarantee",
+    "automatic_retry_or_reconnect": false,
+    "accepted_message_endpoints": "exact HTTPS mcp-pan.baidu.com /messages or /messages/ and single bounded session_id; conservative unverified real-service profile",
+    "schemas": "exact local discovery profile, not claimed actual Baidu schema",
+    "business_payload": "one MCP TextContent containing strict JSON fixture object only; real business envelope unverified"
+  },
+  "isolation": {
+    "kernel_seccomp": true,
+    "socket_probe": "EPERM",
+    "HOME_and_environment": "isolated by reviewed runner",
+    "filesystem_sandbox": false,
+    "real_network_servers_or_local_network_services": 0,
+    "real_credentials_read_or_configured": false,
+    "original_sample_moved_or_reuploaded": false
+  },
+  "status": {
+    "local_raw_protocol_flow": "executed and passed",
+    "SDK_runtime_interoperability": "not executed",
+    "actual_service_connection": "not attempted",
+    "TLS_handshake_and_redirect_runtime": "not executed; no live driver",
+    "real_identity_and_app_scope": "unverified",
+    "real_object_and_share": "not attempted",
+    "share_mapping": "unverified even when fixture returns valid link",
+    "live_entrypoint": "unchanged, rejected",
+    "5GiB_reserve": "unchanged",
+    "first_blocker": "same-purpose access-channel evidence missing; then scoped secret use, application/object entitlement and real business response contract"
+  }
+}

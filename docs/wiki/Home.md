@@ -216,3 +216,8 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 ### 官方 MCP 锁文件证据纠正（2026-11-10）
 
 纠正官方依赖证据：固定提交确有 uv.lock（96,472字节，blob a792c3d7eb17925a76e82af04d94050ef290fe1b），锁定 mcp1.6.0/httpx0.28.1/python-dotenv1.1.0/aiohttp3.11.16等并声明PyPI制品哈希。pyproject 是范围约束，不能据此说官方无锁；本项目尚未采用/完整审查该锁，也未验证Python3.14运行兼容。仅读取公开锁并修正文档/JSON，没有依赖下载、执行或重跑测试；真实接入阻碍不变。 详见[环境复用与纠错依据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-share-candidate.md)。
+
+
+### M4 确定性 SSE 协议接入（2026-11-10）
+
+已新增确定性 SSE/JSON-RPC 字节协议层，接到原固定合成文件核对及 Job 单次意图；保留 MIT 署名/许可证，无 LLM、凭据发现、秘密日志或自动重试。17项新增协议测试及干净必要回归42项通过（零失败/跳过，排除历史未提交四项）。验证的是内存HTTP/SSE流，尚无真实TLS/SSE driver、SDK运行或服务连接，真实身份/对象/建链均未尝试；原访问控制与具体凭据/应用范围条件不变。 详见[协议流程与范围](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-sse-protocol.md)、[执行证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/mcp-sse-protocol-2026-11-10.json)。

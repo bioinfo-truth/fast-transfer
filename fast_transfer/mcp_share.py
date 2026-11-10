@@ -1,4 +1,5 @@
-"""Credential-free MCP candidate contract. No MCP client or wire decoder exists.
+"""Credential-free business candidate; optional scripted SSE protocol integration.
+No live MCP client or confirmed Baidu business-envelope decoder exists.
 
 README field names are not authentication. Observations below are internal,
 explicit fixture normalization, NOT an official MCP response envelope.
@@ -26,6 +27,8 @@ SAFE_CODES = frozenset('''
     mcp_fixture_intent_consumed mcp_fixture_transport_required mcp_fixture_not_ready_or_consumed
     mcp_fixture_object_mismatch mcp_fixture_identity_mismatch mcp_candidate_url_invalid
     mcp_candidate_share_mismatch
+    mcp_sse_protocol_rejected mcp_sse_endpoint_rejected mcp_sse_driver_unavailable
+    mcp_sse_closed mcp_sse_deadline mcp_sse_rpc_error mcp_sse_tool_error mcp_sse_schema_unproven
 '''.split())
 
 
@@ -113,8 +116,12 @@ class ShareArguments:
 
 
 class FixtureTransport:
-    """In-memory observations and ONE scripted share result. No callbacks/network."""
-    def __init__(self, identity, metadata, share):
+    """In-memory observations or reviewed scripted SSE, ONE share. No live callbacks/network."""
+    def __init__(self, identity, metadata, share, *, protocol=None):
+        if protocol is not None:
+            from .mcp_sse import SSEClient
+            if type(protocol) is not SSEClient: reject('mcp_sse_driver_unavailable')
+        self._protocol = protocol
         self._observations = {'user_info': identity, 'file_meta': metadata}
         self._share = share
         self.calls = []
@@ -124,6 +131,9 @@ class FixtureTransport:
 
     def observe(self, name):
         self.calls.append(name)
+        if self._protocol is not None:
+            arguments = {} if name=='user_info' else {'fsids':[int(FIXTURE_FSID)]}
+            return self._protocol.tool(name,arguments).fields()
         observation = self._observations[name]
         if type(observation) is not Observation: reject('mcp_response_contract_unknown')
         return observation.fields()
@@ -131,8 +141,10 @@ class FixtureTransport:
     def share(self, arguments):
         if self._consumed: reject('mcp_fixture_intent_consumed')
         self._consumed = True
-        arguments.fixture_arguments()
+        params = arguments.fixture_arguments()
         self.calls.append('file_sharelink_set')
+        if self._protocol is not None:
+            return self._protocol.tool('file_sharelink_set',params).fields()
         if self._share == 'timeout': raise TimeoutError()
         if type(self._share) is not Observation: reject('mcp_response_contract_unknown')
         return self._share.fields()
