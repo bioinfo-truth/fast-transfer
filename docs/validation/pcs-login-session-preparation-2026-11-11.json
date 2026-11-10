@@ -20,11 +20,11 @@
       "login --session-only (explicit owner TTY confirmation)"
     ],
     "launcher_sha256": "b8ab609ebbd5444e96799be5f49ee045c5073c8f64a00dba71eeb3c93a0af38b",
-    "login_session_sha256": "57595b0cc182c4737b2924b8f901c1d862309ad20a7ec01b3ab1c4a7c4d415c1",
+    "login_session_sha256": "573b993af4201845fd37beb8b854a47e6f3fcf5d5c89e7c20d3936c051ca5417",
     "login_session_frontend_sha256": "287f0a17d0fc742a33750c3b8b52703d3549d4d6e5d5eb74f150a38f36e07d4f",
     "login_session_support": "prepared_single_attempt_no_persistence_real_compatibility_unverified"
   },
-  "go_memory_tests_passed": 12,
+  "go_memory_tests_passed": 13,
   "go_local_tls_tests_passed": 4,
   "frontend_generated_pty_tests_passed": 6,
   "installation_noncredential_checks": [
@@ -82,11 +82,13 @@
     "scripts/baidupcs-go-offline-launcher.py": "b8ab609ebbd5444e96799be5f49ee045c5073c8f64a00dba71eeb3c93a0af38b",
     "scripts/baidupcs-go-login-session.py": "287f0a17d0fc742a33750c3b8b52703d3549d4d6e5d5eb74f150a38f36e07d4f",
     "patches/baidupcs-go-v4.0.2/login-session/local_tls_test.go": "464179abc4e73a9aaa91cede3b8664bad534331f77485dfe550013af5750bf2d",
-    "patches/baidupcs-go-v4.0.2/login-session/main.go": "1be10459e6d1f50783b5fdbf7f149267f2a4d334cbc48963494cdc816d692fec",
-    "patches/baidupcs-go-v4.0.2/login-session/main_test.go": "fcc205be82af74da3cf4af177fd1f65ef40647ec8f6e754ff882d987e9dc7821",
+    "patches/baidupcs-go-v4.0.2/login-session/main.go": "9ed766f027fce944e8d23c136197c4619e842d6f1ba2e727966553971cae2874",
+    "patches/baidupcs-go-v4.0.2/login-session/main_test.go": "fe0242fa67f69feb7c2fab9eaa14e75fb9b807415dd9cc14910b0f46e7fa7163",
     "patches/baidupcs-go-v4.0.2/login-session/profile.go": "2b715ef1c7ba11221f6943e1db6875c538c5da2e8266a167a0077f45b02a2db9",
     "tests/test_pcs_login_frontend.py": "caa9f36cbce334751d616038ef1cec131bc57db75696b0221e4433ff5f06dfba"
   },
   "go_vet": "passed_offline_new_companion_only",
-  "test_binary_sha256": "0e79ea68cafd2c61edc09c3b69883e3f9243e41bb7d960ab7997d661f1e68541"
+  "test_binary_sha256": "ae77cbb69635e1f679d36cf5f3718ef7eb5dc4b9d3bdc7b4fc038e86434ee08a",
+  "trace_bootstrap_body": "not_read_headers_only",
+  "installed_helper_invalid_input_stops_before_network": true
 }

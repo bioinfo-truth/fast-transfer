@@ -82,7 +82,11 @@ func (f *fakeRT) RoundTrip(r *http.Request) (*http.Response, error) {
 	default:
 		f.t.Fatal("unreviewed path")
 	}
-	return &http.Response{StatusCode: status, Header: h, Body: io.NopCloser(strings.NewReader(text)), Request: r}, nil
+	var body io.ReadCloser = io.NopCloser(strings.NewReader(text))
+	if f.trace == "body_unread" && r.URL.Path == "/" {
+		body = io.NopCloser(failingBody{})
+	}
+	return &http.Response{StatusCode: status, Header: h, Body: body, Request: r}, nil
 }
 func fixture(t *testing.T) (*session, *fakeRT) {
 	f := &fakeRT{t: t}
@@ -239,5 +243,16 @@ func TestRemoteErrorCodeCannotReflectPassword(t *testing.T) {
 	r := s.run(context.Background(), v)
 	if r.AuthCode != "other" {
 		t.Fatal("secret echoed as code")
+	}
+}
+
+type failingBody struct{}
+
+func (failingBody) Read([]byte) (int, error) { return 0, rejected }
+func TestTraceBootstrapDoesNotReadLoginPageBody(t *testing.T) {
+	s, f := fixture(t)
+	f.trace = "body_unread"
+	if s.run(context.Background(), credentials()).Status != "session_identity_verified_no_persistence" {
+		t.Fatal("unnecessary page body read")
 	}
 }

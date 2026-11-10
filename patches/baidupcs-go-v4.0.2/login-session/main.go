@@ -223,12 +223,16 @@ func (s *session) request(ctx context.Context, phase, method, address string, bo
 		return nil, rejected
 	}
 	defer response.Body.Close()
+	if response.StatusCode != 200 {
+		return nil, rejected
+	}
 	if phase == "bootstrap_trace" {
 		trace := response.Header.Values("Trace-Id")
 		if len(trace) != 1 || !regexp.MustCompile(`^[A-Za-z0-9_-]{1,256}$`).MatchString(trace[0]) {
 			return nil, rejected
 		}
 		s.trace = trace[0]
+		return nil, nil // Only the header is needed; never fetch the login page body.
 	}
 	if response.StatusCode != 200 || response.Header.Get("Content-Encoding") != "" && response.Header.Get("Content-Encoding") != "identity" {
 		return nil, rejected

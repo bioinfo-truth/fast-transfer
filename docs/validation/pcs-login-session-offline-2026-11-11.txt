@@ -22,4 +22,6 @@
 --- PASS: TestCookieBodyNotAcceptedAndMalformedIdentityStops (0.00s)
 === RUN   TestRemoteErrorCodeCannotReflectPassword
 --- PASS: TestRemoteErrorCodeCannotReflectPassword (0.00s)
+=== RUN   TestTraceBootstrapDoesNotReadLoginPageBody
+--- PASS: TestTraceBootstrapDoesNotReadLoginPageBody (0.00s)
 PASS

@@ -155,4 +155,4 @@ VPS对两个MCP IPv4目标有单播出站路由，IPv6路由查询失败；nft�
 
 ### 2026-11-11 一次性内存登录入口已准备
 
-新增项目子流程`BaiduPCS-Go login --session-only`，不进入原HTTP贴吧初始化或PCSConfig保存。严格固定wappass/pan HTTPS、证书/主机校验，无代理/跳转/自动重试；密码最多提交一次，验证码要求即停，Cookie仅内存，pan身份只接收BDUSS。账号密码隐藏输入经同机私有管道，不进入argv/env/配置。12项Go禁网、4项本地TLS、6项生成PTY及6项无凭据安装检查通过，百度认证/分享请求仍0。旧WAP协议真实兼容性未知，验证码续办和同会话分享未实现；退出不保留本机会话，不等于注销服务器会话。后续仅需本人具体批准一次新登录+固定身份查询，不默认保存秘密。[代码、风险和可执行步骤](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/pcs-login-session-preparation.md)。
+新增项目子流程`BaiduPCS-Go login --session-only`，不进入原HTTP贴吧初始化或PCSConfig保存。严格固定wappass/pan HTTPS、证书/主机校验，无代理/跳转/自动重试；密码最多提交一次，验证码要求即停，Cookie仅内存，pan身份只接收BDUSS。账号密码隐藏输入经同机私有管道，不进入argv/env/配置。13项Go禁网、4项本地TLS、6项生成PTY及6项无凭据安装检查通过，百度认证/分享请求仍0。旧WAP协议真实兼容性未知，验证码续办和同会话分享未实现；退出不保留本机会话，不等于注销服务器会话。后续仅需本人具体批准一次新登录+固定身份查询，不默认保存秘密。[代码、风险和可执行步骤](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/pcs-login-session-preparation.md)。

@@ -6,7 +6,7 @@
 
 - 原上游裸login保持未放开；新入口不调用PCSConfig、SetupUserByBDUSS、NewUserInfoByBDUSS或贴吧初始化。固定请求策略拒绝任何HTTP/Tieba/share端点，因此不是把旧HTTP URL换成未经验证的HTTPS地址。
 - 独立Go companion复用锁定Baidu-Login v1.4.1的WAP表单及bdcrypto算法，仅替换必要的网络/会话编排，不引入MCP客户端或其他网盘后端。旧账号密码协议仍长期不维护，其应用层RSA表示按上游保持，不冒称已更新为现代认证协议；保护传输依赖严格TLS，在线兼容性未知。
-- 只允许五类固定HTTPS请求：wappass的antireplaytoken、固定登录JS、根页面/Trace-ID、`/wp/api/login`，以及pan的`/api/user/getinfo?need_selfinfo=1`。公钥/时间/Trace-ID缺失、格式不符或传输失败即停止，没有默认公钥/时间兜底。密码长度超出实际公钥编码容量时在提交前拒绝。
+- 只允许五类固定HTTPS请求：wappass的antireplaytoken、固定登录JS、根页面的Trace-ID响应头（不读页面正文）、`/wp/api/login`，以及pan的`/api/user/getinfo?need_selfinfo=1`。公钥/时间/Trace-ID缺失、格式不符或传输失败即停止，没有默认公钥/时间兜底。密码长度超出实际公钥编码容量时在提交前拒绝。
 - 系统信任根、证书/主机名校验、TLS至少1.2；不接代理、任意Host/SNI、重定向或响应里的verifyURL/loginProxy/u。DNS只接受公网结果并为每个固定主机选择一个地址，不尝试替代地址；禁keepalive/HTTP2以避免复用连接重放，单次会话45秒预算。真实POST至多一次，可能已发后失败为`authentication_outcome_unknown`，不会自动再提交。
 - 收到手机/邮箱或图片验证码要求后，只给固定状态/错误码，**不发短信、不抓验证码图、不跟随验证URL、不重进登录循环**。验证码续办未实现，不能把当前准备称为完整修复全部交互登录。
 - 登录返回的Cookie只留在Go进程内存；随后只把BDUSS发给固定pan身份接口，不转发完整Cookie集合，不采集贴吧UID或将网盘UK伪装成贴吧UID。成功码但无有效Cookie、缺失/异常身份信封均不宣称已验证登录。
@@ -26,7 +26,7 @@
 
 | 检查 | 结果及边界 |
 | --- | --- |
-| Go合成/禁网 | 12项通过，零失败/跳过；覆盖成功候选、初始化失败不提交、无fallback、重复JSON/异常信封、未知不重发、挑战不续办、Cookie最少转发、账号不匹配、秘密回显抑制、输入长度及固定路由 |
+| Go合成/禁网 | 13项通过，零失败/跳过；覆盖成功候选、初始化失败不提交、无fallback、重复JSON/异常信封、未知不重发、挑战不续办、Cookie最少转发、账号不匹配、秘密回显抑制、输入长度及固定路由 |
 | 本地真实TLS | 4项通过（含错误主机/不受信任链两个子情形）；只连本地生成证书的测试服务和虚构账号，验证正确TLS、证书拒绝、重定向不跟随、服务端读完POST后丢响应仍只提交一次。不是百度认证 |
 | 前端生成凭据PTY | 6项禁网通过；不回显、恢复终端、取消/超时/无TTY拒绝、argv拒绝及结果脱敏 |
 | 安装无凭据检查 | 6项通过：版本/原login帮助/session帮助可运行；无TTY的session在输入前拒绝；裸login和秘密参数拒绝。没有启动真实输入或触发百度请求 |
