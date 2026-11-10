@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-10",
+  "route": "existing self-owned Xtransfer application only; no personal demo app",
+  "new_device_tests": 24,
+  "reused_terminal_tests": 23,
+  "tests_passed": 47,
+  "failures": 0,
+  "skipped": 0,
+  "network_test_scope": "seccomp-denied process; synthetic credentials, mocked DNS/TCP/TLS/HTTP; inherited own PTY input checks",
+  "official_sources": [
+    {
+      "url": "https://github.com/baidu-netdisk/mcp/blob/b3983d330fea79c7b72e6b7014803e1830148d2c/src/baidu-netdisk/openapi_client/api/auth_api.py",
+      "commit": "b3983d330fea79c7b72e6b7014803e1830148d2c",
+      "bytes": 23616,
+      "sha256": "7705cac7a860293212c80f1b2cf352b004c0d96b918a0aa95d4bcc898f01ad27"
+    },
+    {
+      "url": "https://github.com/baidu-netdisk/mcp/blob/b3983d330fea79c7b72e6b7014803e1830148d2c/src/baidu-netdisk/openapi_client/model/oauth_token_device_code_response.py",
+      "commit": "b3983d330fea79c7b72e6b7014803e1830148d2c",
+      "bytes": 12104,
+      "sha256": "40324e73f2ba2bda519b2169a13e47cde98947b991ae806a3a923f2ea8a46225"
+    },
+    {
+      "url": "https://github.com/baidu-netdisk/mcp/blob/b3983d330fea79c7b72e6b7014803e1830148d2c/src/baidu-netdisk/openapi_client/model/oauth_token_device_token_response.py",
+      "commit": "b3983d330fea79c7b72e6b7014803e1830148d2c",
+      "bytes": 12112,
+      "sha256": "9df32181ef1ffe7635582fb29944769b8a6d3e643ec2b06bb1cee95a1934c457"
+    },
+    {
+      "url": "https://github.com/baidu-netdisk/baidu-drive-sdk-go/blob/472e4a1b111eac1d6307e38802f8fe7adf7e8c21/baidudriver/api/auth_device_code.go",
+      "commit": "472e4a1b111eac1d6307e38802f8fe7adf7e8c21",
+      "bytes": 1172,
+      "sha256": "025c5dc326cec9065da578e1d88ad58b313e8b42386d471eb49ac78d92118fed"
+    },
+    {
+      "url": "https://github.com/baidu-netdisk/baidu-drive-sdk-go/blob/472e4a1b111eac1d6307e38802f8fe7adf7e8c21/baidudriver/api/auth_device_token.go",
+      "commit": "472e4a1b111eac1d6307e38802f8fe7adf7e8c21",
+      "bytes": 1366,
+      "sha256": "2f8f7e8d1dc620b18a683152cf8cd607f0463fe4318819a6a2f5035f08b1dbe8"
+    }
+  ],
+  "official_error_reference": "https://openauth.baidu.com/doc/appendix.html",
+  "official_protocol_documented": true,
+  "xtransfer_grant_type_enabled_verified": false,
+  "xtransfer_mcp_compatibility_verified": false,
+  "real_secrets_read": false,
+  "real_device_code_requested": false,
+  "real_oauth_started": false,
+  "real_token_issued_or_refreshed_by_this_task": false,
+  "real_business_or_share_called": false,
+  "vps_deployed": false,
+  "local_interpreter": "/usr/bin/python3 3.14.4",
+  "local_policy": {
+    "application_expected": "Xtransfer",
+    "requested_scope": "basic,netdisk",
+    "max_create_calls": 1,
+    "max_poll_calls": 30,
+    "device_flow_seconds_cap": 300,
+    "minimum_poll_interval_seconds": 6,
+    "slow_down_additional_seconds": 5,
+    "request_budget_seconds": 15,
+    "io_timeout_seconds": 3
+  },
+  "server_refresh_token_may_be_issued": true,
+  "refresh_token_persisted_or_used": false,
+  "server_grant_can_outlive_process": true,
+  "files_sha256": {
+    "fast_transfer/device_oauth.py": "c5c764498bf418c375ae7ede235b6b17d37db2ce255d786bd6f4aa564be0bc28",
+    "fast_transfer/device_oauth_http.py": "ea61e0e095bf478abce4675078364bf228817d336900d2fce14b83ccb13c9089",
+    "fast_transfer/device_terminal.py": "4005809d7482c218ac1eeb0d704b7da527f006c7f6ac1fc90b391f01703648ab",
+    "tools/xtransfer_device_authorize.py": "b86ad03e664b4a5dcc6e3e18b6581bc64028543580da635b1feacad3f753e6ed",
+    "tests/test_device_oauth.py": "b50480ba0313dadce94e4c1af422d1807975565719bd13942f087ae4aadc8761",
+    "fast_transfer/mcp_terminal.py": "2d4b8a6e691dafcfbddc3349e78b1600e2354d6eb607e91b4d542c79a3055fcd",
+    "fast_transfer/mcp_official_http.py": "105ba1ee7b7d636225fe018c7092b16274d8286da46a22a3681fd024d731ebb6",
+    "tests/test_mcp_terminal.py": "8cf9ab06d19472e48005b279b741bd778be839a550e13360f30704d58f676573",
+    "tests/support/run_workflow_isolated.py": "35c6c7f51266a1030a8c308c31aaed0c34aa83e9918921094607f1b68a35d0da"
+  },
+  "output_sha256": "5dd551a416b46ddc94e76624600d761b95e1805c293e0a9dada67c33086f4d84"
+}

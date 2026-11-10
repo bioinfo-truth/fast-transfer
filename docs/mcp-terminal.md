@@ -60,3 +60,5 @@ env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_i
 [测试摘要与源码哈希](validation/mcp-terminal-2026-11-10.json)、[完整输出](validation/mcp-terminal-2026-11-10.txt)。扩展仅发现模式测试初轮有1项失败：构造器测试替身同时替换了类型检查引用，导致安全类型门拒绝测试构造；已将原类型检查与测试构造区分，保持拒绝规则后最终40项通过。[初轮输出](validation/mcp-terminal-expanded-initial-2026-11-10.txt)保留，不覆盖失败历史。
 
 当前交付是可审阅的本地入口代码；原服务器运行、用户真实输入、授权有效性、实际schema/账号/原对象和分享均未在本轮验证。
+
+路线补充：[现有Xtransfer的官方设备码入口](xtransfer-device-oauth.md)已实现并合成测试，未实际发起授权；不使用个人体验应用，不把已有应用推断为权限有效。

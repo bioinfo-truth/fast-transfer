@@ -273,3 +273,11 @@ DNS调用者等待有界，但系统解析线程不能强制取消，超时后�
 单会话先发现schema，匹配后至多一次账号及一个精确文件只读核对；未知schema/身份/响应停止。输入token不证明应用权限，真实分享门保持关闭，不写Job或新增账本；原持久单次意图和未知不重发接口保留。此次没有OAuth、真实token、实网服务访问或VPS部署。干净23项新终端检查+17项相关绑定/持久意图回归共40项通过，含真实自有PTY回显/恢复、EOF/取消/超时/SIGTERM、子进程argv/env/文件泄漏检查；都是合成token/禁网验证。详见[用户步骤、前提与限制](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-terminal.md)。
 
 终端入口另有独立 `--discover-only` 模式，隐藏确认DISCOVER-ONLY后本人输入，只发现工具、无账号/文件调用，不需用户猜fsid。代码仅当前项目工作区就绪，解释器Python3.14.4已核实，VPS未部署。精确只读的私有原收据位置仍待明确；恢复收据只保留账号指纹时不能反推原始uk或伪造mapping。扩展测试初轮1项类型门/测试替身不匹配已修正，最终40项通过，初轮日志保留。
+
+## 2026-11-10 使用现有Xtransfer的设备码路线
+
+按用户更正，仅使用现有自有Xtransfer，不再以个人体验应用/共享AppID代替；应用数量不证明当前API权限或主体审核。官方固定SDK确认设备码GET与同应用AppKey/SecretKey的device_token换取，scope basic,netdisk；Xtransfer实际grant及MCP兼容未测。
+
+新增固定官方TLS的设备码transport、300秒/30轮上界状态机和本人TTY入口：无回显同应用信息、用户自己核对官方页并批准、pending/slow-down受控等待、未知申请/兑换不重发。只私密显示user_code不显示device_code/token；后续另一个明确动作才交MCP工具发现，不直接读原文件或分享。API密钥走HTTPS查询、服务器可能发refresh/session凭据和持续grant的风险明确；客户端不存储/刷新，也不能承诺服务器不签发或退出撤销授权。
+
+仅当前项目工作区就绪，VPS未部署；本轮未读真实密钥/令牌、未发device请求/授权/业务。干净24项新检查+23项终端检查共47通过，全部合成/禁网设备API，不冒称已认证。下一步需用户本人在选定主机输入原Xtransfer资料、确认scope/新grant并自己批准，不在聊天发秘密。详见[官方依据、安全边界与操作步骤](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/xtransfer-device-oauth.md)。
