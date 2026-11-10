@@ -30,3 +30,5 @@ env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_i
 浏览器打开网盘网页的既有拒绝不能泛化为官方 MCP API 被拒；不重试被拒网页，官方具体操作若获新的拒绝则停止，不绕路。本轮未收到官方业务拒绝，也未发生需要补偿的真实创建。用户分享意图已明确；下一步应确认上述具体输入和权限，不泛问是否想分享、不要求在聊天贴令牌、不新建 OAuth。
 
 后续状态：[官方端点无凭据可及性已实测](mcp-reachability.md)，HTTP200事件流响应头已收到，认证/业务仍未尝试。
+
+后续协议实测：无凭据SSE与initialize已通过，实际路由为同域 `/message` + `sessionId`；生产旧profile尚未适配。见[实测分层记录](mcp-reachability.md)，不代表业务认证成功。

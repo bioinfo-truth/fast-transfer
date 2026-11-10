@@ -23,3 +23,21 @@ timeout 25s env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B docs/validation/
 ```
 
 本次没有读取响应体或事件；JSON仅包含非秘密诊断、公共目标地址及公开服务器证书摘要，不保存会话、链接、码或任何凭据。
+
+## 2026-11-10 17:02–17:03（UTC+8）：真实 SSE 与最小握手
+
+从同一项目执行主机进行了三个有明确不同目的的有界会话，没有自动重连/重试：
+
+| 会话 | 实际动作及结果 |
+| --- | --- |
+| 原严格规则 | GET200，读到81字节事件流；消息端点不符合原 `/messages?session_id=…` profile，在本地停止，零POST |
+| 结构诊断 | 新GET200，读到81字节；确认同HTTPS主机、无编码/fragment，但查询键为 `sessionId`、路径与原假设不同；仅输出结构布尔项，零POST |
+| 兼容性探针 | 新GET200，实际消息静态路由为 **`/message`**、查询键 **`sessionId`**；验证同HTTPS主机/443、固定候选静态消息路径、会话值字符/长度后使用内存端点。一次 initialize 的POST收到202，SSE返回JSON-RPC id1与协议 **2024-11-05**，capabilities/serverInfo具备对象结构；再发送一次 initialized通知，POST202。读到314字节，约0.701秒，关闭确认 |
+
+本轮合计 **3 GET + 1 initialize POST + 1 initialized通知POST**，读取476字节协议内容；全部使用真实DNS/TCP/TLS1.2及证书链/主机名校验，无代理/跳转。三次均确认自有连接及计时器关闭。探针最多15秒socket观察窗/25秒外部进程限时、16KiB累计SSE、8KiB事件、256行；查询值和原始事件/异常不输出或落盘。记录中的 `/message` 是经静态允许列表匹配后的公共路由，省略所有会话值。
+
+**结论：无凭据的真实 SSE endpoint事件与最小MCP握手可用。** 初轮停止来自本地候选校验不匹配，不是百度认证拒绝或工具/网络安全控制拒绝。没有遇到明确认证错误；这不说明业务调用无需令牌。未发tools/list、user_info、file_meta或分享，未读凭据/新建OAuth/访问网盘网页，身份、应用权限、原对象和分享均未验证。
+
+明确调整点：生产客户端仍只允许旧 `/messages` + `session_id`，本轮未放宽它；下一步应将已实际观测的 **同域 `/message` + `sessionId`** 作为独立受限profile接入，保留旧合成profile和拒绝跨域/额外认证查询/跳转的保护。此后再按授权范围确定认证输入及实际工具契约，不能从握手成功直接开始账号/对象/分享操作。不是海外VPS实测，不证明所有地区或节点均可用。
+
+[三轮脱敏实测证据及执行源码哈希](validation/mcp-unauthenticated-handshake-2026-11-10.json)。可复现探针只以合成clientInfo发送标准初始化，没有业务副作用；本轮没有新增或重跑离线测试冒充网络结果。

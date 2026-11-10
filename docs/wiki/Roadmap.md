@@ -245,3 +245,9 @@ DNS调用者等待有界，但系统解析线程不能强制取消，超时后�
 16:52（UTC+8），当前项目执行主机一次无认证GET官方SSE地址：DNS/TCP成功，TLS1.2证书链和主机名校验通过，HTTP **200 / text/event-stream**，无跳转，总耗时约0.237秒。未使用代理、令牌或OAuth，未访问网盘网页，未发业务/分享请求；没有遇到新的控制拒绝。此结果是当前主机的实际网络/HTTP证据，不是海外VPS结果，也不证明各地均可达。
 
 事件流仅检查响应头，未读取事件/发initialize；SSE协议、认证、账号/应用/精确对象与分享权限仍未验证。暂不因网络可达性增加代理；下一步再按明确的最小只读协议范围检查事件/握手，若要求认证，核实短期凭据来源和兼容性，不扫描秘密。详见[实测与可执行调整](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-reachability.md)。
+
+## 2026-11-10 官方无凭据 SSE 与 MCP 握手通过
+
+17:02–17:03（UTC+8），三个有界会话合计3GET、1initialize POST、1initialized通知POST；全部TLS证书链/主机验证通过并关闭确认，业务/分享调用为0。前两次GET分别因旧profile不符停止、做脱敏结构诊断；第三次确认官方实际消息路由 `/message`、查询键 `sessionId`，initialize POST202，真实SSE返回协议2024-11-05，initialized通知POST202。仅会话内存使用真实查询值，没有输出/持久化它们。
+
+无凭据最小握手已证实，认证/应用/原对象/分享权限仍未验证；未读令牌/发OAuth，也未访问被拒网页。生产客户端仍是旧 `/messages` + `session_id`，下一步应独立接入已实测的同域受限profile；本轮只改探针及证据，未扩大生产路由或调用业务。当前项目主机结果不能代替海外VPS测试。详见[逐轮结果、数量与调整点](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-reachability.md)。
