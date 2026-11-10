@@ -32,3 +32,5 @@ env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_i
 后续状态：[官方端点无凭据可及性已实测](mcp-reachability.md)，HTTP200事件流响应头已收到，认证/业务仍未尝试。
 
 后续协议实测：无凭据SSE与initialize已通过，实际路由为同域 `/message` + `sessionId`；生产旧profile尚未适配。见[实测分层记录](mcp-reachability.md)，不代表业务认证成功。
+
+最新：[正式路由已接线，无凭据tools/list实测返回空列表](mcp-official-discovery.md)；具体工具schema、认证和原对象权限仍未验证。

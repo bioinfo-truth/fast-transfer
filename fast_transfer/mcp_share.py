@@ -1,5 +1,6 @@
 """Credential-free business candidate; optional scripted SSE protocol integration.
-No live MCP client or confirmed Baidu business-envelope decoder exists.
+This module has no live sharing entry or confirmed Baidu business-envelope decoder;
+separate official read-only transport/discovery exists in mcp_official_http.
 
 README field names are not authentication. Observations below are internal,
 explicit fixture normalization, NOT an official MCP response envelope.

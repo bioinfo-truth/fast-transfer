@@ -58,14 +58,14 @@ class _OfficialConnection(http.client.HTTPSConnection):
 
 
 class OfficialHTTPSDriver(base.LocalHTTPSDriver):
-    """Fixed official destination with an explicitly supplied temporary token.
+    """Fixed official destination; no-token discovery or explicit temporary token.
 
     Construction performs no network I/O. DNS is resolved once before the first
     request, restricted to public addresses and pinned for this session. No
     custom CA, proxy, redirect, token callback or environment token is accepted.
     """
-    def __init__(self, *, access_token, io_timeout=5, budget=30):
-        if (type(access_token) is not str or not 1 <= len(access_token) <= 8192
+    def __init__(self, *, access_token=None, io_timeout=5, budget=30):
+        if access_token is not None and (type(access_token) is not str or not 1 <= len(access_token) <= 8192
                 or any(ord(c) < 33 or ord(c) > 126 for c in access_token)):
             contract.reject('mcp_official_credential_rejected')
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -77,6 +77,7 @@ class OfficialHTTPSDriver(base.LocalHTTPSDriver):
         self.port = 443
         self.origin = ORIGIN
         self.endpoint = ORIGIN + '/sse'
+        self.message_profile = 'official'
         self._token = access_token
         self.address = None
 
@@ -114,6 +115,7 @@ class OfficialHTTPSDriver(base.LocalHTTPSDriver):
         return c
 
     def _opening_path(self):
+        if self._token is None:return '/sse'
         return '/sse?' + urllib.parse.urlencode({'access_token': self._token})
 
     def post(self, url, raw):
@@ -122,6 +124,7 @@ class OfficialHTTPSDriver(base.LocalHTTPSDriver):
         if method not in ('initialize', 'notifications/initialized', 'tools/list', 'tools/call'):
             contract.reject('mcp_official_operation_locked')
         if method == 'tools/call':
+            if self._token is None:contract.reject('mcp_official_authentication_required')
             params = message.get('params', {})
             if params.get('name') not in ('user_info', 'file_meta'):
                 contract.reject('mcp_official_operation_locked')

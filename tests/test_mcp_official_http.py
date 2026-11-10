@@ -30,7 +30,7 @@ class OfficialDriverTests(unittest.TestCase):
         self.assertIsNone(d._token)
 
     def test_invalid_token_rejected_before_network(self):
-        for token in (None,'','x\ny','x y',lambda:'secret'):
+        for token in ('','x\ny','x y',lambda:'secret'):
             with self.assertRaises(m.Rejected):h.OfficialHTTPSDriver(access_token=token)
 
     def test_separate_factory_does_not_relax_fixture_or_default_types(self):

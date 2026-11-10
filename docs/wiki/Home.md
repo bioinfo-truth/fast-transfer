@@ -260,3 +260,11 @@ DNS调用者等待有界，但系统解析线程不能强制取消，超时后�
 17:02–17:03（UTC+8），三个有界会话合计3GET、1initialize POST、1initialized通知POST；全部TLS证书链/主机验证通过并关闭确认，业务/分享调用为0。前两次GET分别因旧profile不符停止、做脱敏结构诊断；第三次确认官方实际消息路由 `/message`、查询键 `sessionId`，initialize POST202，真实SSE返回协议2024-11-05，initialized通知POST202。仅会话内存使用真实查询值，没有输出/持久化它们。
 
 无凭据最小握手已证实，认证/应用/原对象/分享权限仍未验证；未读令牌/发OAuth，也未访问被拒网页。生产客户端仍是旧 `/messages` + `session_id`，下一步应独立接入已实测的同域受限profile；本轮只改探针及证据，未扩大生产路由或调用业务。当前项目主机结果不能代替海外VPS测试。详见[逐轮结果、数量与调整点](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-reachability.md)。
+
+## 2026-11-10 正式路由接线与工具发现
+
+正式客户端现已支持已实测的同域 `/message` + `sessionId`，合成/本地旧profile独立保留；只允许精确路径/受限单查询，TLS、DNS固定、无代理/跳转/重试及日志保护不变。新增不带凭据的OfficialDiscoverySession，底层无token时禁止tools/call，发现会话自身也禁止业务RPC。
+
+17:43:57（UTC+8）正式客户端实网：1GET+initialize/initialized/tools-list三次POST，HTTP200/202/202/202，TLS验证通过、383字节、约0.957秒、关闭确认。**无凭据tools/list返回空列表**，不能判断唯一原因或声称认证/账号/原对象/分享已通过。未读token/私有收据/新建OAuth/调用业务，也未测试海外VPS。
+
+干净必要检查56项禁网+21项本地TLS通过，独立于官方实测。继续账号/原文件核验需要明确原VPS既有短期token的指定读取来源、同进程使用/向官方SSE查询提交范围与应用兼容性；禁止扫描/刷新/换应用，保留原对象。详见[真实结果、代码与具体缺口](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-official-discovery.md)。

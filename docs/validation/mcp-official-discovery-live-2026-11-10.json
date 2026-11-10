@@ -1,0 +1,61 @@
+{
+  "observed_at_utc": "2026-11-10T09:43:57.021361+00:00",
+  "execution_scope": "current project execution host; not overseas VPS",
+  "target": "https://mcp-pan.baidu.com/sse",
+  "production_client_used": true,
+  "authentication_sent": false,
+  "real_credentials_read": false,
+  "business_calls": 0,
+  "share_calls": 0,
+  "redirects_followed": 0,
+  "automatic_retries": 0,
+  "tool_count": 0,
+  "selected_tool_schemas": {
+    "user_info": {
+      "present": false,
+      "object_schema": false
+    },
+    "file_meta": {
+      "present": false,
+      "object_schema": false
+    },
+    "file_sharelink_set": {
+      "present": false,
+      "object_schema": false
+    }
+  },
+  "schema_discovery_completed": true,
+  "live_authenticated": false,
+  "account_verified": false,
+  "object_verified": false,
+  "share_eligible": false,
+  "status": "discovery_completed",
+  "tls_version": "TLSv1.2",
+  "tls_certificate_and_hostname_verified": true,
+  "http_statuses": [
+    200,
+    202,
+    202,
+    202
+  ],
+  "get_requests": 1,
+  "initialize_requests": 1,
+  "initialized_notifications": 1,
+  "tools_list_requests": 1,
+  "rpc_ids": [
+    1,
+    2
+  ],
+  "sse_bytes_read": 383,
+  "close_confirmed": true,
+  "elapsed_seconds": 0.9574,
+  "probe_source_sha256": "c108e0b3bc6b61c429be58bffa26d5982f9b54047f527609fc77b7cf3624e632",
+  "executed_sources_sha256": {
+    "fast_transfer/mcp_http.py": "ce6a9bd74c1c2b8a95a6fa96261cb9d6c31884aa0dbdfe034a43903eb56a1dde",
+    "fast_transfer/mcp_sse.py": "a38682c09d9414a1eb76ac9fa1162e94b8996f1add740a11fba404cd3431c4d7",
+    "fast_transfer/mcp_official_http.py": "532cf688859307d0968a931f8de4103d4030495993b9c0cea15115c90eb0388c",
+    "fast_transfer/mcp_discovery.py": "a290e2495cee19eae1a41f28b938302079339c6b85cea891ff8d1ac0e7ad620d",
+    "fast_transfer/mcp_binding.py": "d7de3f6cd7a1ae0fc58a2a51c83e66442d6c30b194bcca9a1a26ae7f0bebec2d"
+  },
+  "subsequent_source_changes": "mcp_official_http and mcp_share docstrings only; no runtime changes after live observation"
+}

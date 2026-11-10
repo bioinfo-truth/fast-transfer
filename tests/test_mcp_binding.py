@@ -118,8 +118,11 @@ class BindingTests(unittest.TestCase):
         steps=self.steps()[:5]
         steps[2]=('tools/list',None,result(2,{'tools':[{'name':name,'inputSchema':s.schemas()[name]}
             for name in ('user_info','file_meta')]}))
-        wire=s.ScriptedHTTP(steps)
-        with patch.object(driver,'open',side_effect=wire.open),patch.object(driver,'post',side_effect=wire.post),patch.object(driver,'read',side_effect=wire.read):
+        wire=s.ScriptedHTTP(steps,opening=b'event: endpoint\ndata: /message?sessionId=synthetic\n\n')
+        def post(url,raw):
+            s.message_endpoint(url,profile='official')
+            return wire.post(s.ORIGIN+'/messages/?session_id=synthetic',raw)
+        with patch.object(driver,'open',side_effect=wire.open),patch.object(driver,'post',side_effect=post),patch.object(driver,'read',side_effect=wire.read):
             report=obj.inspect()
         self.assertTrue(report['candidate_fields_match']);self.assertFalse(report['live_authenticated'])
         self.assertEqual(obj.called,{'user_info','file_meta'})

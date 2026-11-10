@@ -41,3 +41,5 @@ timeout 25s env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B docs/validation/
 明确调整点：生产客户端仍只允许旧 `/messages` + `session_id`，本轮未放宽它；下一步应将已实际观测的 **同域 `/message` + `sessionId`** 作为独立受限profile接入，保留旧合成profile和拒绝跨域/额外认证查询/跳转的保护。此后再按授权范围确定认证输入及实际工具契约，不能从握手成功直接开始账号/对象/分享操作。不是海外VPS实测，不证明所有地区或节点均可用。
 
 [三轮脱敏实测证据及执行源码哈希](validation/mcp-unauthenticated-handshake-2026-11-10.json)。可复现探针只以合成clientInfo发送标准初始化，没有业务副作用；本轮没有新增或重跑离线测试冒充网络结果。
+
+最新：[正式路由已接线，无凭据tools/list实测返回空列表](mcp-official-discovery.md)；具体工具schema、认证和原对象权限仍未验证。

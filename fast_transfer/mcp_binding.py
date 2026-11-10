@@ -116,7 +116,7 @@ class BoundSession(wire.SSEClient):
         if type(budget) not in (int,float) or not 0<budget<=30:reject('mcp_sse_protocol_rejected')
         obj=cls.__new__(cls);obj._setup(driver,budget)
         obj.expected=expected;obj.scope='official-readonly'
-        obj.origin=driver.origin;obj.endpoint=driver.endpoint
+        obj.origin=driver.origin;obj.endpoint=driver.endpoint;obj.message_profile='official'
         return obj
 
     def review_descriptors(self,descriptors):

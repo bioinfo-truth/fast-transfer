@@ -56,13 +56,13 @@ class LocalHTTPSDriver:
         for value in (io_timeout,budget):
             if type(value) not in (int,float) or not math.isfinite(value) or not .05<=value<=30:
                 fail('mcp_local_scope_rejected')
-        self.port=port;self.context=context;self.io_timeout=io_timeout
+        self.port=port;self.context=context;self.io_timeout=io_timeout;self.message_profile='legacy'
         self.origin=f'https://127.0.0.1:{port}';self.endpoint=self.origin+'/sse'
         self.deadline=time.monotonic()+budget;self.tls_version=None
         self._lock=threading.Lock();self._read_lock=threading.Lock();self._post_lock=threading.Lock()
         self._sockets=[];self._connections=[];self._responses=[];self._active=0;self._closers=0
         self._closed=False;self._expired=False;self._cleanup_failed=False;self._opened=False
-        self._reply=None;self._total=0;self._posts=0;self.trace=[]
+        self._reply=None;self._total=0;self._posts=0;self.trace=[];self.http_statuses=[]
         self.check_tls()
         self._timer=threading.Timer(budget,self._expire);self._timer.daemon=True;self._timer.start()
 
@@ -120,6 +120,7 @@ class LocalHTTPSDriver:
 
     def _response(self,c):
         response=c.getresponse()
+        self.http_statuses.append(response.status)
         with self._lock:self._responses.append(response)
         headers=response.getheaders()
         if (len(headers)>32 or sum(len(k)+len(v) for k,v in headers)>16384
@@ -159,7 +160,7 @@ class LocalHTTPSDriver:
 
     def post(self,url,raw):
         from .mcp_sse import message_endpoint
-        message_endpoint(url,origin=self.origin)
+        message_endpoint(url,origin=self.origin,profile=self.message_profile)
         if type(raw) is not bytes or len(raw)>16384:fail('mcp_local_limit')
         # No arbitrary trace values, headers, credentials or response bodies.
         msg=contract.payload(raw)
