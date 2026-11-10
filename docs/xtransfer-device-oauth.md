@@ -32,7 +32,7 @@ env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tools/xtransfer_device_autho
 
 1. 隐藏输入确认 `XTRANSFER-DEVICE-basic,netdisk`，再在AppKey提示中输入**已有Xtransfer这一项**的AppKey。程序最多发1次设备码请求；未知结果不重发。
 2. 程序仅在私人控制TTY显示经校验的官方HTTPS verification_url及user_code，**不显示device_code**，不打印到普通报告或交给LLM，不自动开浏览器或抓取二维码。用户本人打开页面，核对确为Xtransfer、正确账号及期望权限后自己批准；如果页面应用不符或不接受scope就取消。只接受已审静态HTTPS openapi验证地址；若服务实际返回HTTP/其他路径，停止，不擅自改写或跳转绕行。
-3. 本人确认页面批准后隐藏输入 `XTRANSFER-APPROVED`，再输入**同一应用**SecretKey。这样SecretKey不必在浏览器批准期间持有。协议轮询先等至少6秒，pending按间隔继续、slow_down加间隔；整个设备阶段受返回expires_in与本地300秒更早者约束，最多30次token轮询。两步client_id保持同一内存AppKey。
+3. 本人确认页面批准后隐藏输入 `XTRANSFER-APPROVED`，再输入**同一应用**SecretKey。这样SecretKey不必在浏览器批准期间持有。协议轮询先等至少6秒，pending按间隔继续、slow_down加间隔；整个设备阶段受返回expires_in与本地300秒更早者约束，最多30次token轮询。300秒/expiry在请求前后和等待循环检查；单次在途HTTP另有15秒预算，不能宣称硬实时在300秒整中断，过期后的响应不用于交接。两步client_id保持同一内存AppKey。
 4. 未知/混合错误与token响应、权限拒绝、过期、网络异常、关闭不确认或取消均停止；已兑换结果不可靠时保持unknown，不猜成功，也不盲重发poll或新device请求。取消/进程结束不等于撤销服务端pending或已批准grant；不要为补偿未知结果自动再跑。
 5. 成功后仅保留内存access_token、实际scope及期限，不显示/持久化令牌，不使用refresh/session字段。scope不是精确basic/netdisk或信封未知即停止。令牌lease只能取用一次，过期拒绝。代码没有证明AppKey对应Xtransfer，报告application_binding_verified仍false，不以用户输入自证权限。
 6. 另一次隐藏输入 `MCP-DISCOVER` 才会把该token交给固定官方MCP做最小工具发现；取消则只释放本地引用。不会直接读账号/文件或分享，不将设备授权成功当MCP兼容。后续账号和原对象核验仍需可信私有期望记录、可确认实际schema/应用范围；原文件保留，真实分享门及Job未知不重发保护不变。

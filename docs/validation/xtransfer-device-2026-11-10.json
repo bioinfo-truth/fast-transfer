@@ -59,7 +59,8 @@
     "minimum_poll_interval_seconds": 6,
     "slow_down_additional_seconds": 5,
     "request_budget_seconds": 15,
-    "io_timeout_seconds": 3
+    "io_timeout_seconds": 3,
+    "deadline_semantics": "checked before/after each request and during waiting; an in-flight HTTP request has a separate 15-second budget, not a hard-real-time 300-second guarantee"
   },
   "server_refresh_token_may_be_issued": true,
   "refresh_token_persisted_or_used": false,
