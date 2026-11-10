@@ -36,3 +36,15 @@ REST与MCP也不能共用未经转换的响应解码：前者记录为errno/data
 1. 网络路线：只读核查现有供应商控制台中该VPS出站ACL/防火墙，或由网络提供方解释到固定官方MCP端点的可达性。当前没有该控制台的已授权连接/读数，不自行登录、发工单或更改安全设置；本机已查信息不足以定位上游丢包点。
 2. 原生REST路线：从现有Xtransfer应用的官方服务列表取得“文件分享服务是否开通、应用主体/对应AppID、原授权是否适用”的非秘密事实，核对当前官方资格和报价。无需重新上传、提供令牌或新OAuth。若仍未开通，是否申请企业/经营主体认证及购买服务属于具体用户决策；金额、主体及条款未知时不代办。
 3. 上述任一前提取得可靠证据后，再做该路径的最小只读核对和唯一原样例单次建链；本轮研究不能替代它们。当前无经验证链接，也无官方分享接口明确权限拒绝，因此保留“本VPS MCP直连受阻、REST资格未确认”，不写成“所有官方渠道均无法生成”。
+
+## 2026-11-11：域名路径差异与官方替代入口补查
+
+针对“海外连接超时可能是主要因素”，本轮只读官方GitHub公开资料，没有登录VPS、重复网络探测、读取令牌或改变出口。当前可确认的是**同一业务VPS的pan.baidu.com原生uinfo/filemetas成功，而mcp-pan.baidu.com在TCP阶段失败**。不同域名可能对应不同服务入口/路由，地域限制、运营商丢包或服务端策略都尚无归因证据，不能称“海外百度盘普遍不可达”。
+
+官方仓库默认分支未截断树仍为`b3983d330fea79c7b72e6b7014803e1830148d2c`。新增核对`client_demo_stdio.py`、demo README及生成Python API中的fileinfo/filemanager/multimediafile三份文件：stdio客户端启动本地server，不等同于把远端SSE全部分享工具搬到本地；已审本地工具注册仍为上传。三份API分别覆盖列表/搜索、复制/删除/移动/重命名、递归列表/精确元数据，没有分享方法或另一个分享服务地址。没有执行示例、调用LLM或使用其环境变量/重试流程。
+
+新查到[官方仓库Issue #2](https://github.com/baidu-netdisk/mcp/issues/2)（2026-05-21创建/更新，open，评论0，作者association=NONE）：社区作者报告Streamable HTTP客户端连接SSE入口收到HTTP405，改用SSE可正常连接。这不是维护者发布的支持承诺；**HTTP405说明TCP/TLS/HTTP已发生，不能解释本项目TCP尚未建立的超时**。本项目既有驱动本来就是GET SSE，无须因此切换到猜测的Streamable HTTP路径。报告也没有提供备用官方域名。
+
+已查源码/配置仍只给出`https://mcp-pan.baidu.com/sse`作为远端入口；本轮没有发现官方备用分享域名、地区入口或可替代分享的stdio实现，亦未取得新的原生REST资格证据。此为已查来源的有限结论，不排除官方未公开或后续新增支持；不猜镜像、Host/SNI替换或硬编码IP。下一步仍须同一官方端点的可达性依据，或Xtransfer原生分享服务资格事实，不能靠更换协议绕过TCP失败。原样例及原授权保留，无需重传/新OAuth。
+
+[源码版本、方法清单和Issue证据摘要](validation/mcp-alternate-entry-review-2026-11-11.json)、[stdio示例](https://github.com/baidu-netdisk/mcp/blob/b3983d330fea79c7b72e6b7014803e1830148d2c/src/baidu-netdisk/client_demo/client_demo_stdio.py)、[demo说明](https://github.com/baidu-netdisk/mcp/blob/b3983d330fea79c7b72e6b7014803e1830148d2c/src/baidu-netdisk/client_demo/README.md)。允许范围内未找到解决入口/资格疑点的新官方方案，本轮就此停止，不刷新相同文档或重复探测。

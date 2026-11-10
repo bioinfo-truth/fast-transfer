@@ -133,3 +133,8 @@ VPS 硬盘有限，优先逐文件处理，限制缓冲和保留系统空间；�
 ### 官方替代路径只读复核（2026-11-10）
 
 VPS对两个MCP IPv4目标有单播出站路由，IPv6路由查询失败；nft表清单为空，legacy IPv4表清单为空，未见已查范围内显式本机拒绝，供应商/上游仍未知。未重复连接测试或改设置。原生REST分享是独立官方候选，但既有资料要求服务开通，用户历史未开通；现有Xtransfer资格/应用绑定/最新收费未确认。当前官方Go SDK未提供Share服务。不能把MCP网络失败归纳为全部官方路径不可行，也不能仅凭有REST接口就试建链；最小下一步是既有供应商出站策略或Xtransfer服务列表的只读事实核实，若须企业认证/付费开通则由用户决定。[依据、边界与缺口](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/sharing-alternatives-readonly.md)。本轮凭据读取/分享请求/网络设置变更均0。
+
+
+### 2026-11-11 域名路径差异与入口补查
+
+同业务VPS原生pan.baidu.com接口成功、mcp-pan.baidu.com在TCP阶段失败，地域原因未证实。官方仓库新查Issue #2为社区HTTP405/SSE协议混用报告，无维护者答复，不能解释本项目尚未建TCP的失败；当前驱动已用SSE。新增审阅stdio示例及Python生成API，未发现备用官方分享域名或分享本地实现；已查远端入口仍为官方SSE地址。无VPS探测/凭据/设置变更/分享，本轮未找到解决入口或资格疑点的新方案。[来源与有限结论](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/sharing-alternatives-readonly.md)。
