@@ -132,13 +132,15 @@ class LocalHTTPSDriver:
         if response.status not in (200,202):fail('mcp_local_status_rejected')
         return response
 
+    def _opening_path(self):return '/sse'
+
     def open(self,url,auth_slot):
         from .mcp_sse import AUTH_SLOT
         if url!=self.endpoint or auth_slot is not AUTH_SLOT or self._opened:fail('mcp_local_scope_rejected')
         self._opened=True
         with self.operation():
             self.trace.append({'method':'GET','operation':'sse_open'})
-            c=self._connection();c.request('GET','/sse',headers={'Accept':'text/event-stream','Accept-Encoding':'identity'})
+            c=self._connection();c.request('GET',self._opening_path(),headers={'Accept':'text/event-stream','Accept-Encoding':'identity'})
             self._reply=self._response(c)
             if self._reply.status!=200:fail('mcp_local_status_rejected')
             mime=self._reply.getheader('Content-Type','').split(';',1)[0].strip().lower()

@@ -2,7 +2,7 @@
 
 Sequence adapted from baidu-netdisk/mcp (MIT, Copyright 2025 baidu-netdisk).
 See third_party/NOTICE.md and licenses. No LLM, credential discovery or retry.
-The production/external driver remains locked. Local TLS fixture I/O does not
+An explicit official read-only factory is separate from fixture sharing. Local TLS I/O does not
 prove that an external account/server supports this strict profile.
 """
 from collections import deque
@@ -113,6 +113,15 @@ class SSEClient:
     def for_local_fixture(cls,driver,*,budget=5):
         from .mcp_http import LocalHTTPSDriver
         if type(driver) is not LocalHTTPSDriver:fail('mcp_sse_driver_unavailable')
+        if type(budget) not in (int,float) or not 0<budget<=30:fail()
+        client=cls.__new__(cls);client._setup(driver,budget)
+        client.origin=driver.origin;client.endpoint=driver.endpoint
+        return client
+
+    @classmethod
+    def for_official_readonly(cls, driver, *, budget=30):
+        from .mcp_official_http import OfficialHTTPSDriver
+        if type(driver) is not OfficialHTTPSDriver:fail('mcp_sse_driver_unavailable')
         if type(budget) not in (int,float) or not 0<budget<=30:fail()
         client=cls.__new__(cls);client._setup(driver,budget)
         client.origin=driver.origin;client.endpoint=driver.endpoint
