@@ -1,0 +1,15 @@
+test_absolute_timestamp_and_milliseconds_normalized (test_auth_metadata.MetadataTests.test_absolute_timestamp_and_milliseconds_normalized) ... ok
+test_bad_file_modes_symlinks_duplicates_and_oversize_fail_without_raw_errors (test_auth_metadata.MetadataTests.test_bad_file_modes_symlinks_duplicates_and_oversize_fail_without_raw_errors) ... ok
+test_conflicts_and_naive_time_do_not_become_expiry (test_auth_metadata.MetadataTests.test_conflicts_and_naive_time_do_not_become_expiry) ... ok
+test_duration_alone_and_created_time_are_not_used_as_issuance (test_auth_metadata.MetadataTests.test_duration_alone_and_created_time_are_not_used_as_issuance) ... ok
+test_file_mtime_does_not_supply_missing_metadata (test_auth_metadata.MetadataTests.test_file_mtime_does_not_supply_missing_metadata) ... ok
+test_opaque_values_in_white_fields_are_not_reflected (test_auth_metadata.MetadataTests.test_opaque_values_in_white_fields_are_not_reflected) ... ok
+test_scope_and_expiry_return_only_fixed_safe_metadata (test_auth_metadata.MetadataTests.test_scope_and_expiry_return_only_fixed_safe_metadata) ... ok
+test_secret_duplicated_in_allowed_scope_is_tainted (test_auth_metadata.MetadataTests.test_secret_duplicated_in_allowed_scope_is_tainted) ... ok
+test_unbounded_or_mistyped_metadata_does_not_escape (test_auth_metadata.MetadataTests.test_unbounded_or_mistyped_metadata_does_not_escape) ... ok
+test_unknown_containers_and_secret_keys_are_not_exported (test_auth_metadata.MetadataTests.test_unknown_containers_and_secret_keys_are_not_exported) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.002s
+
+OK

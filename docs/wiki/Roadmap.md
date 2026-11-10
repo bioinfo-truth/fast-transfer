@@ -1,6 +1,6 @@
 # 路线图与决策
 
-> 当前验收目标是海外业务VPS。既有Xtransfer上传/完整回读历史通过；当前原授权仅核实文件元数据，实时有效性及分享权限未验证。不要用开发机授权代替VPS验收，也不重做上传或新grant；当前决策见[路线图](https://github.com/bioinfo-truth/fast-transfer/wiki/Roadmap)。
+> 当前验收目标是海外业务VPS。既有Xtransfer上传/完整回读历史通过；原授权单次原生uinfo验证成功，应用绑定及分享权限仍未验证。不要用开发机授权代替VPS验收，也不重做上传或新grant；当前决策见[路线图](https://github.com/bioinfo-truth/fast-transfer/wiki/Roadmap)。
 
 ## 2026-11-08：当前 MVP 执行范围
 
@@ -301,3 +301,14 @@ DNS调用者等待有界，但系统解析线程不能强制取消，超时后�
 21:44（UTC+8）指定原授权位置lstat仍存在、root/0600/普通文件，未开内容。修改时间不是签发/到期；当前应用绑定、scope/期限及官方实时有效性仍未知，分享权限从未验证。用户新设备token未存储及约30天报告不能更新/证明VPS旧token状态。下一最小受限步骤是明确原地白名单元数据读取范围；真实有效性还需另行获准的VPS内存只读校验，先不用新grant。
 
 另完成initialize超时分段诊断、缓冲计数语义和deadline分类修正：107项禁网/24项本地TLS通过，并非VPS MCP验收。原预算按当前代码不沿用设备轮询时间；pending81不是未消费证明。只准备无凭据源码包/部署计划，没有部署、改出口规则或使用秘密。详见[业务VPS前置与授权状态](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/business-vps-preflight.md)。
+
+## 2026-11-10 原VPS授权元数据已原地提取
+
+22:07（UTC+8）在业务VPS对单个指定旧授权文件用已审阅提取器做内存解析，只传回白名单元数据：scope basic netdisk，expires_in=2592000秒（30天），created_at换算为11月7日01:49:56（UTC+8）。未取得非秘密应用名/AppID、明确签发/绝对到期字段；不把created_at或mtime当签发时间，故当前有效性仍未确定。完整配置/秘密未离开VPS，未写回或刷新，分享权限未验证。
+
+10项合成禁网检查通过，实际提取源码哈希一致；不是在线认证验证。最小下一步候选是在VPS原地用旧access_token仅一次原生网盘uinfo，输出错误码/匹配布尔、不查quota/文件/分享。该接口是旧用途的身份核验环节，但本次元数据许可不自动包含提交凭据；明确单次服务/读取/结果范围前不发请求，不再次做设备授权或假定旧token适配MCP。详见[已取得字段及准确边界](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/xtransfer-auth-metadata-result.md)。
+
+
+### 2026-11-10 原授权单次只读验证
+
+业务VPS原地向原生网盘官方uinfo接口请求一次，HTTP 200、errno=0且身份结构符合预期，说明原令牌在当次请求时被接受。无可信旧账号指纹输入，账号匹配未核验；应用绑定、MCP兼容、分享权限仍未知。无代理/重定向/重试，TLS校验开启，连接已关闭；未刷新、扩权、上传或分享，凭据与身份内容未导出。[脱敏记录与边界](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/xtransfer-auth-metadata-result.md)。
