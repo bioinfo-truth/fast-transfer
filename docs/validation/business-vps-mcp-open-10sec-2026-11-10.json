@@ -1,0 +1,39 @@
+{
+  "credentials_read": false,
+  "credentials_submitted": false,
+  "share_attempted": false,
+  "status": "mcp_local_timeout",
+  "transport": {
+    "operation": "sse_open",
+    "phase": "tcp_connect",
+    "connection": 1,
+    "phase_elapsed_ms": 10010.544,
+    "phase_completed": false,
+    "session_elapsed_ms": 10235.386,
+    "session_budget_ms": 15000,
+    "remaining_ms": 4764.614,
+    "deadline_reached": false,
+    "io_timeout_ms": 10000,
+    "dns_lookup_count": 1,
+    "last_request_send_returned": false,
+    "last_response_headers_received": false,
+    "history": [
+      {
+        "operation": "sse_open",
+        "phase": "dns",
+        "connection": 1,
+        "elapsed_ms": 223.521,
+        "completed": true
+      },
+      {
+        "operation": "sse_open",
+        "phase": "tcp_connect",
+        "connection": 1,
+        "elapsed_ms": 10010.544,
+        "completed": false
+      }
+    ]
+  },
+  "closed": true,
+  "checked_at_utc": "2026-11-10T15:28:53.684529+00:00"
+}

@@ -11,3 +11,11 @@ modelcontextprotocol/python-sdk v1.6.0 (`src/mcp/client/sse.py`,
 `src/mcp/client/session.py`, `src/mcp/types.py`). License: `python-sdk/LICENSE`.
 No SDK code is installed or imported. No upstream client, LLM loop, credential
 configuration, logging or retry machinery is executed or bundled here.
+
+# BaiduPCS-Go MD5 normalization
+
+`fast_transfer/baidu_md5.py` adapts `DecryptMD5` from
+qjfoidnh/BaiduPCS-Go, commit `1b9131817aaf8ca7dee24bc00e33ebc4c7a5cc73`,
+`baidupcs/util.go`, Copyright iikira, Apache License 2.0.
+The Python implementation adds stricter input validation. License in
+`third_party/baidupcs-go/LICENSE`.

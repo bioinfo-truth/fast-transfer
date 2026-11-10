@@ -4,12 +4,15 @@ README documents fields, not the business text envelope or app/share provenance.
 No boolean or caller-supplied receipt can authorize a real mutation here.
 """
 from dataclasses import dataclass
+import hashlib
+import hmac
 import json
 import re
 
 from . import mcp_share as c
 from . import mcp_sse as wire
 from .workflow import Job, digest
+from .baidu_md5 import normalize_md5
 
 
 def reject(code):
@@ -43,8 +46,11 @@ class ExpectedObject:
         for value in (self.task,self.application):
             if type(value) is not str or not re.fullmatch('[A-Za-z0-9_-]{1,64}',value):
                 reject('mcp_binding_expectation_invalid')
-        for value in (self.account,self.fsid):
-            if type(value) is not str or identifier(value)!=value:reject('mcp_binding_expectation_invalid')
+        if type(self.account) is not str or not (re.fullmatch('sha256:[0-9a-f]{64}', self.account)
+                or re.fullmatch('[1-9][0-9]{0,19}', self.account)):
+            reject('mcp_binding_expectation_invalid')
+        if type(self.fsid) is not str or identifier(self.fsid)!=self.fsid:
+            reject('mcp_binding_expectation_invalid')
         if (type(self.path) is not str or not self.path.startswith('/apps/'+self.application+'/')
                 or len(self.path)>1024 or '\\' in self.path
                 or any(part in ('','.','..') for part in self.path.split('/')[1:])
@@ -78,8 +84,12 @@ def decode_result(result):
 
 
 def check_identity(fields,expected):
-    if (type(fields) is not dict or set(fields)-{'uk','avatar_url','vip_type'} or 'uk' not in fields
-            or identifier(fields['uk'])!=expected.account):reject('mcp_binding_account_mismatch')
+    if type(fields) is not dict or set(fields)-{'uk','avatar_url','vip_type'} or 'uk' not in fields:
+        reject('mcp_binding_account_mismatch')
+    actual=identifier(fields['uk'])
+    if expected.account.startswith('sha256:'):
+        actual='sha256:'+hashlib.sha256(actual.encode('ascii')).hexdigest()
+    if not hmac.compare_digest(actual,expected.account):reject('mcp_binding_account_mismatch')
     # README has no app/client_id/scope/session assertion. Never derive it from uk.
 
 
@@ -91,7 +101,7 @@ def check_metadata(fields,expected):
     if (type(item) is not dict or set(item)-allowed or not {'fsid','path','md5','size'}<=set(item)
             or identifier(item['fsid'])!=expected.fsid or item['path']!=expected.path
             or type(item['size']) is not int or item['size']!=expected.size
-            or type(item['md5']) is not str or item['md5']!=expected.md5):
+            or normalize_md5(item['md5'])!=expected.md5):
         reject('mcp_binding_object_mismatch')
     # SHA256 remains a local readback receipt expectation; README doesn't return it.
 

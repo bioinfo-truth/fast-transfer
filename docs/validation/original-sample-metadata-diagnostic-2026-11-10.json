@@ -1,0 +1,26 @@
+{
+  "status": "metadata_diagnostic_complete",
+  "metadata_requests": 1,
+  "identity_requests": 0,
+  "metadata_comparison": {
+    "file_id_matches": true,
+    "path_matches": true,
+    "size_matches": true,
+    "md5_present": true,
+    "md5_has_hex_format": false,
+    "md5_matches": false,
+    "regular_file": true,
+    "row_errno_zero": true
+  },
+  "response_codes": [
+    {
+      "has_errno": true,
+      "has_error_code": false,
+      "errno": 0,
+      "error_code": null
+    }
+  ],
+  "closed": true,
+  "task_mapping_derived_in_vps": true,
+  "checked_at_utc": "2026-11-10T15:25:51.660759+00:00"
+}

@@ -312,3 +312,8 @@ DNS调用者等待有界，但系统解析线程不能强制取消，超时后�
 ### 2026-11-10 原授权单次只读验证
 
 业务VPS原地向原生网盘官方uinfo接口请求一次，HTTP 200、errno=0且身份结构符合预期，说明原令牌在当次请求时被接受。无可信旧账号指纹输入，账号匹配未核验；应用绑定、MCP兼容、分享权限仍未知。无代理/重定向/重试，TLS校验开启，连接已关闭；未刷新、扩权、上传或分享，凭据与身份内容未导出。[脱敏记录与边界](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/xtransfer-auth-metadata-result.md)。
+
+
+### 2026-11-10 原样例分享推进：原对象匹配，MCP网络阻断
+
+已适配旧账号哈希和原任务mapping；业务VPS当前账号及唯一原文件ID/路径/大小/类型、转换后MD5匹配，历史完整SHA256收据复用，未重传/重新完整回读。54项相关禁网测试通过。官方MCP首次连接在TCP阶段3秒超时，随后无凭据10秒复核及两个IPv4/一个IPv6逐地址探测均未建立TCP；TLS/HTTP及令牌提交均未发生，分享请求0、链接0、连接均关闭。**本次当前VPS直连MCP无法建链，尚非官方权限拒绝或永久不支持结论。** 恢复同官方域名443链路后继续真实schema/原对象匹配及单次分享接线，不重授权。[证据与断点](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/original-sample-share-progress.md)。

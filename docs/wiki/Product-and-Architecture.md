@@ -123,3 +123,8 @@ VPS 硬盘有限，优先逐文件处理，限制缓冲和保留系统空间；�
 
 
 后续补齐（2026-11-10 23:03 UTC+8）：官方会话历史已定位原任务目录；业务VPS原地核验五份指定私有记录，账号哈希与最终文件ID存在，任务/目标/目录/源及历史回读摘要一致，私有值未导出。此前“尚未读取”是上一阶段状态。MCP mapping摘要未记录，账号哈希适配、当前账号匹配、当前对象及MCP权限仍待核验；本轮百度/MCP请求及凭据读取均0，无重传。[核验结果](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/original-sample-binding-evidence.md)。
+
+
+### 2026-11-10 原样例分享推进：原对象匹配，MCP网络阻断
+
+已适配旧账号哈希和原任务mapping；业务VPS当前账号及唯一原文件ID/路径/大小/类型、转换后MD5匹配，历史完整SHA256收据复用，未重传/重新完整回读。54项相关禁网测试通过。官方MCP首次连接在TCP阶段3秒超时，随后无凭据10秒复核及两个IPv4/一个IPv6逐地址探测均未建立TCP；TLS/HTTP及令牌提交均未发生，分享请求0、链接0、连接均关闭。**本次当前VPS直连MCP无法建链，尚非官方权限拒绝或永久不支持结论。** 恢复同官方域名443链路后继续真实schema/原对象匹配及单次分享接线，不重授权。[证据与断点](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/original-sample-share-progress.md)。
