@@ -62,3 +62,5 @@ env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_i
 当前交付是可审阅的本地入口代码；原服务器运行、用户真实输入、授权有效性、实际schema/账号/原对象和分享均未在本轮验证。
 
 路线补充：[现有Xtransfer的官方设备码入口](xtransfer-device-oauth.md)已实现并合成测试，未实际发起授权；不使用个人体验应用，不把已有应用推断为权限有效。
+
+后续用户执行报告与静态跟进：[设备兑换返回成功、MCP tools/list本地校验失败](mcp-protocol-diagnostics.md)。已补诊断及标准_meta兼容，根因和官方互通尚未实测确认，本轮没有新授权或读取秘密。

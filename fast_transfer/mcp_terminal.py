@@ -165,6 +165,7 @@ def run_readonly(expected,token):
         token=None
         if driver is not None:driver._token=None
         if client is not None:
+            result['protocol_diagnostics']=client.protocol_diagnostics()
             if hasattr(client,'schema_report'):result['discovery']=client.schema_report
             result['close_confirmed']=client.close()
         elif driver is not None:result['close_confirmed']=driver.close()
@@ -195,7 +196,9 @@ def run_discovery(token):
     finally:
         token=None
         if driver is not None:driver._token=None
-        if client is not None:result['close_confirmed']=client.close()
+        if client is not None:
+            result['protocol_diagnostics']=client.protocol_diagnostics()
+            result['close_confirmed']=client.close()
         elif driver is not None:result['close_confirmed']=driver.close()
         if driver is not None:
             result['request_counts']={name:sum(item.get('operation')==name for item in driver.trace)

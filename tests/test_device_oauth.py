@@ -207,3 +207,12 @@ class DeviceTests(unittest.TestCase):
         self.assertEqual(flow.phase,'exchange_unknown')
         with self.assertRaises(c.Rejected):flow.ready()
         self.assertEqual(transport.polled,1)
+    def test_device_success_and_mcp_protocol_failure_have_separate_completion_flags(self):
+        flow=d.DeviceFlow(AK,clock=Clock());clock=flow.clock;out=io.StringIO()
+        flags=['--scope',d.SCOPE,'--ack-new-user-grant','--ack-query-credential-risk']
+        with patch.object(t,'DeviceFlow',return_value=flow),patch.object(t,'DeviceOAuthHTTP',return_value=Scripted()),patch.object(t,'show_private_device'),patch.object(t,'read_secret',side_effect=['XTRANSFER-DEVICE-basic,netdisk',AK,'XTRANSFER-APPROVED',SK,'MCP-DISCOVER']),patch.object(t.time,'sleep',side_effect=clock.advance),patch.object(t,'run_discovery',return_value={'status':'stopped','reason':'mcp_sse_protocol_rejected','close_confirmed':True}),contextlib.redirect_stdout(out):
+            code=t.main(flags)
+        report=json.loads(out.getvalue().splitlines()[-1])
+        self.assertEqual(code,0);self.assertTrue(report['device_authorization_complete'])
+        self.assertFalse(report['mcp_discovery_complete']);self.assertFalse(report['authorization_outcome_unknown'])
+        self.assertFalse(report['share_attempted']);self.assertEqual(report['poll_requests'],1)

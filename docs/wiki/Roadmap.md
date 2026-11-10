@@ -281,3 +281,11 @@ DNS调用者等待有界，但系统解析线程不能强制取消，超时后�
 新增固定官方TLS的设备码transport、300秒/30轮上界状态机和本人TTY入口：无回显同应用信息、用户自己核对官方页并批准、pending/slow-down受控等待、未知申请/兑换不重发。只私密显示user_code不显示device_code/token；后续另一个明确动作才交MCP工具发现，不直接读原文件或分享。API密钥走HTTPS查询、服务器可能发refresh/session凭据和持续grant的风险明确；客户端不存储/刷新，也不能承诺服务器不签发或退出撤销授权。
 
 仅当前项目工作区就绪，VPS未部署；本轮未读真实密钥/令牌、未发device请求/授权/业务。干净24项新检查+23项终端检查共47通过，全部合成/禁网设备API，不冒称已认证。下一步需用户本人在选定主机输入原Xtransfer资料、确认scope/新grant并自己批准，不在聊天发秘密。详见[官方依据、安全边界与操作步骤](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/xtransfer-device-oauth.md)。
+
+## 2026-11-10 用户设备兑换报告与MCP校验失败跟进
+
+用户提供脱敏报告：设备兑换device_authorized_in_memory、basic netdisk、1次轮询，令牌未存储；MCP已到tools/list一次请求，本地mcp_sse_protocol_rejected后关闭确认。账号/原对象/分享仍未验证。此为用户报告而非本轮代理实网重放；通用本地校验码不能解释为官方权限拒绝，也不能据初始化通过宣称MCP认证成功。
+
+新增固定枚举/计数/布尔的协议诊断，区分事件/行上限、EOF、SSE字段、RPC ID/信封、分页/结果形状，不输出会话、真实ID/游标、schema/meta内容或秘密。静态修正标准ListToolsResult可选dict/null _meta的错误拒绝，但历史实际触发点未知，大小及其他安全门不变；设备授权与MCP发现完成标志分开。干净78项禁网+21项本地TLS通过，不冒称已修复官方互通。
+
+本轮无真实凭据/终端读取或OAuth/MCP/业务请求，不恢复旧token、不重授权。旧报告无法追补诊断；以后最小复测需单独明确有效token来源及一次仅协议发现范围，没有现成token不得自动新grant。详见[已知、候选原因、修正与非敏感诊断字段](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-protocol-diagnostics.md)。

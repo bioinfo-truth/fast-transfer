@@ -41,7 +41,7 @@ def main(argv=None):
     key=secret_key=token=None;flow=lease=None;handlers={}
     report={'expected_application':'Xtransfer','application_binding_verified':False,'status':'stopped','reason':'device_operation_failed',
             'token_stored':False,'token_displayed':False,'refresh_performed':False,
-            'mcp_attempted':False,'account_verified':False,'object_verified':False,'share_attempted':False}
+            'mcp_attempted':False,'device_authorization_complete':False,'mcp_discovery_complete':False,'account_verified':False,'object_verified':False,'share_attempted':False}
     def cancelled(signum,frame):c.reject('device_cancelled')
     try:
         parser=_Parser(description='User-operated Xtransfer device authorization; new grant, no token storage.')
@@ -71,13 +71,15 @@ def main(argv=None):
             if delay>0:time.sleep(min(.2,delay));continue
             lease=flow.poll_once(transport,secret_key)
         secret_key=None
-        report.update(reason='device_authorized_in_memory',scope=lease.scope,
+        report.update(reason='device_authorized_in_memory',device_authorization_complete=True,scope=lease.scope,
                       token_remaining_seconds=max(0,int(lease.deadline-lease.clock())))
         flow.close()
         # Separate action before handing the token to a different official host.
         if read_secret('Type MCP-DISCOVER to submit token to official MCP (hidden), or cancel: ',limit=32)=='MCP-DISCOVER':
             token=lease.take();report['mcp_attempted']=True
             report['mcp']=run_discovery(token);token=None
+            report['mcp_discovery_complete']=(report['mcp'].get('status')=='discovery_complete'
+                and report['mcp'].get('close_confirmed') is True)
         report['status']='finished'
     except TerminalFailure:
         report['reason']='device_terminal_input_stopped'

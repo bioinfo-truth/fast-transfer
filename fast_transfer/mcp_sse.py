@@ -111,6 +111,9 @@ class SSEClient:
         self.driver=driver;self.deadline=time.monotonic()+budget
         self.buffer=bytearray();self.total=0;self.lines=0;self.identifier=0
         self.url=None;self.connected=False;self.closed=False;self.called=set();self.last_rpc_error=None
+        self.stage='not_started';self.failure_rule=None;self.event_bytes=0;self.event_count=0
+        self.pending_line_bytes=0;self.last_event_kind='none';self.rpc_id_matches=None
+        self.pagination_present=False
 
     @classmethod
     def for_local_fixture(cls,driver,*,budget=5):
@@ -134,47 +137,77 @@ class SSEClient:
         if self.closed: fail('mcp_sse_closed')
         if time.monotonic() >= self.deadline: fail('mcp_sse_deadline')
 
+    def reject_rule(self,rule):
+        self.failure_rule=rule
+        fail()  # Keep the existing public rejection code; add only a safe discriminator.
+
+    def protocol_diagnostics(self):
+        # Fixed labels, own sequence numbers, lengths and numeric HTTP statuses.
+        # No endpoint/session, actual response ID, schema/text/key/exception values.
+        statuses=getattr(self.driver,'http_statuses',[])
+        return {'stage':self.stage,'failure_rule':self.failure_rule,
+                'sse_bytes_read':self.total,'sse_lines_read':self.lines,
+                'event_bytes':self.event_bytes,'pending_line_bytes':self.pending_line_bytes,
+                'event_count':self.event_count,'last_event_kind':self.last_event_kind,
+                'rpc_sequence':self.identifier,'rpc_id_matches':self.rpc_id_matches,
+                'pagination_present':self.pagination_present,
+                'http_statuses':[v for v in statuses[-6:] if type(v) is int and 100<=v<=599]}
+
     def event(self):
-        kind=None;data=[];event_bytes=0
+        kind=None;data=[];event_bytes=0;self.event_bytes=0;self.pending_line_bytes=0
         while True:
             self.check()
             while b'\n' not in self.buffer:
                 chunk=self.driver.read(1024);self.check()
-                if type(chunk) is not bytes or not chunk or len(chunk)>1024: fail()
-                self.total+=len(chunk)
-                if self.total>262144 or len(self.buffer)+len(chunk)>MAX_EVENT: fail()
+                if type(chunk) is not bytes or len(chunk)>1024:self.reject_rule('stream_chunk_shape')
+                if not chunk:self.reject_rule('stream_eof')
+                self.total+=len(chunk);self.pending_line_bytes=len(self.buffer)+len(chunk)
+                if self.total>262144:self.reject_rule('stream_byte_limit')
+                if self.pending_line_bytes>MAX_EVENT:self.reject_rule('pending_line_limit')
                 self.buffer.extend(chunk)
             raw,_,rest=self.buffer.partition(b'\n');self.buffer=bytearray(rest)
-            self.lines+=1;event_bytes+=len(raw)+1
-            if self.lines>512 or event_bytes>MAX_EVENT: fail()
+            self.lines+=1;event_bytes+=len(raw)+1;self.event_bytes=event_bytes
+            if self.lines>512:self.reject_rule('stream_line_limit')
+            if event_bytes>MAX_EVENT:self.reject_rule('event_byte_limit')
             try: line=raw.removesuffix(b'\r').decode('utf-8')
-            except UnicodeError: fail()
+            except UnicodeError:self.reject_rule('invalid_utf8')
             if not line:
                 if kind is None and not data: continue
-                if kind not in ('endpoint','message') or not data: fail()
+                if kind not in ('endpoint','message') or not data:self.reject_rule('event_profile_unknown')
+                self.event_count+=1
+                self.last_event_kind=kind
                 return kind,'\n'.join(data)
             if line.startswith(':'): continue
             key,separator,value=line.partition(':')
-            if not separator: fail()
+            if not separator:self.reject_rule('sse_field_shape')
             if value.startswith(' '):value=value[1:]
-            if key=='event' and kind is None:kind=value
+            if key=='event' and kind is None:
+                kind=value;self.last_event_kind=value if value in ('endpoint','message') else 'other'
             elif key=='data':data.append(value)
-            else:fail()  # No id/retry or reconnection semantics in this profile.
+            else:self.reject_rule('sse_field_unreviewed')  # No id/retry/reconnect.
 
     def rpc(self, method, params=None, *, notification=False):
+        label={'initialize':'initialize','notifications/initialized':'initialized','tools/list':'tools_list','tools/call':'tool_call'}.get(method,'rpc')
+        self.stage=label+'_post';self.rpc_id_matches=None
         self.check();msg={'jsonrpc':'2.0','method':method}
         if params is not None:msg['params']=params
         if not notification:self.identifier+=1;msg['id']=self.identifier
         # One dispatch, even when status/response is unknown. Never retry.
         status=self.driver.post(self.url,encode(msg));self.check()
-        if type(status) is not int or status not in (200,202):fail()
-        if notification:return None
+        if type(status) is not int or status not in (200,202):self.reject_rule('post_status_unreviewed')
+        if notification:
+            self.stage=label+'_accepted';return None
+        self.stage=label+'_reply'
         event,text=self.event()
-        if event!='message':fail()
-        response=contract.payload(text.encode())
-        if (set(response)-{'jsonrpc','id','result','error'} or response.get('jsonrpc')!='2.0'
-                or type(response.get('id')) is not int or response['id']!=self.identifier
-                or ('result' in response)==('error' in response)):fail()
+        if event!='message':self.reject_rule('rpc_event_kind')
+        try:response=contract.payload(text.encode())
+        except contract.Rejected:
+            self.failure_rule='json_profile_rejected';raise
+        self.rpc_id_matches=type(response.get('id')) is int and response['id']==self.identifier
+        if set(response)-{'jsonrpc','id','result','error'}:self.reject_rule('rpc_envelope_extra_fields')
+        if response.get('jsonrpc')!='2.0':self.reject_rule('rpc_version')
+        if not self.rpc_id_matches:self.reject_rule('rpc_id_mismatch')
+        if ('result' in response)==('error' in response):self.reject_rule('rpc_result_error_exclusivity')
         if 'error' in response:
             error=response['error'];self.last_rpc_error={'category':'unclassified'}
             if type(error) is dict:
@@ -183,31 +216,41 @@ class SSEClient:
                 if type(message) is str and any(word in message.lower() for word in
                         ('token','auth','credential','鉴权','认证','授权')):
                     self.last_rpc_error['category']='authentication_related'
+            self.failure_rule='rpc_error_response'
             fail('mcp_sse_rpc_error')
-        if type(response['result']) is not dict:fail()
+        if type(response['result']) is not dict:self.reject_rule('rpc_result_type')
         return response['result']
 
     def connect(self):
         if self.connected: return
+        self.stage='sse_open'
         self.check();status,mime=self.driver.open(self.endpoint,AUTH_SLOT)
-        if type(status) is not int or status!=200 or mime!='text/event-stream':fail()
+        if type(status) is not int or status!=200 or mime!='text/event-stream':self.reject_rule('sse_open_profile')
+        self.stage='endpoint_event'
         event,value=self.event()
-        if event!='endpoint':fail()
+        if event!='endpoint':self.reject_rule('endpoint_event_kind')
         self.url=message_endpoint(value,origin=self.origin,profile=self.message_profile)
         result=self.rpc('initialize',{'protocolVersion':VERSION,'capabilities':{},
                                      'clientInfo':{'name':'fast-transfer-offline','version':'0.1'}})
         if (result.get('protocolVersion')!=VERSION or type(result.get('capabilities')) is not dict
-                or type(result.get('serverInfo')) is not dict):fail()
+                or type(result.get('serverInfo')) is not dict):self.reject_rule('initialize_result_profile')
         self.rpc('notifications/initialized',notification=True)
         tools=self.rpc('tools/list')
-        if set(tools)-{'tools','nextCursor'} or tools.get('nextCursor') is not None:fail()
-        if type(tools.get('tools')) is not list:fail()
+        self.stage='tools_list_shape'
+        self.pagination_present=tools.get('nextCursor') is not None
+        if set(tools)-{'tools','nextCursor','_meta'}:self.reject_rule('tools_list_extra_fields')
+        if tools.get('_meta') is not None and type(tools['_meta']) is not dict:self.reject_rule('tools_meta_type')
+        if self.pagination_present:self.reject_rule('tools_pagination_unreviewed')
+        if type(tools.get('tools')) is not list:self.reject_rule('tools_list_type')
         descriptors={}
         for item in tools['tools']:
-            if type(item) is not dict or type(item.get('name')) is not str or item['name'] in descriptors:fail()
+            if type(item) is not dict or type(item.get('name')) is not str or item['name'] in descriptors:self.reject_rule('tool_descriptor_shape_or_duplicate')
             descriptors[item['name']]=item.get('inputSchema')
-        self.review_descriptors(descriptors)
-        self.connected=True
+        self.stage='schema_review'
+        try:self.review_descriptors(descriptors)
+        except contract.Rejected:
+            self.failure_rule='input_schema_unproven';raise
+        self.connected=True;self.stage='connected'
 
     def review_descriptors(self,descriptors):
         if any(descriptors.get(k)!=v for k,v in schemas().items()):fail('mcp_sse_schema_unproven')

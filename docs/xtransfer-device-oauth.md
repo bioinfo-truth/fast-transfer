@@ -44,3 +44,5 @@ env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tools/xtransfer_device_autho
 干净副本新增 **24项设备码检查** + 复用终端 **23项**，共 **47项通过，零失败/跳过**。设备/OAuth网络全为mock，继承seccomp禁网；真实自有PTY部分仅验证合成输入，不读用户现有终端。覆盖同应用参数、query编码、公共DNS/TLS主机政策、禁止redirect/refresh、pending/slow-down/expiry/次数限制、未知申请/兑换和混合响应不重发、私密代码展示限制、scope拒绝、lease单次与过期、参数引用清理、关闭不确认、非交互命令拒绝，以及独立MCP交接动作。没有用这些结果冒称实网OAuth、账号或分享成功。
 
 [源依据/策略/已测源码哈希](validation/xtransfer-device-2026-11-10.json)、[完整测试输出](validation/xtransfer-device-2026-11-10.txt)。
+
+后续用户执行报告与静态跟进：[设备兑换返回成功、MCP tools/list本地校验失败](mcp-protocol-diagnostics.md)。已补诊断及标准_meta兼容，根因和官方互通尚未实测确认，本轮没有新授权或读取秘密。
