@@ -317,3 +317,8 @@ DNS调用者等待有界，但系统解析线程不能强制取消，超时后�
 ### 2026-11-10 原样例分享推进：原对象匹配，MCP网络阻断
 
 已适配旧账号哈希和原任务mapping；业务VPS当前账号及唯一原文件ID/路径/大小/类型、转换后MD5匹配，历史完整SHA256收据复用，未重传/重新完整回读。54项相关禁网测试通过。官方MCP首次连接在TCP阶段3秒超时，随后无凭据10秒复核及两个IPv4/一个IPv6逐地址探测均未建立TCP；TLS/HTTP及令牌提交均未发生，分享请求0、链接0、连接均关闭。**本次当前VPS直连MCP无法建链，尚非官方权限拒绝或永久不支持结论。** 恢复同官方域名443链路后继续真实schema/原对象匹配及单次分享接线，不重授权。[证据与断点](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/original-sample-share-progress.md)。
+
+
+### 官方替代路径只读复核（2026-11-10）
+
+VPS对两个MCP IPv4目标有单播出站路由，IPv6路由查询失败；nft表清单为空，legacy IPv4表清单为空，未见已查范围内显式本机拒绝，供应商/上游仍未知。未重复连接测试或改设置。原生REST分享是独立官方候选，但既有资料要求服务开通，用户历史未开通；现有Xtransfer资格/应用绑定/最新收费未确认。当前官方Go SDK未提供Share服务。不能把MCP网络失败归纳为全部官方路径不可行，也不能仅凭有REST接口就试建链；最小下一步是既有供应商出站策略或Xtransfer服务列表的只读事实核实，若须企业认证/付费开通则由用户决定。[依据、边界与缺口](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/sharing-alternatives-readonly.md)。本轮凭据读取/分享请求/网络设置变更均0。

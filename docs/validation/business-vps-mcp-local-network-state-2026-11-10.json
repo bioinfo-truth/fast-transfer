@@ -1,0 +1,48 @@
+{
+  "checked_at_utc": "2026-11-10T15:42:53.977950+00:00",
+  "credentials_read": false,
+  "settings_changed": false,
+  "connectivity_probes": 0,
+  "routes": [
+    {
+      "family": "ipv4",
+      "route_lookup_succeeded": true,
+      "route_type": "unicast",
+      "device_present": true,
+      "source_present": true,
+      "gateway_present": true
+    },
+    {
+      "family": "ipv4",
+      "route_lookup_succeeded": true,
+      "route_type": "unicast",
+      "device_present": true,
+      "source_present": true,
+      "gateway_present": true
+    },
+    {
+      "family": "ipv6",
+      "route_lookup_succeeded": false
+    }
+  ],
+  "route_tool_available": true,
+  "ipv6_disabled_all": false,
+  "firewall_output_chain_checks": [
+    {
+      "family": "ipv4",
+      "tool_available": false,
+      "chain_readable": false
+    },
+    {
+      "family": "ipv6",
+      "tool_available": false,
+      "chain_readable": false
+    }
+  ],
+  "nft_available": true,
+  "nft_table_inventory_readable": true,
+  "nft_table_count": 0,
+  "nft_rules_not_inspected": true,
+  "provider_firewall_verified": false,
+  "upstream_path_verified": false
+}

@@ -40,3 +40,6 @@
 ## 脱敏证据
 
 [原生账号与首次对象核对](validation/original-sample-native-binding-2026-11-10.json)、[字段诊断](validation/original-sample-metadata-diagnostic-2026-11-10.json)、[摘要转换成功及MCP首次连接](validation/original-sample-normalized-mcp-2026-11-10.json)、[10秒无凭据连接](validation/business-vps-mcp-open-10sec-2026-11-10.json)、[DNS构成](validation/business-vps-mcp-dns-shape-2026-11-10.json)、[逐地址网络诊断](validation/business-vps-mcp-addresses-2026-11-10.json)、[测试摘要与区分的执行/最终源码哈希](validation/original-sample-binding-tests-2026-11-10.json)、[测试输出](validation/original-sample-binding-tests-2026-11-10.txt)。
+
+
+后续完成无凭据路由/本机过滤清单及官方原生REST/Go SDK只读复核：未定位上游故障，REST资格未确认，不将MCP网络失败推广到全部官方路径。[替代路径证据与具体下一步](sharing-alternatives-readonly.md)。

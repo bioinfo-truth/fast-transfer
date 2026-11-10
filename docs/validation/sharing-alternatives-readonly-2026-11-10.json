@@ -1,0 +1,28 @@
+{
+  "checked_date": "2026-11-10",
+  "sdk_tree_sha": "472e4a1b111eac1d6307e38802f8fe7adf7e8c21",
+  "sdk_tree_truncated": false,
+  "sdk_readme_blob": "9e825aa81f35d6caeecb6f72b9b4cd1cd25dc029",
+  "sdk_client_blob": "770dc1c1c3136db35488a89cb6d945fb906aee92",
+  "sdk_share_named_paths": [],
+  "sdk_exported_services": [
+    "File",
+    "FileManager",
+    "Auth",
+    "Nas",
+    "Upload",
+    "Download"
+  ],
+  "share_service_exported": false,
+  "mcp_fixed_commit": "b3983d330fea79c7b72e6b7014803e1830148d2c",
+  "mcp_readme_blob": "aebcff89265d8948be9e6dc7147cc2998b4e5d61",
+  "native_rest_documentation_basis": "previously reviewed official documentation recorded 2026-11-08 and 2026-11-09; not revisited this round",
+  "native_rest_endpoint_recorded": "https://pan.baidu.com/apaas/1.0/share/set",
+  "native_rest_entitlement_confirmed": false,
+  "native_rest_share_requests": 0,
+  "mcp_share_requests": 0,
+  "rejected_webpage_revisited": false,
+  "credential_reads": 0,
+  "settings_changed": false,
+  "scope": "read-only local endpoint routing/firewall inventories and public official GitHub docs; no new target authentication"
+}
