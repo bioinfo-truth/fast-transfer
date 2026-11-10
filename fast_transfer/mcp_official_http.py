@@ -41,13 +41,15 @@ class _OfficialConnection(http.client.HTTPSConnection):
         raw = socket.socket(family, socket.SOCK_STREAM)
         d.own_socket(raw)
         try:
-            raw.settimeout(d.timeout())
-            raw.connect(address)
-            wrapped = d.context.wrap_socket(raw, server_hostname=HOST, do_handshake_on_connect=False)
-            d.own_socket(wrapped)
-            self.sock = wrapped
-            wrapped.settimeout(d.timeout())
-            wrapped.do_handshake()
+            with d.io_phase('tcp_connect'):
+                raw.settimeout(d.timeout())
+                raw.connect(address)
+            with d.io_phase('tls_handshake'):
+                wrapped = d.context.wrap_socket(raw, server_hostname=HOST, do_handshake_on_connect=False)
+                d.own_socket(wrapped)
+                self.sock = wrapped
+                wrapped.settimeout(d.timeout())
+                wrapped.do_handshake()
             d.tls_version = wrapped.version()
             d.check()
         except BaseException:
@@ -87,28 +89,30 @@ class OfficialHTTPSDriver(base.LocalHTTPSDriver):
     def _connection(self):
         self.check_tls()
         if self.address is None:
-            result = queue.Queue(maxsize=1)
-            threading.Thread(target=_resolve, args=(result,), daemon=True).start()
-            try:
-                addresses = result.get(timeout=self.timeout())
-            except queue.Empty:
-                contract.reject('mcp_official_dns_timeout')
-            self.check()
-            if not addresses:
-                contract.reject('mcp_official_dns_failed')
-            candidates = []
-            for family, kind, proto, name, address in addresses:
+            with self.io_phase('dns'):
+                self._dns_lookup_count+=1
+                result = queue.Queue(maxsize=1)
+                threading.Thread(target=_resolve, args=(result,), daemon=True).start()
                 try:
-                    ip = ipaddress.ip_address(address[0])
-                except ValueError:
+                    addresses = result.get(timeout=self.timeout())
+                except queue.Empty:
+                    contract.reject('mcp_official_dns_timeout')
+                self.check()
+                if not addresses:
+                    contract.reject('mcp_official_dns_failed')
+                candidates = []
+                for family, kind, proto, name, address in addresses:
+                    try:
+                        ip = ipaddress.ip_address(address[0])
+                    except ValueError:
+                        contract.reject('mcp_official_dns_rejected')
+                    if (family not in (socket.AF_INET, socket.AF_INET6) or not ip.is_global
+                            or ip.is_multicast or address[1] != 443):
+                        contract.reject('mcp_official_dns_rejected')
+                    candidates.append((family, address))
+                if not candidates:
                     contract.reject('mcp_official_dns_rejected')
-                if (family not in (socket.AF_INET, socket.AF_INET6) or not ip.is_global
-                        or ip.is_multicast or address[1] != 443):
-                    contract.reject('mcp_official_dns_rejected')
-                candidates.append((family, address))
-            if not candidates:
-                contract.reject('mcp_official_dns_rejected')
-            self.address = candidates[0]  # No automatic alternate-address retry.
+                self.address = candidates[0]  # No automatic alternate-address retry.
         c = _OfficialConnection(self)
         with self._lock:
             self._connections.append(c)

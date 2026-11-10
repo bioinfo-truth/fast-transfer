@@ -1,5 +1,7 @@
 # 现有 Xtransfer 应用的官方设备码路线
 
+> 当前目标更正：MCP须在海外业务VPS验收。停止沿用开发主机的授权命令；先核查现有授权和VPS部署，见[业务VPS前置](business-vps-preflight.md)。两次用户报告未标主机，不能定位。
+
 2026-11-10：按用户纠正，使用**现有、自有Xtransfer应用**，不借用个人体验应用/共享AppID、不另建应用。用户描述的开发者主体状态没有在控制台核验；“只有一个应用”不能证明当前grant_type、scope、MCP或分享服务权限有效。本轮未读AppKey/SecretKey/token、未请求真实device_code、未启动OAuth/刷新、未访问被拒网页、未部署VPS或迁移原对象。
 
 ## 官方依据及能确认到哪里
@@ -17,18 +19,11 @@
 
 SDK用GET查询传SecretKey，本实现不能把它说成只进POST正文；服务端/中间设施日志风险不由客户端脱敏控制。请求scope是应用级basic/netdisk，**不能在OAuth服务端缩成仅原单文件**；后续本地工具权限控制是另一层。用户页面同意会创建/更新服务端授权，可能签发refresh token并在进程退出后持续有效。程序不自动撤销、刷新或声称退出即使服务端token失效，不保证内存安全擦除。
 
-## 用户可执行步骤（尚未实际执行）
+## 历史终端流程说明（当前不要重做授权）
 
 代码仅当前项目主机评审工作区就绪，已核实 `/usr/bin/python3` 为3.14.4且入口 `--help` 可运行。**原海外VPS没有部署此入口**；若必须在VPS操作，先明确部署位置/版本，不能直接假设已有同名路径。使用本人、不记录输入的前台交互终端；非TTY不回退到回显/stdin，复用输入窗口60秒及取消/EOF/信号恢复规则。
 
-在已审阅仓库根目录运行下述命令是一个会发起**新授权**的用户动作；不是本轮代理已经执行的命令。先确认允许在选择的主机使用同一Xtransfer应用的AppKey/SecretKey、请求下列scope并接受URL/服务端授权生命周期风险，不把资料发聊天/Slack。
-
-```sh
-env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tools/xtransfer_device_authorize.py \
-  --scope basic,netdisk \
-  --ack-new-user-grant \
-  --ack-query-credential-risk
-```
+已撤下开发机上的可执行授权命令。用户已报告自行完成设备兑换；现优先确认VPS现有授权，不重复grant。待业务节点目录/版本及具体读取/请求范围明确后再提供该节点操作步骤。以下仅保留流程与安全边界，不作为现在执行指令。
 
 1. 隐藏输入确认 `XTRANSFER-DEVICE-basic,netdisk`，再在AppKey提示中输入**已有Xtransfer这一项**的AppKey。程序最多发1次设备码请求；未知结果不重发。
 2. 程序仅在私人控制TTY显示经校验的官方HTTPS verification_url及user_code，**不显示device_code**，不打印到普通报告或交给LLM，不自动开浏览器或抓取二维码。用户本人打开页面，核对确为Xtransfer、正确账号及期望权限后自己批准；如果页面应用不符或不接受scope就取消。只接受已审静态HTTPS openapi验证地址；若服务实际返回HTTP/其他路径，停止，不擅自改写或跳转绕行。

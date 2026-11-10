@@ -13,7 +13,7 @@ import time
 class Case:
     def __init__(self,mode='normal',context=None):
         self.mode=mode;self.context=context;self.release=threading.Event();self.feed=queue.Queue()
-        self.gets=0;self.posts=0;self.shares=0;self.trace=[]
+        self.gets=0;self.posts=0;self.shares=0;self.trace=[];self.accepts=0
 
 
 class Server(http.server.ThreadingHTTPServer):
@@ -26,8 +26,8 @@ class Server(http.server.ThreadingHTTPServer):
         self.server_name='local-fixture';self.server_port=self.server_address[1]
     def get_request(self):
         raw,address=self.socket.accept();raw.settimeout(1)
-        case=self.case
-        if case.mode=='stall_tls':
+        case=self.case;case.accepts+=1
+        if case.mode=='stall_tls' or (case.mode=='stall_post_tls' and case.accepts==2):
             case.release.wait(2);raw.close();raise OSError('fixture TLS stall ended')
         try:
             wrapped=(case.context or self.context).wrap_socket(raw,server_side=True)
@@ -74,6 +74,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
         try:
             if c.mode=='drop_frame':self._chunk(b'event: endpoint\ndata: /messages/');self.wfile.write(b'0\r\n\r\n');self.wfile.flush();return
             endpoint=b'https://not-a-real-target.invalid/messages/?session_id=fixture' if c.mode=='cross_origin' else b'/messages/?session_id=fixture'
+            if c.mode=='endpoint_exact81':
+                base=b'/messages/?session_id='
+                endpoint=base+b'x'*(81-len(b'event: endpoint\ndata: ')-len(base)-2)
             self._chunk(b'event: endpoint\ndata: '+endpoint+b'\n\n')
             while not c.release.is_set():
                 try:data=c.feed.get(timeout=.05)
@@ -91,6 +94,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         except (ValueError,OSError):return
         name=msg.get('params',{}).get('name');method=msg.get('method')
         c.trace.append({'method':method,'tool':name,'id':msg.get('id')})
+        if c.mode=='stall_post_headers' and method=='initialize':c.release.wait(2);return
         if name=='file_sharelink_set':
             c.shares+=1
             if c.mode=='share_timeout':c.release.wait(2);return

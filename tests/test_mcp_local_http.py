@@ -147,3 +147,35 @@ class LocalHTTPTests(unittest.TestCase):
         text=json.dumps(r)+json.dumps(d.trace)+(self.job.root/'state.json').read_text()+repr(d)
         for value in ['synthetic_link','synthetic_short','a1b2','SYNTHETIC_PRIVATE','proxy.invalid','access_token']:
             self.assertNotIn(value,text)
+
+    def test_initialize_POST_TLS_stall_is_distinct_and_not_retried(self):
+        case=self.case('stall_post_tls');driver=self.driver(io_timeout=.15,budget=1)
+        client=s.SSEClient.for_local_fixture(driver);self.addCleanup(client.close)
+        with self.assertRaisesRegex(m.Rejected,'mcp_local_timeout'):client.connect()
+        diag=client.protocol_diagnostics();transport=diag['transport']
+        self.assertEqual(diag['stage'],'initialize_post');self.assertEqual(diag['http_statuses'],[200])
+        self.assertEqual(transport['operation'],'rpc_post');self.assertEqual(transport['phase'],'tls_handshake')
+        self.assertEqual(transport['connection'],2);self.assertFalse(transport['phase_completed'])
+        self.assertFalse(transport['last_request_send_returned']);self.assertEqual(case.accepts,2)
+        self.assertEqual((case.gets,case.posts,case.shares),(1,0,0))
+        self.assertEqual(sum(x.get('operation')=='initialize' for x in driver.trace),1)
+    def test_initialize_POST_header_stall_reproduces_user_stage_and_200_only(self):
+        case=self.case('stall_post_headers');driver=self.driver(io_timeout=.15,budget=1)
+        client=s.SSEClient.for_local_fixture(driver);self.addCleanup(client.close)
+        with self.assertRaisesRegex(m.Rejected,'mcp_local_timeout'):client.connect()
+        diag=client.protocol_diagnostics();transport=diag['transport']
+        self.assertEqual(diag['stage'],'initialize_post');self.assertEqual(diag['http_statuses'],[200])
+        self.assertEqual(transport['phase'],'response_headers');self.assertFalse(transport['phase_completed'])
+        self.assertTrue(transport['last_request_send_returned']);self.assertFalse(transport['last_response_headers_received'])
+        self.assertEqual((case.gets,case.posts,case.shares),(1,1,0))
+        self.assertEqual(sum(x.get('operation')=='initialize' for x in driver.trace),1)
+    def test_exact_81_byte_endpoint_is_consumed_with_zero_pending_buffer(self):
+        case=self.case('endpoint_exact81');driver=self.driver()
+        client=s.SSEClient.for_local_fixture(driver);self.addCleanup(client.close)
+        driver.open(driver.endpoint,s.AUTH_SLOT)
+        kind,value=client.event();self.assertEqual(kind,'endpoint')
+        diag=client.protocol_diagnostics()
+        self.assertEqual((diag['sse_bytes_read'],diag['event_bytes'],diag['event_count']),(81,81,1))
+        self.assertEqual(diag['buffered_bytes'],0);self.assertEqual(diag['pending_line_bytes'],0)
+        self.assertEqual(diag['line_buffer_high_water_bytes'],81)
+        self.assertEqual((case.gets,case.posts,case.shares),(1,0,0))

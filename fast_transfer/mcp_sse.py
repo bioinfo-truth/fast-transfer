@@ -112,7 +112,7 @@ class SSEClient:
         self.buffer=bytearray();self.total=0;self.lines=0;self.identifier=0
         self.url=None;self.connected=False;self.closed=False;self.called=set();self.last_rpc_error=None
         self.stage='not_started';self.failure_rule=None;self.event_bytes=0;self.event_count=0
-        self.pending_line_bytes=0;self.last_event_kind='none';self.rpc_id_matches=None
+        self.pending_line_bytes=0;self.line_buffer_high_water_bytes=0;self.last_event_kind='none';self.rpc_id_matches=None
         self.pagination_present=False
 
     @classmethod
@@ -145,27 +145,35 @@ class SSEClient:
         # Fixed labels, own sequence numbers, lengths and numeric HTTP statuses.
         # No endpoint/session, actual response ID, schema/text/key/exception values.
         statuses=getattr(self.driver,'http_statuses',[])
+        from .mcp_http import LocalHTTPSDriver
+        transport=self.driver.io_diagnostics() if isinstance(self.driver,LocalHTTPSDriver) else None
         return {'stage':self.stage,'failure_rule':self.failure_rule,
                 'sse_bytes_read':self.total,'sse_lines_read':self.lines,
                 'event_bytes':self.event_bytes,'pending_line_bytes':self.pending_line_bytes,
-                'event_count':self.event_count,'last_event_kind':self.last_event_kind,
+                'buffered_bytes':len(self.buffer),'line_buffer_high_water_bytes':self.line_buffer_high_water_bytes,
+                'transport':transport,'event_count':self.event_count,'last_event_kind':self.last_event_kind,
                 'rpc_sequence':self.identifier,'rpc_id_matches':self.rpc_id_matches,
                 'pagination_present':self.pagination_present,
                 'http_statuses':[v for v in statuses[-6:] if type(v) is int and 100<=v<=599]}
 
     def event(self):
-        kind=None;data=[];event_bytes=0;self.event_bytes=0;self.pending_line_bytes=0
+        kind=None;data=[];event_bytes=0;self.event_bytes=0
+        self.pending_line_bytes=len(self.buffer) if b'\n' not in self.buffer else 0
+        self.line_buffer_high_water_bytes=len(self.buffer)
         while True:
             self.check()
             while b'\n' not in self.buffer:
                 chunk=self.driver.read(1024);self.check()
                 if type(chunk) is not bytes or len(chunk)>1024:self.reject_rule('stream_chunk_shape')
                 if not chunk:self.reject_rule('stream_eof')
-                self.total+=len(chunk);self.pending_line_bytes=len(self.buffer)+len(chunk)
+                self.total+=len(chunk);size=len(self.buffer)+len(chunk)
+                self.line_buffer_high_water_bytes=max(self.line_buffer_high_water_bytes,size)
                 if self.total>262144:self.reject_rule('stream_byte_limit')
-                if self.pending_line_bytes>MAX_EVENT:self.reject_rule('pending_line_limit')
+                if size>MAX_EVENT:self.reject_rule('pending_line_limit')
                 self.buffer.extend(chunk)
+                self.pending_line_bytes=len(self.buffer) if b'\n' not in self.buffer else 0
             raw,_,rest=self.buffer.partition(b'\n');self.buffer=bytearray(rest)
+            self.pending_line_bytes=len(self.buffer) if b'\n' not in self.buffer else 0
             self.lines+=1;event_bytes+=len(raw)+1;self.event_bytes=event_bytes
             if self.lines>512:self.reject_rule('stream_line_limit')
             if event_bytes>MAX_EVENT:self.reject_rule('event_byte_limit')

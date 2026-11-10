@@ -32,10 +32,12 @@ class _Connection(http.client.HTTPSConnection):
         raw=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.driver.own_socket(raw)
         try:
-            raw.settimeout(self.driver.timeout());raw.connect(('127.0.0.1',self.driver.port))
-            wrapped=self.driver.context.wrap_socket(raw,server_hostname='127.0.0.1',do_handshake_on_connect=False)
-            self.driver.own_socket(wrapped);self.sock=wrapped
-            wrapped.settimeout(self.driver.timeout());wrapped.do_handshake()
+            with self.driver.io_phase('tcp_connect'):
+                raw.settimeout(self.driver.timeout());raw.connect(('127.0.0.1',self.driver.port))
+            with self.driver.io_phase('tls_handshake'):
+                wrapped=self.driver.context.wrap_socket(raw,server_hostname='127.0.0.1',do_handshake_on_connect=False)
+                self.driver.own_socket(wrapped);self.sock=wrapped
+                wrapped.settimeout(self.driver.timeout());wrapped.do_handshake()
             self.driver.tls_version=wrapped.version()
             self.driver.check()
         except BaseException:
@@ -59,6 +61,11 @@ class LocalHTTPSDriver:
         self.port=port;self.context=context;self.io_timeout=io_timeout;self.message_profile='legacy'
         self.origin=f'https://127.0.0.1:{port}';self.endpoint=self.origin+'/sse'
         self.deadline=time.monotonic()+budget;self.tls_version=None
+        self._created=self.deadline-budget;self._budget=budget;self._diag_lock=threading.Lock()
+        self._io_operation='none';self._io_phase='idle';self._phase_started=None;self._phase_ms=0
+        self._phase_complete=False;self._io_serial=0;self._io_history=[];self._connection_count=0
+        self._io_connection=0;self._sse_connection=0;self._last_send_returned=False
+        self._last_headers_received=False;self._dns_lookup_count=0
         self._lock=threading.Lock();self._read_lock=threading.Lock();self._post_lock=threading.Lock()
         self._sockets=[];self._connections=[];self._responses=[];self._active=0;self._closers=0
         self._closed=False;self._expired=False;self._cleanup_failed=False;self._opened=False
@@ -73,6 +80,60 @@ class LocalHTTPSDriver:
                 or not self.context.check_hostname or self.context.minimum_version<ssl.TLSVersion.TLSv1_2
                 or self.context.keylog_filename is not None):
             fail('mcp_local_tls_policy_rejected')
+
+    def deadline_reached(self):return self._expired or time.monotonic()>=self.deadline
+
+    def begin_io(self,operation,*,new_connection=False):
+        with self._diag_lock:
+            if new_connection:self._connection_count+=1
+            self._io_connection=self._sse_connection if operation=='sse_read' else self._connection_count
+            self._io_operation=operation;self._io_phase='prepare';self._phase_started=None
+            self._phase_ms=0;self._phase_complete=False;self._io_serial+=1
+            if new_connection:
+                self._last_send_returned=False;self._last_headers_received=False
+
+    @contextlib.contextmanager
+    def io_phase(self,phase):
+        began=time.monotonic()
+        with self._diag_lock:
+            self._io_serial+=1;serial=self._io_serial
+            operation=self._io_operation;connection=self._io_connection
+            self._io_phase=phase;self._phase_started=began;self._phase_complete=False
+        completed=False
+        try:
+            yield
+            completed=True
+        finally:
+            elapsed=round(max(0,time.monotonic()-began)*1000,3)
+            with self._diag_lock:
+                self._io_history.append({'operation':operation,'phase':phase,'connection':connection,
+                                         'elapsed_ms':elapsed,'completed':completed})
+                self._io_history=self._io_history[-32:]
+                if self._io_serial==serial:
+                    self._phase_ms=elapsed;self._phase_started=None;self._phase_complete=completed
+
+    def io_diagnostics(self):
+        now=time.monotonic()
+        with self._diag_lock:
+            elapsed=(now-self._phase_started)*1000 if self._phase_started is not None else self._phase_ms
+            return {'operation':self._io_operation,'phase':self._io_phase,'connection':self._io_connection,
+                    'phase_elapsed_ms':round(max(0,elapsed),3),'phase_completed':self._phase_complete,
+                    'session_elapsed_ms':round(max(0,now-self._created)*1000,3),
+                    'session_budget_ms':round(self._budget*1000,3),
+                    'remaining_ms':round(max(0,self.deadline-now)*1000,3),
+                    'deadline_reached':self._expired or now>=self.deadline,
+                    'io_timeout_ms':round(self.io_timeout*1000,3),'dns_lookup_count':self._dns_lookup_count,
+                    'last_request_send_returned':self._last_send_returned,
+                    'last_response_headers_received':self._last_headers_received,
+                    'history':[dict(entry) for entry in self._io_history]}
+
+    def send_request(self,c,method,path,**kwargs):
+        # Explicit single connect splits TCP/TLS from sending and prevents a
+        # library auto-open from silently replacing a lost connection.
+        c.connect();c.auto_open=False
+        with self.io_phase('request_send'):
+            c.sock.settimeout(self.timeout());c.request(method,path,**kwargs)
+            self._last_send_returned=True
 
     def check(self):
         if self._closed:fail('mcp_local_closed')
@@ -105,11 +166,11 @@ class LocalHTTPSDriver:
             self.check()
         except contract.Rejected:raise
         except (TimeoutError,socket.timeout):
-            fail('mcp_local_deadline' if self._expired else 'mcp_local_timeout')
+            fail('mcp_local_deadline' if self.deadline_reached() else 'mcp_local_timeout')
         except ssl.SSLError:
-            fail('mcp_local_deadline' if self._expired else 'mcp_local_tls_error')
+            fail('mcp_local_deadline' if self.deadline_reached() else 'mcp_local_tls_error')
         except Exception:
-            fail('mcp_local_closed' if self._closed else 'mcp_local_deadline' if self._expired else 'mcp_local_io_failure')
+            fail('mcp_local_closed' if self._closed else 'mcp_local_deadline' if self.deadline_reached() else 'mcp_local_io_failure')
         finally:
             with self._lock:self._active-=1
 
@@ -119,7 +180,9 @@ class LocalHTTPSDriver:
         return c
 
     def _response(self,c):
-        response=c.getresponse()
+        with self.io_phase('response_headers'):
+            c.sock.settimeout(self.timeout());response=c.getresponse()
+            self._last_headers_received=True
         self.http_statuses.append(response.status)
         with self._lock:self._responses.append(response)
         headers=response.getheaders()
@@ -138,10 +201,11 @@ class LocalHTTPSDriver:
     def open(self,url,auth_slot):
         from .mcp_sse import AUTH_SLOT
         if url!=self.endpoint or auth_slot is not AUTH_SLOT or self._opened:fail('mcp_local_scope_rejected')
-        self._opened=True
+        self._opened=True;self.begin_io('sse_open',new_connection=True)
+        self._sse_connection=self._io_connection
         with self.operation():
             self.trace.append({'method':'GET','operation':'sse_open'})
-            c=self._connection();c.request('GET',self._opening_path(),headers={'Accept':'text/event-stream','Accept-Encoding':'identity'})
+            c=self._connection();self.send_request(c,'GET',self._opening_path(),headers={'Accept':'text/event-stream','Accept-Encoding':'identity'})
             self._reply=self._response(c)
             if self._reply.status!=200:fail('mcp_local_status_rejected')
             mime=self._reply.getheader('Content-Type','').split(';',1)[0].strip().lower()
@@ -151,9 +215,11 @@ class LocalHTTPSDriver:
     def read(self,limit):
         if type(limit) is not int or not 1<=limit<=1024 or self._reply is None:fail('mcp_local_scope_rejected')
         with self._read_lock,self.operation():
+            self.begin_io('sse_read')
             for sock in self._sockets:
                 if sock.fileno()>=0:sock.settimeout(self.timeout())
-            data=self._reply.read1(limit)
+            with self.io_phase('sse_read'):
+                data=self._reply.read1(limit)
             self._total+=len(data)
             if self._total>262144:fail('mcp_local_limit')
             return data
@@ -166,13 +232,14 @@ class LocalHTTPSDriver:
         msg=contract.payload(raw)
         path=url[len(self.origin):]
         with self._post_lock,self.operation():
+            self.begin_io('rpc_post',new_connection=True)
             self._posts+=1
             if self._posts>6:fail('mcp_local_limit')
             self.trace.append({'method':'POST','operation':msg.get('method'),'id':msg.get('id'),
                                'tool':msg.get('params',{}).get('name')})
             c=self._connection()
             try:
-                c.request('POST',path,body=raw,headers={'Content-Type':'application/json','Accept-Encoding':'identity'})
+                self.send_request(c,'POST',path,body=raw,headers={'Content-Type':'application/json','Accept-Encoding':'identity'})
                 response=self._response(c)
                 status=response.status
                 response.close();return status

@@ -19,3 +19,5 @@
 私有主机地址、凭据路径、账号、应用ID和原文件标识不写入公开记录。此次无代码改动，不新增/重跑测试冒充元数据结果。[脱敏核查收据](validation/xtransfer-auth-metadata-2026-11-10.json)。
 
 路线补充：[现有Xtransfer的官方设备码入口](xtransfer-device-oauth.md)已实现并合成测试，未实际发起授权；不使用个人体验应用，不把已有应用推断为权限有效。
+
+最新：[业务VPS当前原授权文件仍存在，scope/到期/实时有效性及分享权限未验证](business-vps-preflight.md)；新报告的initialize POST超时只在本地复现诊断，不重授权，见[分段分析](mcp-initialize-timeout.md)。

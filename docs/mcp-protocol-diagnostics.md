@@ -36,3 +36,5 @@
 若以后另行允许一次最小协议复测，前提是用户本人有一份获准、仍有效的token可在隐藏终端输入；当前程序未存储上次token，不能承诺恢复。没有现成token时，需要另行决定是否启动下一次设备grant，不能为抓诊断自动重做OAuth、兑换或刷新。最小复测仍仅1GET+initialize/initialized/tools-list三次POST，无账号/原文件/分享请求。
 
 届时只需以下**脱敏字段**：`mcp.reason`、`mcp.protocol_diagnostics.stage`、`failure_rule`、`sse_bytes_read`、`event_bytes`、`pending_line_bytes`、`rpc_id_matches`、`pagination_present`、`http_statuses`。其中规则通常即可定位；不需要整个JSON、响应内容、服务器实际ID或游标。执行代码的短提交号也可作为非秘密版本依据。没有这些新观测前，不扩大大小限制、不实现未审分页/通知，也不把_meta修正宣传为根因已解决。
+
+最新：[业务VPS当前原授权文件仍存在，scope/到期/实时有效性及分享权限未验证](business-vps-preflight.md)；新报告的initialize POST超时只在本地复现诊断，不重授权，见[分段分析](mcp-initialize-timeout.md)。

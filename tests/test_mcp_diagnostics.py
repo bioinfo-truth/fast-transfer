@@ -38,7 +38,8 @@ class DiagnosticTests(unittest.TestCase):
     def test_oversized_single_line_retains_limit_and_reports_safe_rule(self):
         raw=b'event: message\ndata: '+b'x'*(s.MAX_EVENT+10)+b'\n\n'
         client,diag=self.rejected(raw,'pending_line_limit')
-        self.assertGreater(diag['pending_line_bytes'],s.MAX_EVENT)
+        self.assertGreater(diag['line_buffer_high_water_bytes'],s.MAX_EVENT)
+        self.assertLessEqual(diag['pending_line_bytes'],s.MAX_EVENT)
         self.assertEqual(s.MAX_EVENT,16384)
     def test_multiline_event_size_limit_has_distinct_rule(self):
         raw=b'event: message\n'+(b'data: '+b'x'*800+b'\n')*24+b'\n'

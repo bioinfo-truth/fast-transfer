@@ -298,3 +298,13 @@ DNS调用者等待有界，但系统解析线程不能强制取消，超时后�
 新增固定枚举/计数/布尔的协议诊断，区分事件/行上限、EOF、SSE字段、RPC ID/信封、分页/结果形状，不输出会话、真实ID/游标、schema/meta内容或秘密。静态修正标准ListToolsResult可选dict/null _meta的错误拒绝，但历史实际触发点未知，大小及其他安全门不变；设备授权与MCP发现完成标志分开。干净78项禁网+21项本地TLS通过，不冒称已修复官方互通。
 
 本轮无真实凭据/终端读取或OAuth/MCP/业务请求，不恢复旧token、不重授权。旧报告无法追补诊断；以后最小复测需单独明确有效token来源及一次仅协议发现范围，没有现成token不得自动新grant。详见[已知、候选原因、修正与非敏感诊断字段](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-protocol-diagnostics.md)。
+
+## 2026-11-10 业务VPS优先与当前原授权状态
+
+按用户纠正，海外业务VPS才是MCP验收目标；开发机可用PCS-Go的路线判断不能代替VPS实测，两次匿名脱敏授权报告也不能归属主机/出口。撤下开发机授权命令作为当前业务步骤，不要求第三次授权。
+
+业务VPS只读：Linux x86-64/Python3.13.5，PATH有64位x86-64 BaiduPCS-Go但未启动/登录；候选30份源码在内存compile通过，标准库/148项CA可用，未写部署文件或发官方请求。默认隔离Python不能导入fast_transfer不代表全盘无代码，当前缺确认的新入口目录/版本。已有上传/完整双哈希回读复用，不重传或迁移。
+
+21:44（UTC+8）指定原授权位置lstat仍存在、root/0600/普通文件，未开内容。修改时间不是签发/到期；当前应用绑定、scope/期限及官方实时有效性仍未知，分享权限从未验证。用户新设备token未存储及约30天报告不能更新/证明VPS旧token状态。下一最小受限步骤是明确原地白名单元数据读取范围；真实有效性还需另行获准的VPS内存只读校验，先不用新grant。
+
+另完成initialize超时分段诊断、缓冲计数语义和deadline分类修正：107项禁网/24项本地TLS通过，并非VPS MCP验收。原预算按当前代码不沿用设备轮询时间；pending81不是未消费证明。只准备无凭据源码包/部署计划，没有部署、改出口规则或使用秘密。详见[业务VPS前置与授权状态](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/business-vps-preflight.md)。

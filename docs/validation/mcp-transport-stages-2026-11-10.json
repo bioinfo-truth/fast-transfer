@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-10",
+  "user_report_source": "second user-provided redacted report, execution host/egress/version not independently identified",
+  "user_report_summary": {
+    "device_authorization_complete": true,
+    "scope": "basic netdisk",
+    "poll_requests": 6,
+    "token_stored": false,
+    "mcp_discovery_complete": false,
+    "mcp_reason": "mcp_local_timeout",
+    "mcp_stage": "initialize_post",
+    "mcp_http_statuses": [
+      200
+    ],
+    "mcp_sse_bytes_read": 81,
+    "mcp_event_count": 1,
+    "mcp_old_pending_line_bytes": 81,
+    "mcp_request_counts": {
+      "sse_open": 1,
+      "initialize": 1,
+      "notifications/initialized": 0,
+      "tools/list": 0
+    },
+    "close_confirmed": true,
+    "share_attempted": false
+  },
+  "conclusions": {
+    "official_refusal_established": false,
+    "initialize_response_headers_received_established": false,
+    "timeout_substage_known_for_historical_run": false,
+    "current_code_mcp_deadline_reuses_device_poll_start": false,
+    "old_pending_counter_was_read_high_water_not_unconsumed_bytes": true,
+    "historical_host_attribution_known": false
+  },
+  "fixes": [
+    "bounded fixed-label TCP/TLS/send/header segment timers and request-send-returned/header-received booleans",
+    "refresh socket timeout at each phase against the same total deadline, no timeout-limit increase",
+    "classify deadline by monotonic clock even if watchdog flag lags",
+    "explicit one connect and no library auto-open",
+    "separate buffered/pending bytes from last event high-water"
+  ],
+  "new_unit_tests": 7,
+  "related_offline_tests": 100,
+  "offline_passed": 107,
+  "local_tls_passed": 24,
+  "new_local_tls_cases": 3,
+  "failures": 0,
+  "skipped": 0,
+  "official_requests_this_followup": 0,
+  "real_credentials_read": false,
+  "authorization_restarted_or_refreshed": false,
+  "host_security_settings_changed": false,
+  "files_sha256": {
+    "fast_transfer/mcp_http.py": "9220ea0a750318512e4152f159300dd06abe507b09c33dffa830ea79962ccfbb",
+    "fast_transfer/mcp_official_http.py": "2813820c7401dda9bc1a01b99707fba50e4a02f0266dec976c51e0793abcadf2",
+    "fast_transfer/mcp_sse.py": "54fcd3d6228f4ebf4ba85f97729925c525e96e6c2528bfb7b91374c83ff4cf52",
+    "tests/test_mcp_transport_stages.py": "04007c5fab62bd4f75ed1e046ecf42e86d31f0699159cb1ba3e93ae098217253",
+    "tests/test_mcp_diagnostics.py": "01cbd4fdd1c8cf5b7a71af85bec57820bae727a4f2136178741c1e88ceb3d85f",
+    "tests/test_mcp_local_http.py": "bb472acc03a92ca3f05a0616454b4ef335732503531b072c168c93b4acf6fd9d",
+    "tests/support/local_sse_server.py": "6b9f688a0fc5911fec93678dbbb81bb35ffe4b3cb63ca6680b81abd2e73da9bf"
+  },
+  "logs_sha256": {
+    "mcp-transport-stages-offline-2026-11-10.txt": "5683cd32c548bde6c3c725bb8a131f6ab02baca2148010e5a7e1a2883fba8ba3",
+    "mcp-transport-stages-local-2026-11-10.txt": "88184bf854f2eb40c54975b8b38b02e061a2283b8f785c72304ee30afb50bb14"
+  }
+}
