@@ -19,3 +19,12 @@ qjfoidnh/BaiduPCS-Go, commit `1b9131817aaf8ca7dee24bc00e33ebc4c7a5cc73`,
 `baidupcs/util.go`, Copyright iikira, Apache License 2.0.
 The Python implementation adds stricter input validation. License in
 `third_party/baidupcs-go/LICENSE`.
+
+# Baidu-Login WAP session preparation
+
+`patches/baidupcs-go-v4.0.2/login-session/profile.go` adapts the WAP form
+from qjfoidnh/Baidu-Login v1.4.1; the companion links its `bdcrypto` package.
+Copyright (c) iikira, MIT. License in `third_party/baidu-login/LICENSE`.
+The companion replaces network/session handling, removes all Tieba and disk
+configuration paths, and stops on challenges rather than following response URLs.
+It does not claim the legacy WAP login protocol is currently supported online.

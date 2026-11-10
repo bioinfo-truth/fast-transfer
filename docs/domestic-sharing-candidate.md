@@ -58,3 +58,6 @@ BaiduPCS-Go --help
 
 
 后续已开放隔离login帮助，并核实上游交互密码流程长期不维护、默认保存及HTTP会话初始化等问题；并非仅撤销wrapper即可安全登录。[login专项审阅](pcs-login-flow-review.md)。
+
+
+后续已完成独立的一次性内存登录准备，移除拟用流程中的HTTP贴吧及配置保存路径；支持隐藏本人输入、一次提交和固定pan身份核验，真实兼容性/验证码续办/分享仍未验证。[最新实现与明确本人步骤](pcs-login-session-preparation.md)。

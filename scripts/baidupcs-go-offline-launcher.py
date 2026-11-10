@@ -1,8 +1,9 @@
-"""Installed patched BaiduPCS-Go: offline version/help only until live review.
+"""Installed patched CLI: isolated help plus a prepared explicit session frontend.
 
-No real config, credentials, network, login or share. Linux x86_64 only.
-The parent loads only its fixed installation metadata and generated canaries.
-Child guards are installed before the target executable's initialization.
+The upstream CLI only runs offline, with empty config and child guards before
+initialization. The separately reviewed session-only frontend requires owner
+TTY confirmation before new authentication; no secrets are read by this launcher.
+Linux x86_64 only. No upstream config/login/share command is exposed.
 """
 import ctypes
 import errno
@@ -64,14 +65,24 @@ def guards(root,binary,canary,link):
 
 
 def main():
+    install=Path(__file__).resolve().parent
+    if sys.argv[1:] in (['login','--session-only'],['login','--session-only','--help']):
+        frontend=install/'login-session.py'
+        info=frontend.lstat()
+        if not stat.S_ISREG(info.st_mode) or info.st_uid!=os.geteuid() or info.st_mode&0o022:fail('frontend_file_rejected')
+        manifest=json.loads((install/'installation.json').read_text())
+        if hashlib.sha256(frontend.read_bytes()).hexdigest()!=manifest['login_session_frontend_sha256']:fail('frontend_hash_mismatch')
+        args=['--help'] if sys.argv[-1]=='--help' else ['--session-only']
+        # Session mode is a separate reviewed implementation, not a relaxation
+        # of the upstream CLI's real-config or identity/save protections.
+        os.execve('/usr/bin/python3',['/usr/bin/python3','-I','-S',str(frontend),*args],{})
     modes={('--version',):('--version',),('version',):('--version',),
            ('--help',):('--help',),('help',):('--help',),
            ('login','--help'):('login','--help'),('help','login'):('help','login')}
     mode=modes.get(tuple(sys.argv[1:]))
     if mode is None:
-        print('Safety candidate: --version, --help and login --help are available. Online login/account/share operations are not enabled.')
+        print('Safety candidate: upstream online login/account/share commands remain disabled. Inspect with login --help; session-only uses a separate explicit entry.')
         return 2
-    install=Path(__file__).resolve().parent
     manifest=json.loads((install/'installation.json').read_text())
     binary=install/'BaiduPCS-Go.patched'
     st=binary.lstat()

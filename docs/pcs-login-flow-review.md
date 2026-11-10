@@ -54,3 +54,6 @@ BaiduPCS-Go login --help
 **尚未准备好可推荐的真实登录步骤；差距是上述实际代码和凭据保留选择，不是再开一个包装器开关。** 后续本人新认证将接触账号密码/验证码并访问wappass服务，或以本机既有会话做导入，数据流和是否保存须分别明确；用户当前问题不是这些操作的执行批准。本轮没有实际实现/验证新登录的服务兼容性，不用测试fixture冒充已可登录。
 
 来源：[main.go登录分支](https://github.com/qjfoidnh/BaiduPCS-Go/blob/225bdd3b6cb298601c4d5ef7104c3e08cd1d692d/main.go)、[RunLogin](https://github.com/qjfoidnh/BaiduPCS-Go/blob/225bdd3b6cb298601c4d5ef7104c3e08cd1d692d/internal/pcscommand/login.go)、[账号配置结构](https://github.com/qjfoidnh/BaiduPCS-Go/blob/225bdd3b6cb298601c4d5ef7104c3e08cd1d692d/internal/pcsconfig/baidu.go)、本地锁定Baidu-Login v1.4.1和baidu-tools v1.2.0源码（只读审阅，无依赖下载/执行）。[源码摘要和实际help检查](validation/pcs-login-flow-review-2026-11-11.json)。
+
+
+后续已完成独立的一次性内存登录准备，移除拟用流程中的HTTP贴吧及配置保存路径；支持隐藏本人输入、一次提交和固定pan身份核验，真实兼容性/验证码续办/分享仍未验证。[最新实现与明确本人步骤](pcs-login-session-preparation.md)。

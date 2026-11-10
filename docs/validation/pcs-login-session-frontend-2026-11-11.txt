@@ -1,0 +1,11 @@
+test_new_frontend_argv_or_pipe_rejected_before_helper (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_argv_or_pipe_rejected_before_helper) ... ok
+test_new_frontend_cancel (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_cancel) ... ok
+test_new_frontend_echo_and_restoration (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_echo_and_restoration) ... ok
+test_new_frontend_noninteractive_has_no_fallback (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_noninteractive_has_no_fallback) ... ok
+test_new_frontend_rejects_reflected_or_extra_fields (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_rejects_reflected_or_extra_fields) ... ok
+test_new_frontend_timeout (test_pcs_login_frontend.PCSFrontendTests.test_new_frontend_timeout) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.294s
+
+OK
