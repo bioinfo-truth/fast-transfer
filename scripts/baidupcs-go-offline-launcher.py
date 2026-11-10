@@ -64,10 +64,12 @@ def guards(root,binary,canary,link):
 
 
 def main():
-    modes={('--version',):'--version',('version',):'--version',('--help',):'--help',('help',):'--help'}
+    modes={('--version',):('--version',),('version',):('--version',),
+           ('--help',):('--help',),('help',):('--help',),
+           ('login','--help'):('login','--help'),('help','login'):('help','login')}
     mode=modes.get(tuple(sys.argv[1:]))
     if mode is None:
-        print('Safety candidate: only --version and --help are available. Login/account/share commands are not enabled.')
+        print('Safety candidate: --version, --help and login --help are available. Online login/account/share operations are not enabled.')
         return 2
     install=Path(__file__).resolve().parent
     manifest=json.loads((install/'installation.json').read_text())
@@ -76,7 +78,7 @@ def main():
     if (not stat.S_ISREG(st.st_mode) or st.st_uid!=os.geteuid() or st.st_mode&0o022):fail('installed_binary_rejected')
     with binary.open('rb') as f:actual=hashlib.file_digest(f,'sha256').hexdigest()
     if actual!=manifest['binary_sha256']:fail('installed_binary_hash_mismatch')
-    print('BaiduPCS-Go safety candidate; offline isolated '+mode+' only. No real login configuration is loaded.',flush=True)
+    print('BaiduPCS-Go safety candidate; offline isolated '+' '.join(mode)+' only. No real login configuration is loaded.',flush=True)
     with tempfile.TemporaryDirectory(prefix='ft-pcs-offline-') as folder, tempfile.NamedTemporaryFile(prefix='ft-pcs-generated-canary-') as outside:
         root=Path(folder);home=root/'home';home.mkdir();config=home/'config';config.mkdir();tmp=root/'tmp';tmp.mkdir()
         outside.write(b'GENERATED_FAKE_ONLY');outside.flush()
@@ -96,7 +98,7 @@ def main():
                 guards(root,binary,Path(outside.name),link)
                 env={'HOME':str(home),'XDG_CONFIG_HOME':str(config),'TMPDIR':str(tmp),
                      'BAIDUPCS_GO_CONFIG_DIR':str(config),'GOTELEMETRY':'off'}
-                os.execve(binary,[str(binary),mode],env)
+                os.execve(binary,[str(binary),*mode],env)
             except BaseException:
                 os.write(2,b'offline_startup_rejected\n');os._exit(1)
         _,status=os.waitpid(pid,0)

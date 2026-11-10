@@ -1,0 +1,97 @@
+{
+  "checked_at_utc": "2026-11-10T16:48:33.931706+00:00",
+  "installation_manifest": {
+    "baseline_repository": "qjfoidnh/BaiduPCS-Go",
+    "baseline_tag": "v4.0.2",
+    "baseline_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+    "build_type": "project_patched_safety_candidate_not_official_release_binary",
+    "binary_sha256": "41b3182106fe0de3591be0e03d59063268db78886a3fe94c54ca24e0f0963186",
+    "binary_bytes": 20870517,
+    "go_toolchain": "go1.27.3",
+    "architecture": "linux/amd64",
+    "credential_support": "not_enabled",
+    "network_runtime": "kernel_denied",
+    "commands": [
+      "--version",
+      "--help",
+      "login --help",
+      "help login"
+    ],
+    "launcher_sha256": "90657bfff089b03cd7bf4bcd79df711edec3a79323eb39ee9e487b4f66d4888f"
+  },
+  "actual_isolated_login_help_flags": {
+    "username": true,
+    "password": true,
+    "bduss": true,
+    "ptoken": true,
+    "stoken": true,
+    "cookies": true
+  },
+  "checks": [
+    {
+      "case": "login --help",
+      "exit": 0,
+      "expected": 0,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "help login",
+      "exit": 0,
+      "expected": 0,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "login",
+      "exit": 2,
+      "expected": 2,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "password_argument_rejected",
+      "exit": 2,
+      "expected": 2,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "share set",
+      "exit": 2,
+      "expected": 2,
+      "no_synthetic_secret_echo": true
+    }
+  ],
+  "actual_authentication_attempted": false,
+  "credential_input_started": false,
+  "credential_files_read_or_created": false,
+  "baidu_requests": 0,
+  "share_requests": 0,
+  "upstream_readme_blob_current": "84143066a3324206e0da6519b677b4803edcfb22",
+  "source_basis": {
+    "pcs_baseline": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+    "baidu_login_dependency": "github.com/qjfoidnh/Baidu-Login v1.4.1",
+    "password_login_maintenance": "README explicitly long-unmaintained",
+    "qr_login_found_in_reviewed_flow": false,
+    "config_new_file_mode": "0600",
+    "config_new_directory_mode": "0700",
+    "configuration_storage_encrypted": false,
+    "bare_login_works_currently": "not_tested",
+    "blockers": [
+      "offline_wrapper",
+      "login_identity_gate_in_patched_binary",
+      "nonempty_account_save_gate_in_patched_binary",
+      "upstream_HTTP_tieba_session_initialization",
+      "upstream_dynamic_verification_URLs_error_output_and_fallbacks",
+      "new_login_and_credential_retention_scope_not_decided"
+    ]
+  },
+  "reviewed_source_sha256": {
+    "main.go": "0f8761cf40e7e77721a5ee7eb7dceeb0180dbfd352680f6607bafa862faec0b5",
+    "internal/pcscommand/login.go": "3dc761267b261c6abe99d8e7cff19f360db534a95bd369834065044ef570aa13",
+    "internal/pcsconfig/pcsconfig.go": "87534c9e3cbfc5a3dc02a7e768c5910f0ad8814b3cbd0dd12acf522229bfe05f",
+    "internal/pcsconfig/baidu.go": "e607f22d1a711f25c842e0ee4e39e429a7c69a3c99aa8f2932dcd1329589324f",
+    "internal/pcsconfig/maniper.go": "588e3c72a0f496cdd974f4459ea803a5106007d4c2ef88e4d6f24aaec2420185"
+  },
+  "login_dependency_sha256": {
+    "http_request.go": "abc6a66b8604e1282db3510e1d29b0a123b211235f8df3f3a776ec48bf84e932",
+    "util.go": "3812fca4266dc68a525afed9a6efa43a3e7141e5f0ce5cfb6e52513699ab064b"
+  }
+}

@@ -146,3 +146,8 @@ VPS对两个MCP IPv4目标有单播出站路由，IPv6路由查询失败；nft�
 
 
 同轮安装进展：用户明确授权安装并确认两端同账号；境内已安装固定v4.0.2源码的项目安全候选构建，版本输出v4.0.2-dev，产物哈希与历史构建收据一致。PATH入口目前仅允许隔离空配置、内核禁网的版本/帮助；四项实际启动/命令拒绝检查通过。**不是可正常登录分享的正式版**，真实认证/分享接线仍缺，用户账号确认不代替境内会话核验。未读取/复制凭据、登录、新授权或分享，不重传原样例。[安装事实与限制](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/domestic-sharing-candidate.md)。
+
+
+### 2026-11-11 login机制澄清
+
+上游login保留交互账号密码/验证码及Cookie/BDUSS导入两个不同流程；当前README明确交互登录长期不维护。当前拒绝既有本项目wrapper/身份/保存保护，也有上游拿到会话后HTTP贴吧初始化等具体安全问题，不能说成百度不支持login。已开放隔离的`BaiduPCS-Go login --help`，五项实际帮助/拒绝检查通过，真实认证未执行。后续应聚焦原登录链的固定HTTPS挑战、输入/输出、去HTTP身份依赖和凭据保留选择，不继续扩建无关MCP实现。[源码、保存行为和准确差距](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/pcs-login-flow-review.md)。
