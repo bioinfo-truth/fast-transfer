@@ -115,3 +115,8 @@ VPS 硬盘有限，优先逐文件处理，限制缓冲和保留系统空间；�
 ### 2026-11-10 原授权单次只读验证
 
 业务VPS原地向原生网盘官方uinfo接口请求一次，HTTP 200、errno=0且身份结构符合预期，说明原令牌在当次请求时被接受。无可信旧账号指纹输入，账号匹配未核验；应用绑定、MCP兼容、分享权限仍未知。无代理/重定向/重试，TLS校验开启，连接已关闭；未刷新、扩权、上传或分享，凭据与身份内容未导出。[脱敏记录与边界](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/xtransfer-auth-metadata-result.md)。
+
+
+### 原样例绑定证据复核（2026-11-10，仅文档）
+
+历史脱敏收据确认当时账号指纹匹配、上传及完整双哈希回读成功；未公开实际指纹/文件ID/完整随机路径。现有代码指向原任务私有恢复结果和会话检查点，但本轮未读取它们，当前可用性不作保证。目录ID不替代最终文件ID；旧账号哈希不能直接替代当前MCP接口的原始账号ID输入。下一候选是明确私有收据来源并原地核对，然后在MCP用途/权限成立时精确只读核验原对象，不重传或重复完整回读。分享的实际信封、对象映射和真实持久接线仍待完成。[字段来源与最小依赖](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/original-sample-binding-evidence.md)。本轮外部业务请求零。
