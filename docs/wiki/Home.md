@@ -221,3 +221,8 @@ M4.2 文件级验证通过，完整补丁包和依赖仍未编译验证；M4.3/M
 ### M4 确定性 SSE 协议接入（2026-11-10）
 
 已新增确定性 SSE/JSON-RPC 字节协议层，接到原固定合成文件核对及 Job 单次意图；保留 MIT 署名/许可证，无 LLM、凭据发现、秘密日志或自动重试。17项新增协议测试及干净必要回归42项通过（零失败/跳过，排除历史未提交四项）。验证的是内存HTTP/SSE流，尚无真实TLS/SSE driver、SDK运行或服务连接，真实身份/对象/建链均未尝试；原访问控制与具体凭据/应用范围条件不变。 详见[协议流程与范围](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-sse-protocol.md)、[执行证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/mcp-sse-protocol-2026-11-10.json)。
+
+
+### 候选 HTTP/SSE 驱动真实本地验证（2026-11-10）
+
+候选 HTTP/SSE 驱动已实现，新增21项真实本地TCP/TLS测试在干净副本全部通过（零失败/跳过），未重跑上轮42项内存测试。实际验证了TLS信任/主机名、跨域/重定向拒绝、握手/读取/慢头超时与关闭、已受理合成分享后ACK超时保持未知且同Job不重发。生产构造器及外部/凭据入口仍拒绝，本地工厂硬绑定回环；没有百度连接、真实认证/对象/分享/领取或原样例重传。 明确隔离本地测试工厂与生产入口；内核TCP单端口+应用回环绑定，无文件系统/完整网络沙箱。详见[实现与实际测量](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/mcp-local-https.md)、[机器证据](https://github.com/bioinfo-truth/fast-transfer/blob/codex/mvp-intake-download/docs/validation/mcp-local-https-2026-11-10.json)。

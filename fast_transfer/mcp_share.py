@@ -28,6 +28,9 @@ SAFE_CODES = frozenset('''
     mcp_fixture_object_mismatch mcp_fixture_identity_mismatch mcp_candidate_url_invalid
     mcp_candidate_share_mismatch
     mcp_sse_protocol_rejected mcp_sse_endpoint_rejected mcp_sse_driver_unavailable
+    mcp_external_driver_locked mcp_local_scope_rejected mcp_local_tls_policy_rejected
+    mcp_local_closed mcp_local_deadline mcp_local_timeout mcp_local_tls_error
+    mcp_local_io_failure mcp_local_headers_rejected mcp_local_status_rejected mcp_local_limit
     mcp_sse_closed mcp_sse_deadline mcp_sse_rpc_error mcp_sse_tool_error mcp_sse_schema_unproven
 '''.split())
 

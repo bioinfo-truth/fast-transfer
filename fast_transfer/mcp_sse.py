@@ -1,9 +1,9 @@
-"""Deterministic SSE/JSON-RPC connection profile, scripted byte transport only.
+"""Deterministic SSE/JSON-RPC profile; separate scripted and local-TLS factories.
 
 Sequence adapted from baidu-netdisk/mcp (MIT, Copyright 2025 baidu-netdisk).
 See third_party/NOTICE.md and licenses. No LLM, credential discovery or retry.
-A real TLS/SSE driver is deliberately unavailable; this is executable protocol
-integration, not evidence that the account/server supports this strict profile.
+The production/external driver remains locked. Local TLS fixture I/O does not
+prove that an external account/server supports this strict profile.
 """
 from collections import deque
 import json
@@ -24,12 +24,12 @@ def fail(code='mcp_sse_protocol_rejected'):
     contract.reject(code)
 
 
-def message_endpoint(value):
+def message_endpoint(value, *, origin=ORIGIN):
     if (type(value) is not str or len(value) > 512 or '%' in value or '\\' in value
             or any(ord(c) < 33 or ord(c) > 126 for c in value)):
         fail('mcp_sse_endpoint_rejected')
-    u = urllib.parse.urlsplit(urllib.parse.urljoin(ENDPOINT, value))
-    if (u.scheme != 'https' or u.netloc != 'mcp-pan.baidu.com'
+    u = urllib.parse.urlsplit(urllib.parse.urljoin(origin+'/sse', value))
+    if (u.scheme != 'https' or u.netloc != urllib.parse.urlsplit(origin).netloc
             or u.path not in ('/messages', '/messages/') or u.fragment
             or not re.fullmatch(r'session_id=[A-Za-z0-9_-]{1,128}', u.query)):
         fail('mcp_sse_endpoint_rejected')
@@ -101,9 +101,22 @@ class SSEClient:
     def __init__(self, driver, *, budget=5):
         if type(driver) is not ScriptedHTTP: fail('mcp_sse_driver_unavailable')
         if type(budget) not in (int,float) or not 0 < budget <= 30: fail()
+        self._setup(driver,budget)
+
+    def _setup(self,driver,budget):
+        self.origin=ORIGIN;self.endpoint=ENDPOINT
         self.driver=driver;self.deadline=time.monotonic()+budget
         self.buffer=bytearray();self.total=0;self.lines=0;self.identifier=0
         self.url=None;self.connected=False;self.closed=False;self.called=set()
+
+    @classmethod
+    def for_local_fixture(cls,driver,*,budget=5):
+        from .mcp_http import LocalHTTPSDriver
+        if type(driver) is not LocalHTTPSDriver:fail('mcp_sse_driver_unavailable')
+        if type(budget) not in (int,float) or not 0<budget<=30:fail()
+        client=cls.__new__(cls);client._setup(driver,budget)
+        client.origin=driver.origin;client.endpoint=driver.endpoint
+        return client
 
     def __repr__(self): return '<private_sse_session>'
 
@@ -158,11 +171,11 @@ class SSEClient:
 
     def connect(self):
         if self.connected: return
-        self.check();status,mime=self.driver.open(ENDPOINT,AUTH_SLOT)
+        self.check();status,mime=self.driver.open(self.endpoint,AUTH_SLOT)
         if type(status) is not int or status!=200 or mime!='text/event-stream':fail()
         event,value=self.event()
         if event!='endpoint':fail()
-        self.url=message_endpoint(value)
+        self.url=message_endpoint(value,origin=self.origin)
         result=self.rpc('initialize',{'protocolVersion':VERSION,'capabilities':{},
                                      'clientInfo':{'name':'fast-transfer-offline','version':'0.1'}})
         if (result.get('protocolVersion')!=VERSION or type(result.get('capabilities')) is not dict
@@ -220,9 +233,15 @@ def schemas():
 
 
 def exercise(job,driver,*,pwd):
+    return _exercise(job,driver,pwd=pwd,local=False)
+
+def exercise_local_fixture(job,driver,*,pwd):
+    return _exercise(job,driver,pwd=pwd,local=True)
+
+def _exercise(job,driver,*,pwd,local):
     client=None
     try:
-        client=SSEClient(driver)
+        client=SSEClient.for_local_fixture(driver) if local else SSEClient(driver)
         transport=contract.FixtureTransport(None,None,None,protocol=client)
         result=contract.exercise_share(job,transport,pwd=pwd)
     except Exception:
@@ -231,6 +250,8 @@ def exercise(job,driver,*,pwd):
                 'mapping_verified':False,'live_authenticated':False,'share_eligible':False,
                 'automatic_retry_allowed':False}
     closed=client.close() if client is not None else None
-    result.update(protocol_closed=closed,live_connected=False)
+    result.update(protocol_closed=closed,live_connected=False,external_service_connected=False,
+                  transport_scope='local-loopback-tls' if local else 'scripted-memory',
+                  local_tls_connected=bool(local and client is not None and client.driver.tls_version))
     if closed is False:result.update(status='manual_review',reason='mcp_sse_stop_unconfirmed')
     return result

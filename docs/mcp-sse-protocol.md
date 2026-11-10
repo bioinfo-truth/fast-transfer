@@ -1,10 +1,12 @@
 # 确定性 SSE/JSON-RPC 接入及执行验证
 
-2026-11-10，基于官方示例流程，新增 `fast_transfer/mcp_sse.py`，接入现有 `mcp_share.FixtureTransport`、精确合成文件校验及 Job 锁/持久意图。**内存原始 HTTP/SSE 字节流验证已执行；实际服务连接、TLS、真实身份/对象/分享均未尝试。** 没有另建工作流/账本、LLM 循环或 supervisor，也没有读取凭据、迁移/重传原样例。
+初轮记录（2026-11-10）：基于官方示例流程，新增 `fast_transfer/mcp_sse.py`，接入现有 `mcp_share.FixtureTransport`、精确合成文件校验及 Job 锁/持久意图。**内存原始 HTTP/SSE 字节流验证已执行；实际服务连接、TLS、真实身份/对象/分享均未尝试。** 没有另建工作流/账本、LLM 循环或 supervisor，也没有读取凭据、迁移/重传原样例。
+
+同日后续进展：已实现[回环专用真实 HTTPS/SSE 驱动](mcp-local-https.md)，21项真实本地传输测试通过；下文42项为初轮内存验证历史，外部入口仍锁定。
 
 ## 依赖和源码依据
 
-对当前解释器仅查询 importlib.metadata，mcp/httpx/anyio/python-dotenv 均未安装；没有导入 SDK、安装或下载依赖制品。因此本轮选择可用标准库实现和可执行的原始协议层，而非运行官方 demo。**联网 HTTP/SSE 驱动仍未实现，构造器仅接受精确 ScriptedHTTP 内存驱动；不能把本轮当作可直接启用的真实客户端。**
+对当前解释器仅查询 importlib.metadata，mcp/httpx/anyio/python-dotenv 均未安装；没有导入 SDK、安装或下载依赖制品。因此本轮选择可用标准库实现和可执行的原始协议层，而非运行官方 demo。**当时尚无联网驱动；现在默认构造器仍仅接受 ScriptedHTTP，后续新增独立回环工厂，外部驱动入口依旧锁定，不能当成可直接连接百度的客户端。**
 
 流程参考 [baidu-netdisk/mcp 固定示例](https://github.com/baidu-netdisk/mcp/blob/b3983d330fea79c7b72e6b7014803e1830148d2c/src/baidu-netdisk/client_demo/client_demo_sse.py)。保留 MIT 署名、许可证及 [NOTICE](../third_party/NOTICE.md)。同时只读核对官方锁定 mcp1.6.0 对应 [SDK SSE](https://github.com/modelcontextprotocol/python-sdk/blob/v1.6.0/src/mcp/client/sse.py)、[session](https://github.com/modelcontextprotocol/python-sdk/blob/v1.6.0/src/mcp/client/session.py)、[types](https://github.com/modelcontextprotocol/python-sdk/blob/v1.6.0/src/mcp/types.py)；逐文件 Git blob/SHA-256 保存在证据中，SDK 许可证亦保留，未安装或执行源码。
 
@@ -48,4 +50,4 @@ env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_i
 
 真实连接首要仍缺原 Browser Use site safety gate 对同一目的的可验证允许依据；本轮开发授权不解除它，也不以新驱动/主机绕行。接下来还需要明确兼容应用/原精确 NCBI对象的权限、真实业务响应/映射契约，以及逐次确认的短期凭据使用和私密返回方式。不能从已上传成功推导当前 token有效或 MCP/分享权益。
 
-具体下一步是先取得允许渠道/实际阶段范围，再审阅和实现有固定依赖、TLS证书/主机检查、无跨域认证跳转、无代理/日志泄漏、受控超时及关闭的真实 SSE driver；不能直接放开 ScriptedHTTP 类型门或安装SDK即宣称可用。其后才可能依次验证实际服务连接、真实身份/精确对象、单次分享及境内领取，分别记录。这些现在均未尝试；原上传保留、5GiB保留线不变，PR保持草稿、不部署。
+具体下一步是先取得允许渠道/实际阶段范围，再基于已实现的本地驱动机械层审阅外部路由、TLS公共CA/主机检查、无跨域认证跳转、无代理/日志泄漏、受控超时及真实数据流；不能直接放开 ScriptedHTTP 类型门或安装SDK即宣称可用。其后才可能依次验证实际服务连接、真实身份/精确对象、单次分享及境内领取，分别记录。这些现在均未尝试；原上传保留、5GiB保留线不变，PR保持草稿、不部署。

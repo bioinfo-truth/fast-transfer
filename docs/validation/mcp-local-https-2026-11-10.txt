@@ -1,0 +1,42 @@
+test_GET_redirect_does_not_follow_or_leak_location (test_mcp_local_http.LocalHTTPTests.test_GET_redirect_does_not_follow_or_leak_location) ... LOCAL_SSE_EVIDENCE {"mode": "redirect_get", "elapsed_seconds": 0.04551474889740348, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 0, "shares": 0, "status": "rejected", "reason": "mcp_local_status_rejected", "create_attempted": false, "unknown": false, "closed": true}
+ok
+test_TLS_key_logging_context_is_rejected_before_network (test_mcp_local_http.LocalHTTPTests.test_TLS_key_logging_context_is_rejected_before_network) ... ok
+test_accepted_synthetic_share_then_ACK_timeout_is_unknown_no_replay (test_mcp_local_http.LocalHTTPTests.test_accepted_synthetic_share_then_ACK_timeout_is_unknown_no_replay) ... LOCAL_SSE_EVIDENCE {"mode": "share_timeout", "elapsed_seconds": 0.44038913887925446, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 6, "shares": 1, "status": "unverified", "reason": "mcp_local_timeout", "create_attempted": true, "unknown": true, "closed": true}
+ok
+test_actual_bad_MIME_or_duplicate_headers_cannot_start_protocol (test_mcp_local_http.LocalHTTPTests.test_actual_bad_MIME_or_duplicate_headers_cannot_start_protocol) ... LOCAL_SSE_EVIDENCE {"mode": "wrong_mime", "elapsed_seconds": 0.04305540001951158, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 0, "shares": 0, "status": "rejected", "reason": "mcp_local_headers_rejected", "create_attempted": false, "unknown": false, "closed": true}
+LOCAL_SSE_EVIDENCE {"mode": "duplicate_type", "elapsed_seconds": 0.04247294692322612, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 0, "shares": 0, "status": "rejected", "reason": "mcp_local_headers_rejected", "create_attempted": false, "unknown": false, "closed": true}
+ok
+test_close_interrupts_actual_blocked_TLS_read (test_mcp_local_http.LocalHTTPTests.test_close_interrupts_actual_blocked_TLS_read) ... LOCAL_SSE_EVIDENCE {"mode": "close_blocked_read", "elapsed_seconds": 0.0014626248739659786, "first_close_confirmed": true, "final_close_confirmed": true, "reader_exited": true}
+ok
+test_corrupt_real_SSE_share_result_is_unknown_not_verified (test_mcp_local_http.LocalHTTPTests.test_corrupt_real_SSE_share_result_is_unknown_not_verified) ... LOCAL_SSE_EVIDENCE {"mode": "corrupt_share", "elapsed_seconds": 0.3249778850004077, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 6, "shares": 1, "status": "unverified", "reason": "mcp_candidate_shape_invalid", "create_attempted": true, "unknown": true, "closed": true}
+ok
+test_cross_origin_endpoint_over_actual_TLS_is_never_contacted (test_mcp_local_http.LocalHTTPTests.test_cross_origin_endpoint_over_actual_TLS_is_never_contacted) ... LOCAL_SSE_EVIDENCE {"mode": "cross_origin", "elapsed_seconds": 0.04659156990237534, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 0, "shares": 0, "status": "rejected", "reason": "mcp_sse_endpoint_rejected", "create_attempted": false, "unknown": false, "closed": true}
+ok
+test_external_factory_and_production_constructor_still_reject_before_socket (test_mcp_local_http.LocalHTTPTests.test_external_factory_and_production_constructor_still_reject_before_socket) ... ok
+test_full_real_TLS_HTTP_SSE_handshake_and_single_synthetic_share (test_mcp_local_http.LocalHTTPTests.test_full_real_TLS_HTTP_SSE_handshake_and_single_synthetic_share) ... LOCAL_SSE_EVIDENCE {"mode": "normal", "elapsed_seconds": 0.3283228480722755, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 6, "shares": 1, "status": "candidate_unverified", "reason": "mcp_share_mapping_unproven", "create_attempted": true, "unknown": true, "closed": true}
+ok
+test_hostname_mismatch_fails_with_trusted_but_wrong_SAN (test_mcp_local_http.LocalHTTPTests.test_hostname_mismatch_fails_with_trusted_but_wrong_SAN) ... ok
+test_insecure_TLS_context_and_mutation_are_rejected (test_mcp_local_http.LocalHTTPTests.test_insecure_TLS_context_and_mutation_are_rejected) ... ok
+test_local_scope_no_arbitrary_destinations_and_TCP_kernel_port_guard (test_mcp_local_http.LocalHTTPTests.test_local_scope_no_arbitrary_destinations_and_TCP_kernel_port_guard) ... ok
+test_logs_and_state_do_not_contain_private_result_or_proxy_values (test_mcp_local_http.LocalHTTPTests.test_logs_and_state_do_not_contain_private_result_or_proxy_values) ... LOCAL_SSE_EVIDENCE {"mode": "normal", "elapsed_seconds": 0.3282963680103421, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 6, "shares": 1, "status": "candidate_unverified", "reason": "mcp_share_mapping_unproven", "create_attempted": true, "unknown": true, "closed": true}
+ok
+test_peer_EOF_mid_SSE_frame_cannot_create (test_mcp_local_http.LocalHTTPTests.test_peer_EOF_mid_SSE_frame_cannot_create) ... LOCAL_SSE_EVIDENCE {"mode": "drop_frame", "elapsed_seconds": 0.04492906597442925, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 0, "shares": 0, "status": "rejected", "reason": "mcp_sse_protocol_rejected", "create_attempted": false, "unknown": false, "closed": true}
+ok
+test_real_SSE_idle_read_timeout_not_a_success (test_mcp_local_http.LocalHTTPTests.test_real_SSE_idle_read_timeout_not_a_success) ... LOCAL_SSE_EVIDENCE {"mode": "stall_read", "elapsed_seconds": 0.19691106583923101, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 0, "shares": 0, "status": "rejected", "reason": "mcp_local_timeout", "create_attempted": false, "unknown": false, "closed": true}
+ok
+test_real_TLS_handshake_stall_times_out_and_closes (test_mcp_local_http.LocalHTTPTests.test_real_TLS_handshake_stall_times_out_and_closes) ... LOCAL_SSE_EVIDENCE {"mode": "stall_tls", "elapsed_seconds": 0.15209587896242738, "TLS": null, "GETs": 0, "POSTs": 0, "shares": 0, "status": "rejected", "reason": "mcp_local_timeout", "create_attempted": false, "unknown": false, "closed": true}
+ok
+test_real_header_idle_timeout_is_bounded_and_closed (test_mcp_local_http.LocalHTTPTests.test_real_header_idle_timeout_is_bounded_and_closed) ... LOCAL_SSE_EVIDENCE {"mode": "stall_headers", "elapsed_seconds": 0.15383914206176996, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 0, "shares": 0, "status": "rejected", "reason": "mcp_local_timeout", "create_attempted": false, "unknown": false, "closed": true}
+ok
+test_share_redirect_is_unknown_once_and_never_followed_or_retried (test_mcp_local_http.LocalHTTPTests.test_share_redirect_is_unknown_once_and_never_followed_or_retried) ... LOCAL_SSE_EVIDENCE {"mode": "redirect_share", "elapsed_seconds": 0.33508121804334223, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 6, "shares": 1, "status": "unverified", "reason": "mcp_local_status_rejected", "create_attempted": true, "unknown": true, "closed": true}
+ok
+test_trickling_headers_interrupted_by_whole_driver_watchdog (test_mcp_local_http.LocalHTTPTests.test_trickling_headers_interrupted_by_whole_driver_watchdog) ... LOCAL_SSE_EVIDENCE {"mode": "trickle_headers", "elapsed_seconds": 0.30163756594993174, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 0, "shares": 0, "status": "rejected", "reason": "mcp_local_deadline", "create_attempted": false, "unknown": false, "closed": true}
+ok
+test_untrusted_certificate_fails_before_HTTP_or_share (test_mcp_local_http.LocalHTTPTests.test_untrusted_certificate_fails_before_HTTP_or_share) ... ok
+test_wire_identity_drift_has_no_share_side_effect (test_mcp_local_http.LocalHTTPTests.test_wire_identity_drift_has_no_share_side_effect) ... LOCAL_SSE_EVIDENCE {"mode": "wrong_identity", "elapsed_seconds": 0.23983832611702383, "TLS": "TLSv1.3", "GETs": 1, "POSTs": 4, "shares": 0, "status": "rejected", "reason": "mcp_fixture_identity_mismatch", "create_attempted": false, "unknown": false, "closed": true}
+ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 3.383s
+
+OK
