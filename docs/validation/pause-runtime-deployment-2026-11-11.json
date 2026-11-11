@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-11",
+  "revision": "2772a7a602c6a82f8665a09665b44c7f3d756672",
+  "archive_sha256": "6e72161f740984c5f50b55bc8e21584eb48d0c5af97b99a4c2eaf0cdead87dc9",
+  "archive_files": 51,
+  "verified_payload_files": 50,
+  "vps_installed": true,
+  "separate_version_directory": true,
+  "old_release_retained": true,
+  "service_activated": false,
+  "archive_member_set_exact": true,
+  "payload_hash_mode_owner_and_python_syntax_checked": true,
+  "referenced_baidupcs_go_license_included": true,
+  "kernel_network_denied_during_smoke_check": true,
+  "cli_help_passed": 7,
+  "signal_request_and_handler_restore_verified": true,
+  "credentials_read": false,
+  "cloud_requests": false,
+  "upload_started": false,
+  "existing_unknown_part48_modified": false,
+  "full_mvp_acceptance": false
+}
