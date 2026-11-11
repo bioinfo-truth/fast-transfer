@@ -170,7 +170,7 @@ def _operation(db, index, operation, part=-1):
 
 
 def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None, approved_task_spec_sha256=None,
-             pause_requested=None):
+             pause_requested=None, readback_only=False):
     """Upload and stream-verify one source; factory is trusted code, never JSON.
 
     The task lock spans the worker invocation. The factory gets the independently
@@ -178,7 +178,7 @@ def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None
     durable and forbids promoting synthetic receipts into a real task.
     """
     if (type(account_sha256) is not str or not re.fullmatch('[0-9a-f]{64}',account_sha256)
-            or type(timeout) not in (int,float) or not 0 < timeout <= 900):
+            or type(timeout) not in (int,float) or not 0 < timeout <= 900 or type(readback_only) is not bool):
         fail('task_upload_scope_invalid')
     control = TransferControl(deadline=time.monotonic()+timeout)
     with task.locked() as db:
@@ -196,6 +196,9 @@ def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None
         index = row['idx'];entry = manifest['files'][index]
         if row['phase'] not in ('source_verified','uploading'):
             fail('task_source_not_verified')
+        if readback_only:
+            committed=_operation(db,index,'commit')
+            if committed is None or committed['outcome']!='confirmed':fail('task_readback_commit_required')
         folder = task.file_root(index)
         needs = BackendNeeds('direct-api',65536,METADATA_CAP,METADATA_CAP,'stream')
         extras = [task.root/name for name in ('task.sqlite3','task.sqlite3-journal','task.sqlite3-wal','task.sqlite3-shm')]
@@ -226,6 +229,7 @@ def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None
             if type(protocol) is not TaskProtocol or protocol.account != account_sha256 or protocol.target != target:
                 fail('task_backend_invalid')
             protocol.attach(context)
+            if readback_only and protocol.kind=='official-api':protocol.client.read_only=True
             if protocol.kind == 'official-api':
                 grant = protocol.client.grant
                 grant.check(target)
@@ -397,6 +401,7 @@ def main(argv=None):
     mode=p.add_mutually_exclusive_group()
     mode.add_argument('--inspect-commit-proof',type=Path)
     mode.add_argument('--retry-unknown-part-once',type=int,help='Explicit policy exception: one replay of same unknown nonfinal part; retains original history.')
+    mode.add_argument('--readback-only',action='store_true',help='Require a confirmed commit before factory/credentials; forbid remote writes.')
     a=p.parse_args(argv)
     last_protocol=[None]
     samples=None
@@ -429,7 +434,7 @@ def main(argv=None):
                 with PauseSignal() as pause:
                     result=run_next(task,factory,a.expected_account_sha256,timeout=a.timeout,
                                     approved_task_spec_sha256=a.approved_task_sha256,
-                                    pause_requested=lambda:pause.requested)
+                                    pause_requested=lambda:pause.requested,readback_only=a.readback_only)
         result['resource_samples']=samples.summary()
         print(json.dumps(result,sort_keys=True));return 0
     except (StageFailure,InputProblem) as exc:

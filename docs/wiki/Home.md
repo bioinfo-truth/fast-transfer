@@ -1,5 +1,13 @@
 # Fast Transfer 项目 Wiki
 
+## 最新状态（2026-11-11）
+
+当前路线为通用Task＋固定官方Go SDK编码/API上传、完整双摘要回读、境内原生分享及私有收据。蛋白和834MB＋报告两个任务均由本人确认下载，delivered=true；已实测源SIGKILL恢复、无效令牌拒绝、低空间准入和真实unknown commit的只读核查，无重复合并。更广范围/生产SLA未作承诺，完整验收持续按当前目标核对。
+
+使用[操作手册](https://github.com/bioinfo-truth/fast-transfer/wiki/Operations)、[路线图](https://github.com/bioinfo-truth/fast-transfer/wiki/Roadmap)与[产品架构](https://github.com/bioinfo-truth/fast-transfer/wiki/Product-and-Architecture)。操作手册为当前命令、队列和故障恢复入口；下方保留早期工具/授权/模拟/M1–M6实验记录，其中“当前/待验证”均指原记录时点，不能覆盖最新状态或替代当前原地凭据授权。
+
+## 历史记录（保留原文）
+
 > 当前验收目标是海外业务VPS。既有Xtransfer上传/完整回读历史通过；原授权单次原生uinfo验证成功，应用绑定及分享权限仍未验证。不要用开发机授权代替VPS验收，也不重做上传或新grant；当前决策见[路线图](https://github.com/bioinfo-truth/fast-transfer/wiki/Roadmap)。
 
 面向中国境内科研用户，提供海外公开生物信息数据的代下载和百度网盘交付服务。

@@ -1,55 +1,36 @@
 # fast-transfer：公开生物数据代下载 MVP
 
-目标链路是人工录入公开 HTTPS 文件链接/manifest → 下载及源站校验 → 上传百度网盘并核验 → 分享交付 → 中国境内用户领取校验。首版不做淘宝、支付、项目号解析、完整网站或收费。
+面向中国境内用户，提供海外公开HTTPS数据的代下载和百度网盘交付。首版由操作人员人工录单、审核manifest、串行执行、官方API上传与完整回读、境内原生分享，并记录本人领取；淘宝、支付、项目号解析、多用户并发和无限流式传输不作为前置。
 
-当前已完成一次真实公开小样例的官方API上传和完整双哈希回读；用户已确认境内原生BDUSS/STOKEN登录、原文件核对、分享及未登录领取下载成功。这是单样例闭环，不等于通用MVP已完成。通用任务真实接线、后端全过程空间/取消保护和跨阶段恢复仍待验收。官方Go SDK复用已固定版本并通过5项禁网兼容性测试，尚未替换现有上传后端。具体见[下一步MVP清单](docs/mvp-next-steps.md)和[SDK复用边界](docs/official-sdk-reuse.md)；下文部分旧阶段说明保留历史实现范围，不代表当前样例仍未交付。
+通用任务已完成两次真实交付：902,395字节蛋白文件，以及834,262,758字节鼠基因组＋7,187字节报告，均完整MD5/SHA256回读、一次分享并由本人确认下载。原地OAuth与国内原生登录复用；固定Go SDK承担请求编码，项目保留摘要、资源预算和持久恢复控制。故障证据与完整验收缺口持续列在[验收状态](docs/mvp-acceptance-status.md)，不将模拟测试或单次成功当作整体完成。
 
-- [半自动流程：可用命令、未知结果接续与下一轮验收候选](docs/half-automatic-handoff.md)
-- [SDK请求编码适配（已接协议，Task上传执行待接）](docs/sdk-request-encoder.md)
-- [通用任务入口：持久状态、源下载和恢复（上传尚未接入）](docs/mvp-task-entry.md)
-- [输入契约与拒绝/人工审核规则](docs/mvp-input-contract.md)
-- [百度 HTTP 绑定、官方依据与关闭门](docs/mvp-baidu-http.md)
-- [M3 无凭据适配、模拟状态与真实验收边界](docs/mvp-upload-stage.md)
-- [后端空间预算、检查接口与未验证范围](docs/mvp-space-budget.md)
-- [M1–M6 里程碑与授权边界](docs/mvp-milestones.md)
-- [真实 NCBI 样例及来源/使用政策](examples/ncbi-ecoli/README.md)
-- [项目 Wiki](https://github.com/bioinfo-truth/fast-transfer/wiki)（[仓库镜像](docs/wiki/Home.md)）
+- [操作手册：人工队列、录入、执行、恢复、交接与保留](docs/operator-runbook.md)
+- [输入契约](docs/mvp-input-contract.md)、[通用任务](docs/mvp-task-entry.md)、[上传与恢复](docs/mvp-task-upload.md)
+- [只读未知合并核查](docs/unknown-commit-inspection.md)、[私有交付收据](docs/private-delivery.md)
+- [SDK复用](docs/official-sdk-reuse.md)、[编码适配](docs/sdk-request-encoder.md)、[运行包](docs/versioned-runtime.md)
+- [蛋白真实任务](docs/protein-pilot-2026-11-11.md)、[鼠多文件真实任务](docs/mouse-pilot-2026-11-11.md)、[源/令牌/空间故障](docs/source-token-faults-2026-11-11.md)
+- [项目 Wiki](https://github.com/bioinfo-truth/fast-transfer/wiki)、[路线图](https://github.com/bioinfo-truth/fast-transfer/wiki/Roadmap)
 
-## 只读运行
+## 本地只读入口
 
-Python 3.10+，仅标准库，无需网盘凭据：
+在已审核仓库、仅使用标准库：
 
 ```sh
-python3 -m fast_transfer.intake examples/ncbi-ecoli/manifest.json
-python3 -m fast_transfer.download examples/ncbi-ecoli/manifest.json --output-dir ./scratch-ncbi-new-run --max-file-bytes 2097152
+python3 -B -m fast_transfer.intake examples/ncbi-ecoli-protein/manifest.json
 ```
 
-输出目录必须不存在；源文件逐个下载，收据位于 `.receipts/`，不会上传或分享。默认单文件上限 16 MiB；工作文件系统至少保留 5 GiB，另加 256 MiB 提前停止余量，以及独立的源收据/元数据预算。默认 source-only 计划不含未来后端空间保证；选择后端计划时须显式提供开销及目录，命令仍不会上传。当前只供操作人员串行运行，不具备多用户配额和完整任务监管。
-
-只给公开链接也可以先录入，例如：
-
-```sh
-python3 -m fast_transfer.intake --url https://example.org/sample.fastq.gz --name sample.fastq.gz
-```
-
-缺少大小、源站哈希或来源审核记录时返回 `manual_review`（退出码 2），不会开始下载。`accepted`（0）仅代表输入通过；`rejected`（1）需修正或拒绝。不接受受控访问、带凭据/查询参数的链接、私网目标或危险重定向。详见输入契约。
-
-历史 `python3 -m fast_transfer` 是旧 PoC 入口，保留用于对照，**不用于 MVP 的用户链接处理**；其输入和下载安全实现不具备新契约，不应作为服务接口。[历史 PoC 说明](docs/legacy-poc.md)与未提交实验材料保持独立。
+accepted只表示输入通过，不是授权或已交付。VPS使用经过核对的独立运行包和显式私有路径；完整命令见操作手册。单文件默认1GiB、4MiB片、每manifest最多100文件，逐文件核验后才可清理；实际空间保留5GiB底线及余量。更改任务设置需重新审核，不改变既有快照。没有固定速度或商业SLA承诺。
 
 ## 检查
 
+在Linux且libseccomp可用、实际SDK helper已按文档构建后，运行已审核的明确测试模块；不要用广泛discover夹带本地未提交实验：
+
 ```sh
-python3 -m unittest discover -s tests -v
+python3 -I -S -B tests/support/run_workflow_isolated.py \
+  test_intake test_safe_download test_space test_stop_boundaries test_baidu_md5 \
+  test_resources test_task_upload_process test_task_retry test_task_inspect \
+  test_task_delivery test_delivery test_task_handoff test_task_cleanup \
+  test_task_upload test_task test_baidu_protocol test_sdk_codec
 ```
 
-新测试使用模拟网络检查危险输入、重定向、固定 IP 与 TLS 主机名、大小/磁盘/哈希错误及旧文件保护。另有一次真实 NCBI 小文件源下载记录，见 [M2 证据](docs/validation/mvp-source-2026-11-08.json)；它不包含网盘上传、分享或客户领取。
-
-M3 的 `python3 -m fast_transfer.m3 --simulate ...` 仅使用本地已校验文件与内存假远端，不加载凭据或连接网盘；没有 live 回退。模拟成功始终 `cloud_verified=false`、`delivery_eligible=false`，不得用于真实分享。操作及完整验收矩阵见 M3 说明。
-
-新增 fake-only [隔离不覆盖候选](docs/mvp-baidu-http.md)：目录身份核验、改名失败保留、提交未知不重试；真实写入保持关闭。
-
-[M4/M5 离线单任务工作流](docs/mvp-workflow.md)：人工回填与清单草稿、私有状态/查看及人工核查；无真实分享、发送或交付能力。
-
-[M6 本地验收准备](docs/mvp-acceptance.md)：回执契约、只读文件核验与真实领取清单；准备完成不代表境内实测通过。
-
-[单次获准真实样例与同目录续办](docs/mvp-live-sample.md)：真实上传/完整回读已通过，分享创建仍待既有能力核实或人工建链；未通过境内领取验收。
+该入口用继承性内核禁网、空环境与临时HOME执行测试，合成响应不冒充云端成功；真实验收单独记录。Go helper构建和检查见SDK文档。历史`python3 -m fast_transfer`、M3模拟器、M4/M5离线聚合器及M6早期准备材料保留作对照；实际人工录单使用通用Task链路，不以旧PoC处理客户链接。

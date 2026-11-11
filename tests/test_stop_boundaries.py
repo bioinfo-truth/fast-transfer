@@ -1,5 +1,6 @@
 """Bounded synthetic stop experiments in kernel-network-denied child processes."""
 import errno
+import contextlib
 import hashlib
 import json
 import os
@@ -107,6 +108,7 @@ def http_scenario(root,mode):
     entered=threading.Event();release=threading.Event();calls=[];timeouts=[];read_sizes=[]
     cooperative=mode.startswith('cooperative_')
     point=mode.split('_',1)[1] if cooperative else mode
+    if mode=='deadline_control':point='deadline'
     class Sock:
         def settimeout(self,n):timeouts.append(n)
         def shutdown(self,how):
@@ -138,6 +140,9 @@ def http_scenario(root,mode):
     grant=RuntimeGrant(True,target,'0'*64,'1'*64,'synthetic-only',time.monotonic()+60)
     client=PinnedBaiduHTTPClient(grant=grant,resolver=lambda _:['8.8.8.8'],connection_factory=lambda *args:Connection())
     request=HTTPRequest('GET','https://d.pcs.baidu.com/synthetic',target,'readback',auth=False)
+    if mode=='deadline_control':
+        client.provider=lambda:'SYNTHETIC_TEST_TOKEN'
+        request=HTTPRequest('GET','https://pan.baidu.com/rest/2.0/xpan/file',target,params={'method':'meta'})
     outcome=[]
     if mode=='headers_stop':
         stop_results=[]
@@ -163,13 +168,19 @@ def http_scenario(root,mode):
             if point=='read':list(reply.chunks(4,4))
             outcome.append('unexpected_success')
         except StageFailure as exc:outcome.append(exc.code)
-    with patch('fast_transfer.baidu_http.REQUEST_BUDGET',.01 if mode=='deadline' else 120):
+    clock=time.monotonic;shift=[0]
+    # Readback is bounded by the grant, control by REQUEST_BUDGET. Advance
+    # only after the request is demonstrably stalled, avoiding timing races.
+    clock_context=(patch('fast_transfer.baidu_http.time.monotonic',side_effect=lambda:clock()+shift[0])
+                   if mode=='deadline' else contextlib.nullcontext())
+    with patch('fast_transfer.baidu_http.REQUEST_BUDGET',.01 if mode.startswith('deadline') else 120),clock_context:
         thread=threading.Thread(target=run,daemon=True);thread.start();assert entered.wait(3)
         start=time.monotonic()
-        if mode=='deadline':
+        if mode.startswith('deadline'):
+            if mode=='deadline':shift[0]=61
             time.sleep(.03);first=None
         else:first=client.stop()
-        stop_call_seconds=time.monotonic()-start if mode!='deadline' else None
+        stop_call_seconds=time.monotonic()-start if not mode.startswith('deadline') else None
         time.sleep(.03)
         blocked=thread.is_alive()
         release.set();thread.join(3);assert not thread.is_alive()
@@ -269,6 +280,10 @@ class StopBoundaryTests(unittest.TestCase):
         self.assertTrue(d['final_stop_confirmed'])
     def test_deadline_checked_after_stalled_request_returns(self):
         d=self.scenario('http','deadline');self.assertTrue(d['blocked_after_stop'])
+        self.assertEqual(d['outcome'],['http_deadline']);self.assertNotIn('headers',d['calls'])
+
+    def test_control_request_keeps_short_deadline_when_stalled(self):
+        d=self.scenario('http','deadline_control');self.assertTrue(d['blocked_after_stop'])
         self.assertEqual(d['outcome'],['http_deadline']);self.assertNotIn('headers',d['calls'])
 
 

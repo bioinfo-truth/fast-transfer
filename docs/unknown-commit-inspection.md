@@ -38,3 +38,10 @@ python3 -m fast_transfer.task_upload --tasks-dir /PRIVATE/TASKS JOB_ID \
 ## 证据
 
 7项新增及相关回归共106项禁网测试通过，实际SDK编码器配合合成服务器，覆盖响应丢失但对象已合并、只读完整核验后接续、对象/摘要/账号范围拒绝、错误回读保留未知、停止未确认、源变化、HTTP非GET在认证前拒绝及其他未知类型不接管。未进行新真实账号核查或VPS部署，不替代上传强杀与资源验收。
+
+
+## 2026-11-11真实崩溃窗口验证
+
+独立内部验收Task使用已审核NCBI 7,187字节公开报告，真实目录/预上传/单片/合并仅一次。服务端合并响应被验证后、Task.finish_operation保存回执前暂停；父进程确认子进程存活后SIGKILL并wait，canonical commit意图仍unknown。精确对象定位及原unknown行另存私有证据，没有篡改已交付任务。普通续跑在factory/凭据之前拒绝，新请求0。
+
+新exec使用inspect_commit，仅6个GET核对账号、目录/对象身份和大小，并完整MD5/SHA256回读；6.40486秒、RSS采样峰值29,580KiB、最低采样可用空间23,387,348,992字节，未知归零、cloud_verified。没有第二次合并/上传/分享或清理，原交付Task数据库摘要未变。该真实崩溃窗口不代表任意服务端响应丢失/断电语义都被覆盖；定位文件仍不是成功证明。机器记录见`validation/unknown-commit-real-2026-11-11.json`。

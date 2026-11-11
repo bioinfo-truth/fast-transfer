@@ -1,5 +1,13 @@
 # 首轮验证方案
 
+## 最新状态（2026-11-11）
+
+当前路线为通用Task＋固定官方Go SDK编码/API上传、完整双摘要回读、境内原生分享及私有收据。蛋白和834MB＋报告两个任务均由本人确认下载，delivered=true；已实测源SIGKILL恢复、无效令牌拒绝、低空间准入和真实unknown commit的只读核查，无重复合并。更广范围/生产SLA未作承诺，完整验收持续按当前目标核对。
+
+使用[操作手册](https://github.com/bioinfo-truth/fast-transfer/wiki/Operations)、[路线图](https://github.com/bioinfo-truth/fast-transfer/wiki/Roadmap)与[产品架构](https://github.com/bioinfo-truth/fast-transfer/wiki/Product-and-Architecture)。操作手册为当前命令、队列和故障恢复入口；下方保留早期工具/授权/模拟/M1–M6实验记录，其中“当前/待验证”均指原记录时点，不能覆盖最新状态或替代当前原地凭据授权。
+
+## 历史记录（保留原文）
+
 ## 环境
 
 记录 VPS 服务商、区域、套餐、系统、磁盘剩余、账号等级、网盘客户端版本及 commit、测试时间和网络条件。勿记录 token、Cookie、订单个人信息或未公开数据。

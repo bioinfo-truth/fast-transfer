@@ -236,6 +236,25 @@ class TaskUploadTests(unittest.TestCase):
         self.cloud.corrupt_readback=False;self.run_upload()
         self.assertEqual(self.count('commit'),1);self.assertEqual(self.count('precreate'),1);self.assertEqual(self.count('part:0'),1);self.assertEqual(self.count('readback'),2)
 
+    def test_readback_only_rejects_uncommitted_task_before_factory(self):
+        self.prepare()
+        with self.assertRaisesRegex(StageFailure,'task_readback_commit_required'):
+            self.run_upload(readback_only=True)
+        self.assertEqual(self.factory_calls,0);self.assertFalse(self.cloud.events)
+        self.assertEqual(self.task.view()['unknown_operations'],0)
+
+    def test_readback_only_recovery_never_posts_after_confirmed_commit(self):
+        self.prepare();self.cloud.corrupt_readback=True
+        with self.assertRaisesRegex(StageFailure,'readback_hash'):self.run_upload()
+        self.cloud.corrupt_readback=False;exchange=MemoryAPI.exchange
+        def only_get(client,req):
+            self.assertEqual(req.method,'GET')
+            return exchange(client,req)
+        with patch.object(MemoryAPI,'exchange',only_get):
+            result=self.run_upload(readback_only=True)
+        self.assertEqual(result['status'],'test_cloud_verified')
+        self.assertEqual(self.count('commit'),1);self.assertEqual(self.count('part:0'),1)
+
     def test_unknown_commit_blocks_factory_and_never_retries(self):
         self.prepare();self.cloud.drop_commit=True
         with self.assertRaisesRegex(StageFailure,'http_io'):self.run_upload()
