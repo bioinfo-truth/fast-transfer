@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-11",
+  "runtime_revision": "63a9840fba769df14c7b6f0c0902f986c94a4162",
+  "mode": "real-official-api-generic-task",
+  "file": {
+    "name": "GCF_000005845.2_ASM584v2_protein.faa.gz",
+    "bytes": 902395,
+    "md5": "c9c1dcbe6e78af9e375396775c944a9f",
+    "sha256": "283c91ff66d0597f2488fd1c00ad40f8d0a0b37a92f981b6148d75fa4a934896"
+  },
+  "source": {
+    "status": "source_verified",
+    "elapsed_seconds": 0.630571,
+    "minimum_sampled_free_bytes": 24289083392,
+    "peak_sampled_self_rss_kib": 28112,
+    "peak_sampled_process_tree_rss_kib": 28112,
+    "samples": 14
+  },
+  "upload_and_full_readback": {
+    "status": "cloud_verified",
+    "elapsed_seconds": 18.394651,
+    "minimum_sampled_free_bytes": 24289050624,
+    "peak_sampled_self_rss_kib": 34664,
+    "peak_sampled_process_tree_rss_kib": 44792,
+    "samples": 361,
+    "sample_errors": 0,
+    "sampler_stopped": true,
+    "stop_confirmed": true,
+    "md5_and_sha256_match": true
+  },
+  "confirmed_mutations": [
+    "directory",
+    "precreate",
+    "part:0",
+    "commit"
+  ],
+  "unknown_operations": 0,
+  "authorization": {
+    "existing_vps_oauth_used_in_place": true,
+    "new_login_required": false,
+    "credentials_transferred": false
+  },
+  "handoff": {
+    "exported": true,
+    "private_metadata_transferred": true,
+    "digest_and_account_verified_domestically": true
+  },
+  "native_client": {
+    "metadata_matched": [
+      "path",
+      "fs_id",
+      "bytes",
+      "md5"
+    ],
+    "share_created": true,
+    "share_attempts": 1,
+    "share_period_days": 1,
+    "random_code": true
+  },
+  "delivery": {
+    "status": "pending_recipient",
+    "private_receipt_saved": true,
+    "receipt_associated_with_source_task": true,
+    "recipient_confirmed": false,
+    "delivered": false
+  },
+  "cleanup": {
+    "phase": "cleaned",
+    "local_payload_bytes_removed": 902395,
+    "receipts_retained": true,
+    "cloud_deleted": false,
+    "original_sample_modified": false
+  },
+  "limitations": [
+    "small-file result only",
+    "periodic RSS can miss peaks and double-count shared pages",
+    "upload/readback duration is combined, not bulk throughput",
+    "recipient confirmation pending",
+    "large-file and real failure acceptance incomplete"
+  ]
+}
