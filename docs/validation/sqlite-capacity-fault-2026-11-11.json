@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-11",
+  "scope": "local-sqlite-capacity-fault",
+  "network": "inherited kernel seccomp denial",
+  "test_module": "test_stability",
+  "passed_tests": 7,
+  "log_sha256": "d0ae3108cabbe799f381a1d5503b6c44fc66ed8bbb1fd85b74d2f544ff234224",
+  "new_test_cases": 1,
+  "new_subcases": [
+    "part",
+    "commit"
+  ],
+  "failure": "actual SQLite SQLITE_FULL using max_page_count on temporary database",
+  "service": "synthetic HTTP with actual local SDK encoder",
+  "failure_boundary": "service effect observed before finish_operation receipt write; temporary capacity-probe INSERT causes actual SQLITE_FULL",
+  "verified": [
+    "adapter stopped",
+    "original unknown intent remains durable",
+    "no receipt falsely confirmed",
+    "no verification row",
+    "not delivered",
+    "fresh Task blocks before factory",
+    "no repeated part or commit"
+  ],
+  "filesystem_ENOSPC": false,
+  "production_disk_filled": false,
+  "credentials_read": false,
+  "real_network": false,
+  "deployed": false,
+  "published": false,
+  "limitations": [
+    "Capacity-probe INSERT fails in test wrapper before receipt update, not the receipt UPDATE itself.",
+    "Tests database-engine capacity failure; not evidence of real filesystem ENOSPC or journal rollback under filesystem failure.",
+    "SQLite error propagation is verified; no guarantee a new failure-reason record can be written on full storage."
+  ]
+}

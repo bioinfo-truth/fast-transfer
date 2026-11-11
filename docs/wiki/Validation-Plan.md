@@ -62,3 +62,9 @@
 ### 2026-11-11：恢复入口诊断审计（仅本地）
 
 重复操作与交付保护复用既有测试，不重写上传/分享流程。task show新增只读recovery建议，区分下载恢复/续传/GET-only回读/未知commit核查/有限片重试审议/等待领取；已耗用片重试不再建议重试，错误类别不清unknown，未导出或未分享不自行推断。新增通用合成测试与原收据测试断言，无真实认证/传输/分享/部署。本轮仅本地工程，远端同步尚未执行；具体映射见[操作手册](https://github.com/bioinfo-truth/fast-transfer/wiki/Operations)。
+
+## 2026-11-11：SQLite容量耗尽边界
+
+在独立临时数据库通过 `max_page_count` 实际触发SQLITE_FULL，不填满真实磁盘。新增一个测试分别覆盖part/commit两个子场景：合成服务已接收写入，finish_operation保存回执之前，测试包装器的容量探测INSERT实际失败。原持久unknown保留、没有伪造确认/完整核验/交付，适配器停止；重新打开原Task在factory之前拒绝，不再次发片或合并。
+
+7项相关禁网测试通过，使用实际本地SDK编码器与合成服务。不是实际收据UPDATE触发SQLITE_FULL，也不是文件系统ENOSPC/日志回滚或生产磁盘耗尽验收；不保证此时还能持久化新reason。只增强数据库容量失败的恢复证据，不扩大此前真实操作范围。仓库证据为 `docs/validation/sqlite-capacity-fault-2026-11-11.json`。

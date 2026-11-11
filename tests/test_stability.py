@@ -1,5 +1,6 @@
 """Synthetic generic task faults only; run with inherited kernel network denial."""
 import io
+import sqlite3
 import tempfile
 import time
 import unittest
@@ -134,3 +135,39 @@ class StabilityTests(unittest.TestCase):
         with self.assertRaisesRegex(StageFailure,'^http_timeout$'): client.exchange(request)
         factory.assert_called_once(); connection.request.assert_called_once(); connection.close.assert_called_once()
         self.assertTrue(client.stop())
+
+    def test_sqlite_full_before_receipt_keeps_part_or_commit_unknown(self):
+        # Real SQLITE_FULL in a temporary test database via page cap; no disk filling.
+        original = Task.finish_operation
+        for operation in ('part','commit'):
+            with self.subTest(operation=operation):
+                self.configure(); self.prepare()
+                def full(task,index,op,fingerprint,receipt,*,part=-1,_db=None):
+                    if op == operation:
+                        _db.execute('CREATE TABLE synthetic_capacity_probe(payload BLOB)')
+                        _db.commit()
+                        pages = _db.execute('PRAGMA page_count').fetchone()[0]
+                        _db.execute('PRAGMA max_page_count='+str(pages))
+                        with _db:
+                            _db.execute('INSERT INTO synthetic_capacity_probe VALUES(zeroblob(1048576))')
+                        raise AssertionError('Expected bounded SQLite capacity failure')
+                    return original(task,index,op,fingerprint,receipt,part=part,_db=_db)
+                with patch.object(Task,'finish_operation',full):
+                    with self.assertRaises(sqlite3.OperationalError) as caught:
+                        self.run_upload()
+                self.assertEqual(caught.exception.sqlite_errorcode,sqlite3.SQLITE_FULL)
+                self.assertTrue(self.last.client.stopped)
+                view = self.task.view()
+                self.assertEqual(view['unknown_operations'],1)
+                self.assertFalse(view['delivered'])
+                self.assertEqual(view['files'][0]['phase'],'uploading')
+                with self.task.locked() as db:
+                    row = db.execute("SELECT operation,receipt FROM operations WHERE outcome='unknown'").fetchone()
+                    self.assertEqual(row['operation'],operation); self.assertIsNone(row['receipt'])
+                    self.assertEqual(db.execute('SELECT COUNT(*) FROM verifications').fetchone()[0],0)
+                calls = self.factory_calls; events = list(self.cloud.events)
+                self.task = Task(self.root,self.task.job_id)
+                with self.assertRaisesRegex(StageFailure,'unknown_operation'): self.run_upload()
+                self.assertEqual(self.factory_calls,calls); self.assertEqual(self.cloud.events,events)
+                self.assertEqual(self.count('part:0'),1)
+                self.assertEqual(self.count('commit'),1 if operation=='commit' else 0)

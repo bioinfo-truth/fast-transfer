@@ -166,3 +166,9 @@ ft_run task_delivery --tasks-dir "$ft_tasks" "$ft_job" \
 未知写入优先于错误类别：即使reason变成限流、认证拒绝、超时或空值，未知commit仍只建议核查，不被清零。一次非最终片重试失败后保留原unknown及尝试，重开诊断转人工。show在合成测试中保持SQLite字节摘要不变，使用既有排他锁，无新迁移或持久表。
 
 审计复用既有实际exec/SIGKILL/重新exec、unknown commit GET-only核查、有限重试耗用、交接拒绝未核验及pending/confirmed防回退测试；不重复实现上传/交付逻辑。新增通用合成测试入口 `tests/test_task_recovery.py`，领取confirmed/pending诊断也接入原有收据测试。无实网、部署或新交付。本轮仅本地工程，Wiki本地镜像同步，远端发布待后续允许网络时进行。
+
+## 2026-11-11：SQLite容量耗尽边界
+
+在独立临时数据库通过 `max_page_count` 实际触发SQLITE_FULL，不填满真实磁盘。新增一个测试分别覆盖part/commit两个子场景：合成服务已接收写入，finish_operation保存回执之前，测试包装器的容量探测INSERT实际失败。原持久unknown保留、没有伪造确认/完整核验/交付，适配器停止；重新打开原Task在factory之前拒绝，不再次发片或合并。
+
+7项相关禁网测试通过，使用实际本地SDK编码器与合成服务。不是实际收据UPDATE触发SQLITE_FULL，也不是文件系统ENOSPC/日志回滚或生产磁盘耗尽验收；不保证此时还能持久化新reason。只增强数据库容量失败的恢复证据，不扩大此前真实操作范围。仓库证据为 `docs/validation/sqlite-capacity-fault-2026-11-11.json`。
