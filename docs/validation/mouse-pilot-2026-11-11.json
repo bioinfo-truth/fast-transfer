@@ -1,0 +1,141 @@
+{
+  "date": "2026-11-11",
+  "status": "two_files_verified_shared_recipient_confirmed",
+  "same_original_task": true,
+  "files": [
+    {
+      "index": 0,
+      "name": "GCF_000001635.27_GRCm39_genomic.fna.gz",
+      "bytes": 834262758,
+      "md5": "c0b0c4c3f54d2b480efe68a18bf7e42b",
+      "sha256": "94d08476468027092ed8b6714fd00e6a0b8ef556a5d899c9a1619eb8d9ec9e8c"
+    },
+    {
+      "index": 1,
+      "name": "GCF_000001635.27_GRCm39_assembly_report.txt",
+      "bytes": 7187,
+      "md5": "1fd6ffdf5da458e9d4f4e5b82d482601",
+      "sha256": "e3fb259bf1d1ee3b646c1f697a39c8394a6342d790fca9c1b36a8c873063ae26"
+    }
+  ],
+  "native_identity_size_verified": true,
+  "native_md5_equals_content_md5": [
+    false,
+    true
+  ],
+  "native_md5_difference_cause": "not-established",
+  "content_integrity": "official-api-full-md5-sha256-readback",
+  "audit": {
+    "unknown_operations": 0,
+    "confirmed_commit_count": 2,
+    "verification_count": 2,
+    "files": [
+      {
+        "index": 0,
+        "phase": "cloud_verified"
+      },
+      {
+        "index": 1,
+        "phase": "cloud_verified"
+      }
+    ],
+    "retry_history": [
+      {
+        "part": 48,
+        "outcome": "confirmed",
+        "original_outcome": "unknown"
+      }
+    ],
+    "readback_received_body_bytes": 834262758,
+    "readback_post_requests": 0,
+    "source_payloads_retained": true
+  },
+  "readback_resources": {
+    "schema": "fast-transfer-resource-samples-v1",
+    "samples": 9665,
+    "sample_errors": 0,
+    "interval_seconds": 0.05,
+    "elapsed_seconds": 493.906808,
+    "minimum_sampled_free_bytes": 23405002752,
+    "peak_sampled_self_rss_kib": 43096,
+    "peak_sampled_process_tree_rss_kib": 43096,
+    "process_tree_truncated": false,
+    "sampler_stopped": true,
+    "complete": true,
+    "measurement": "periodic-rss-sum-may-double-count-shared-pages-and-miss-peaks"
+  },
+  "report_resources": {
+    "schema": "fast-transfer-resource-samples-v1",
+    "samples": 348,
+    "sample_errors": 0,
+    "interval_seconds": 0.05,
+    "elapsed_seconds": 17.685965,
+    "minimum_sampled_free_bytes": 23404953600,
+    "peak_sampled_self_rss_kib": 31624,
+    "peak_sampled_process_tree_rss_kib": 33916,
+    "process_tree_truncated": false,
+    "sampler_stopped": true,
+    "complete": true,
+    "measurement": "periodic-rss-sum-may-double-count-shared-pages-and-miss-peaks"
+  },
+  "resume_with_remaining_parts_resources": {
+    "schema": "fast-transfer-resource-samples-v1",
+    "samples": 4580,
+    "sample_errors": 0,
+    "interval_seconds": 0.05,
+    "elapsed_seconds": 235.200531,
+    "minimum_sampled_free_bytes": 23421857792,
+    "peak_sampled_self_rss_kib": 78556,
+    "peak_sampled_process_tree_rss_kib": 102236,
+    "process_tree_truncated": false,
+    "sampler_stopped": true,
+    "complete": true,
+    "measurement": "periodic-rss-sum-may-double-count-shared-pages-and-miss-peaks"
+  },
+  "failed_readback_only_resources": {
+    "schema": "fast-transfer-resource-samples-v1",
+    "samples": 2590,
+    "sample_errors": 0,
+    "interval_seconds": 0.05,
+    "elapsed_seconds": 132.328535,
+    "minimum_sampled_free_bytes": 23415951360,
+    "peak_sampled_self_rss_kib": 42876,
+    "peak_sampled_process_tree_rss_kib": 42876,
+    "process_tree_truncated": false,
+    "sampler_stopped": true,
+    "complete": true,
+    "measurement": "periodic-rss-sum-may-double-count-shared-pages-and-miss-peaks"
+  },
+  "share_created_once": true,
+  "share_period_days": 1,
+  "random_code": true,
+  "recipient_status": "confirmed",
+  "delivered": true,
+  "cleanup_performed": false,
+  "credentials_transferred": false,
+  "new_login_or_authorization": false,
+  "second_1_13gb_manifest_executed": false,
+  "mvp_complete": false,
+  "final_regression": {
+    "passed": 130,
+    "network": "seccomp denied",
+    "sdk_encoder": "actual",
+    "cloud": "synthetic",
+    "log_sha256": "6c46c1960f1b27a69af0c2e3b036b6d784ba141076d8c9f90e5e147a77e50ece"
+  },
+  "recipient_evidence": "user-reports-both-files-extracted-and-downloaded-in-response-to-logged-out-test",
+  "delivery_history": [
+    "pending",
+    "confirmed"
+  ],
+  "pending_record_retained": true,
+  "confirmed_receipt_attached_to_source_task": true,
+  "delivery_runtime": {
+    "revision": "4c8ea433f666963c4e29ab8dff5f95274f2e326e",
+    "archive_sha256": "6d12c92f0bf5eef801fb32a51bf5fca02d9e83152427e0a3a0ff1af483926a89",
+    "verified_payload_files": 51,
+    "service_activated": false,
+    "old_releases_retained": true
+  },
+  "goal_status": "active"
+}

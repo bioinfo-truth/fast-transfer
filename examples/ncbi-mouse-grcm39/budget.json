@@ -1,6 +1,6 @@
 {
   "date": "2026-11-11",
-  "status": "first-plan-stopped-with-unknown-part48",
+  "status": "first-plan-verified-shared-recipient-confirmed",
   "plans": [
     {
       "manifest": "manifest-genome-and-report.json",
@@ -39,11 +39,19 @@
   "payload_downloaded": true,
   "baidu_object_created": true,
   "baidu_directory_created": true,
-  "baidu_final_file_committed": false,
+  "baidu_final_file_committed": true,
   "second_plan_executed": false,
-  "confirmed_part_count": 48,
-  "unknown_part": 48,
+  "confirmed_part_count": 101,
+  "unknown_part": null,
   "local_worker_terminal": true,
   "cleanup_performed": false,
-  "specific_first_plan_scope_confirmed": true
+  "specific_first_plan_scope_confirmed": true,
+  "confirmed_genome_parts": 100,
+  "confirmed_report_parts": 1,
+  "part48_retried_once": true,
+  "original_unknown_snapshot_retained": true,
+  "full_readback_verified": true,
+  "share_created_once": true,
+  "recipient_status": "confirmed",
+  "delivered": true
 }
