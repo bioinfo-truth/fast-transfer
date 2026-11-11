@@ -1,5 +1,7 @@
 # Fast Transfer 项目 Wiki
 
+> 2026-11-11最新：用户已将同一Goal恢复active；较早blocked叙述是历史状态。成本/工时和跨地区测速后置。新增错误分类与恢复建议通过224项禁网回归，尚未部署；不能将历史VPS运行包等同本地新代码。本轮只做本地工程，远端发布待后续允许联网时同步。操作入口见[Operations](https://github.com/bioinfo-truth/fast-transfer/wiki/Operations)。
+
 ## 最新状态（2026-11-11）
 
 当前路线为通用Task＋固定官方Go SDK编码/API上传、完整双摘要回读、境内原生分享及私有收据。蛋白和834MB＋报告两个任务均由本人确认下载，delivered=true；已实测源SIGKILL恢复、无效令牌拒绝、低空间准入和真实unknown commit的只读核查，无重复合并。更广范围/生产SLA未作承诺，完整验收持续按当前目标核对。

@@ -27,7 +27,8 @@ accepted只表示输入通过，不是授权或已交付。VPS使用经过核对
 
 ```sh
 python3 -I -S -B tests/support/run_workflow_isolated.py \
-  test_intake test_safe_download test_space test_stop_boundaries test_baidu_md5 \
+  test_task_recovery test_stability test_intake test_safe_download test_space \
+  test_stop_boundaries test_baidu_md5 \
   test_resources test_task_upload_process test_task_retry test_task_inspect \
   test_task_delivery test_delivery test_task_handoff test_task_cleanup \
   test_task_upload test_task test_baidu_protocol test_sdk_codec
