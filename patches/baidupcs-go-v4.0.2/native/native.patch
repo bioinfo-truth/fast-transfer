@@ -1,0 +1,109 @@
+--- a/main.go
++++ b/main.go
+@@ -3,6 +3,7 @@
+ import (
+ 	"encoding/hex"
+ 	"fmt"
++	"golang.org/x/crypto/ssh/terminal"
+ 	"os"
+ 	"os/exec"
+ 	"path"
+@@ -420,7 +421,26 @@
+ 			After:    saveFunc,
+ 			Action: func(c *cli.Context) error {
+ 				var bduss, ptoken, stoken, cookies string
+-				if c.IsSet("cookies") {
++				if c.Bool("cookies-prompt") {
++					file, e := os.OpenFile("/dev/tty", os.O_RDWR, 0)
++					if e != nil {
++						return fmt.Errorf("interactive terminal required")
++					}
++					defer file.Close()
++					fmt.Fprint(file, "Cookie (hidden): ")
++					raw, e := terminal.ReadPassword(int(file.Fd()))
++					fmt.Fprintln(file)
++					if e != nil {
++						return fmt.Errorf("cookie input failed")
++					}
++					cookies = string(raw)
++					for i := range raw {
++						raw[i] = 0
++					}
++					if strings.TrimSpace(cookies) == "" {
++						return fmt.Errorf("empty cookie")
++					}
++				} else if c.IsSet("cookies") {
+ 					cookies = c.String("cookies")
+ 				} else if c.IsSet("bduss") {
+ 					bduss = c.String("bduss")
+@@ -448,6 +468,7 @@
+ 				return nil
+ 			},
+ 			Flags: []cli.Flag{
++				cli.BoolFlag{Name: "cookies-prompt", Usage: "隐藏输入Cookie，使用原生登录和本机配置保存"},
+ 				cli.StringFlag{
+ 					Name:  "username",
+ 					Usage: "登录百度帐号的用户名(手机号/邮箱/用户名)",
+--- a/go.mod
++++ b/go.mod
+@@ -44,3 +44,5 @@
+ 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
+ 	google.golang.org/protobuf v1.33.0 // indirect
+ )
++
++replace github.com/qjfoidnh/baidu-tools => ./local-baidu-tools
+--- a/requester/http_client.go
++++ b/requester/http_client.go
+@@ -20,7 +20,8 @@
+ func NewHTTPClient() *HTTPClient {
+ 	h := &HTTPClient{
+ 		Client: http.Client{
+-			Timeout: 50 * time.Second,
++			Timeout:       50 * time.Second,
++			CheckRedirect: func(req *http.Request, via []*http.Request) error { return http.ErrUseLastResponse },
+ 		},
+ 		UserAgent: UserAgent,
+ 	}
+@@ -35,7 +36,7 @@
+ 			DialContext: dialContext,
+ 			// DialTLS:     h.dialTLSFunc(),
+ 			TLSClientConfig: &tls.Config{
+-				InsecureSkipVerify: true,
++				MinVersion: tls.VersionTLS12,
+ 			},
+ 			TLSHandshakeTimeout:   20 * time.Second,
+ 			DisableKeepAlives:     false,
+@@ -86,7 +87,7 @@
+ 	// 		h.transport.TLSClientConfig = nil
+ 	// 	} else {
+ 	h.transport.TLSClientConfig = &tls.Config{
+-		InsecureSkipVerify: true,
++		MinVersion: tls.VersionTLS12,
+ 	}
+ 	// 	}
+ }
+--- a/requester/fetch.go
++++ b/requester/fetch.go
+@@ -39,6 +39,9 @@
+ // 返回值分别为 *http.Response, 错误信息
+ func (h *HTTPClient) Req(method string, urlStr string, post interface{}, header map[string]string) (resp *http.Response, err error) {
+ 	h.lazyInit()
++	if u, e := url.Parse(urlStr); e != nil || u.Scheme != "https" {
++		return nil, fmt.Errorf("HTTPS required")
++	}
+ 	var (
+ 		req           *http.Request
+ 		obody         io.Reader
+--- a/requester/dial.go
++++ b/requester/dial.go
+@@ -213,8 +213,8 @@
+ 		}
+ 
+ 		return tls.Client(conn, &tls.Config{
+-			ServerName:         getServerName(address),
+-			InsecureSkipVerify: !h.https,
++			ServerName: getServerName(address),
++			MinVersion: tls.VersionTLS12,
+ 		}), nil
+ 	}
+ }

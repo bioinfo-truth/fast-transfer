@@ -1,0 +1,1 @@
+Native flow restoration with narrowly scoped local security changes. See docs/pcs-native-mode.md for build provenance, dependency patch instructions, tests and limitations. No old identity/save rejection gates or companion workflow are applied to this build.

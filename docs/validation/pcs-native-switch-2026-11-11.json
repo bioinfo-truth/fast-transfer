@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-11",
+  "baseline_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+  "mode": "native_with_local_transport_and_hidden_cookie_prompt_patches",
+  "binary_sha256": "2eec4869e7f06fb13cd1671f58a4d6780fb4cd917a8afd3c6d4243b231194a94",
+  "wrapper_sha256": "354c8c753e680ca6e89a5b10b33aa49025fbf4831f0ad73470332bf87cd0fd4a",
+  "checks": [
+    {
+      "args": [
+        "--version"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "login",
+        "--help"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "share",
+        "--help"
+      ],
+      "exit": 0
+    }
+  ],
+  "local_tls_and_redirect_tests": 2,
+  "real_login": false,
+  "real_share": false,
+  "existing_credentials_read": false,
+  "historical_companion_retained_but_not_default": true
+}
