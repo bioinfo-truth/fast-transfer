@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "name": "GCF_000001635.27_GRCm39_genomic.gbff.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.gbff.gz",
+      "size": 1133653005,
+      "md5": "07c0e87ecb706e32b422e2d7a36ce8b1",
+      "source": {
+        "access": "public",
+        "record_url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/",
+        "version": "GCF_000001635.27 / GRCm39; files dated 2024-02-08; metadata checked 2026-11-11",
+        "checksum_url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/md5checksums.txt",
+        "redistribution": {
+          "status": "reviewed",
+          "basis_url": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "note": "Public non-human mouse RefSeq reference assembly. Reviewed against NCBI Molecular Data Usage for this bounded transfer test: NCBI places no restrictions on molecular-data use/distribution, while submitter third-party rights may exist. Preserve NCBI/source attribution and policy notice; not a blanket commercial-rights guarantee."
+        }
+      }
+    }
+  ]
+}
