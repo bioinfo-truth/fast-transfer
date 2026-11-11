@@ -53,6 +53,8 @@ SAFE_REASONS = frozenset('''
     task_operation_already_consumed task_operation_receipt_mismatch
     task_operation_receipt_invalid task_operation_invalid task_private_file_required
     task_private_directory_required task_busy task_record_invalid task_manifest_changed
+    task_readback_commit_required task_retry_scope_invalid task_retry_requires_one_unknown_part
+    task_retry_nonfinal_part_required task_retry_already_attempted adapter_stop_unconfirmed
 '''.split())
 
 

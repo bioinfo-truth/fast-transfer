@@ -332,6 +332,21 @@ class TaskUploadTests(unittest.TestCase):
             self.assertEqual(main(args),2)
         token.assert_not_called();self.assertEqual(json.loads(out.getvalue())['reason'],'task_upload_scope_invalid')
 
+    def test_cli_readback_precondition_has_safe_actionable_reason_without_auth(self):
+        import contextlib
+        self.prepare();out=io.StringIO()
+        args=['--tasks-dir',str(self.root),self.task.job_id,'--approve-job',self.task.job_id,
+              '--approved-task-sha256',self.task.view()['task_spec_sha256'],
+              '--authorization',str(self.root/'never-read.json'),'--expected-account-sha256',ACCOUNT,
+              '--sdk-helper',str(HELPER),'--sdk-helper-sha256',sha(HELPER),
+              '--sdk-guard',str(self.guard),'--sdk-guard-sha256',sha(self.guard),'--readback-only']
+        with patch('fast_transfer.task_upload.access_token_first_field') as token,contextlib.redirect_stdout(out):
+            self.assertEqual(main(args),2)
+        token.assert_not_called();result=json.loads(out.getvalue())
+        self.assertEqual(result['reason'],'task_readback_commit_required')
+        self.assertEqual(result['api_diagnostics'],[])
+        self.assertEqual(self.task.view()['unknown_operations'],0)
+
     def test_bad_saved_session_never_reprecreates_or_sends_parts(self):
         self.prepare();self.cloud.drop_locate=True
         with self.assertRaises(StageFailure):self.run_upload()
