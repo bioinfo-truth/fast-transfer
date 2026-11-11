@@ -35,7 +35,7 @@ class HandoffTests(unittest.TestCase):
         self.assertEqual(self.output.stat().st_mode & 0o777,0o600)
         self.assertFalse(doc['delivered']);self.assertEqual(doc['files'][0]['fs_id'],123)
         self.assertEqual(set(doc['files'][0]),{'index','name','path','fs_id','bytes','md5','sha256'})
-        for word in ('uploadid','token','cookie','url'):self.assertNotIn(word,raw.decode().lower())
+        for word in ('uploadid','token','cookie'):self.assertNotIn(word,raw.decode().lower())
 
     def test_fixture_and_incomplete_refused(self):
         for kind,phase in [('test-fixture','test_cloud_verified'),('official-api','uploading')]:

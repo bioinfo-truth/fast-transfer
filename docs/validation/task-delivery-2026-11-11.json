@@ -1,0 +1,10 @@
+{
+  "tests": 62,
+  "new_task_delivery_tests": 7,
+  "passed": true,
+  "network": "inherited seccomp deny",
+  "records": "synthetic fixtures",
+  "real_account_or_transfer_actions": false,
+  "handoff_schema": "fast-transfer-handoff-v2",
+  "command": "python3 -I -S -B tests/support/run_workflow_isolated.py test_task_delivery test_delivery test_task_handoff test_task_cleanup test_task_upload test_task"
+}

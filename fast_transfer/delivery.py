@@ -12,7 +12,8 @@ import re
 import sys
 import time
 
-from .intake import InputProblem, MAX_FILES, safe_name
+from .intake import InputProblem, MAX_FILES, safe_name, require_accepted
+from .workflow import digest
 from .task import MAX_JSON, encoded, fail, private_directory, private_file, read_json
 
 
@@ -36,8 +37,12 @@ def load_handoff(path, expected_sha256, expected_account_sha256):
         fail('delivery_scope_invalid')
     doc,raw=load_private(path)
     if hashlib.sha256(raw).hexdigest()!=expected_sha256:fail('delivery_handoff_changed')
-    fields={'schema','job_id','task_spec_sha256','account_sha256','files','verification','sharing','delivered'}
-    if (type(doc) is not dict or set(doc)!=fields or doc['schema']!='fast-transfer-handoff-v1'
+    return validate_handoff(doc, expected_account_sha256)
+
+
+def validate_handoff(doc, expected_account_sha256):
+    fields={'schema','job_id','task_spec_sha256','account_sha256','files','verification','sharing','delivered','manifest','manifest_sha256'}
+    if (type(doc) is not dict or set(doc)!=fields or doc['schema']!='fast-transfer-handoff-v2'
             or not matches(doc['job_id'],'job-[0-9a-f]{32}')
             or not matches(doc['task_spec_sha256'],'[0-9a-f]{64}')
             or doc['account_sha256']!=expected_account_sha256
@@ -45,6 +50,9 @@ def load_handoff(path, expected_sha256, expected_account_sha256):
             or doc['sharing']!='manual-native-client' or doc['delivered'] is not False
             or type(doc['files']) is not list or not 1<=len(doc['files'])<=MAX_FILES):
         fail('delivery_handoff_invalid')
+    entries=require_accepted(doc['manifest'])
+    if digest(doc['manifest'])!=doc['manifest_sha256'] or len(entries)!=len(doc['files']):
+        fail('delivery_provenance_mismatch')
     ids=set();paths=set()
     for index,item in enumerate(doc['files']):
         if (type(item) is not dict or set(item)!={'index','name','path','fs_id','bytes','md5','sha256'}
@@ -56,6 +64,10 @@ def load_handoff(path, expected_sha256, expected_account_sha256):
                 or not matches(item['md5'],'[0-9a-f]{32}') or not matches(item['sha256'],'[0-9a-f]{64}')
                 or item['fs_id'] in ids or item['path'] in paths):
             fail('delivery_handoff_invalid')
+        source=entries[index]
+        if (source['name']!=item['name'] or source['size']!=item['bytes']
+                or any(source.get(k) and source[k].lower()!=item[k] for k in ('md5','sha256'))):
+            fail('delivery_provenance_mismatch')
         safe_name(item['name'])
         ids.add(item['fs_id']);paths.add(item['path'])
     return doc
@@ -64,6 +76,15 @@ def load_handoff(path, expected_sha256, expected_account_sha256):
 def record_delivery(handoff, expected_sha256, account_sha256, observation, output):
     doc=load_handoff(handoff,expected_sha256,account_sha256)
     observed,_=load_private(observation)
+    confirmed=validate_observation(doc,observed)
+    record={'schema':'fast-transfer-delivery-v1','handoff_sha256':expected_sha256,
+            'handoff':doc,'human_observation':observed,
+            'evidence':'operator-attestation-not-independent-verification',
+            'recorded_at':int(time.time()),'delivered':confirmed}
+    return save_record(record,output,confirmed,observed['recipient']['status'])
+
+
+def validate_observation(doc,observed):
     if (type(observed) is not dict
             or set(observed)!={'schema','job_id','task_spec_sha256','metadata','share','recipient'}
             or observed['schema']!='fast-transfer-human-observation-v1'
@@ -90,10 +111,10 @@ def record_delivery(handoff, expected_sha256, account_sha256, observation, outpu
         if (type(when) is not int or not share['created_at']<=when<share['expires_at']
                 or when>time.time()+300):fail('delivery_recipient_invalid')
     elif when is not None:fail('delivery_recipient_invalid')
-    record={'schema':'fast-transfer-delivery-v1','handoff_sha256':expected_sha256,
-            'handoff':doc,'human_observation':observed,
-            'evidence':'operator-attestation-not-independent-verification',
-            'recorded_at':int(time.time()),'delivered':confirmed}
+    return confirmed
+
+
+def save_record(record,output,confirmed,status):
     output=Path(output).absolute();private_directory(output.parent)
     raw=(encoded(record)+'\n').encode()
     fd=os.open(output,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
@@ -102,7 +123,7 @@ def record_delivery(handoff, expected_sha256, account_sha256, observation, outpu
     directory=os.open(output.parent,os.O_RDONLY|os.O_DIRECTORY)
     try:os.fsync(directory)
     finally:os.close(directory)
-    return {'status':'recipient_confirmed' if confirmed else 'recipient_'+recipient['status'],
+    return {'status':'recipient_confirmed' if confirmed else 'recipient_'+status,
             'receipt_sha256':hashlib.sha256(raw).hexdigest(),'delivered':confirmed,
             'evidence':'operator-attestation','network_actions':False}
 

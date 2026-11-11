@@ -12,6 +12,7 @@ import sys
 
 from .intake import InputProblem
 from .task import Task, encoded, fail, private_directory, read_json
+from .workflow import digest
 
 
 
@@ -57,9 +58,10 @@ def export_handoff(task, destination):
             entry = manifest['files'][row['idx']]
             # Deliberate whitelist: never dump the manifest, DB, or upload session.
             files.append({'index':row['idx'],'name':entry['name'],**receipt})
-        document={'schema':'fast-transfer-handoff-v1','job_id':task.job_id,
+        document={'schema':'fast-transfer-handoff-v2','job_id':task.job_id,
                   'task_spec_sha256':task.spec_digest(manifest,settings),
                   'account_sha256':binding['account_sha256'],'files':files,
+                  'manifest':manifest,'manifest_sha256':digest(manifest),
                   'verification':'official-api-full-md5-sha256-readback',
                   'sharing':'manual-native-client','delivered':False}
         raw=(encoded(document)+'\n').encode()

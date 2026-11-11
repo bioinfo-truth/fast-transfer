@@ -210,13 +210,17 @@ class Task:
                 if row is not None:
                     if row['kind'] not in ('official-api','test-fixture'):fail('task_record_invalid')
                     backend = row['kind']
+            delivered = False
+            if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='deliveries'").fetchone():
+                delivered = db.execute("SELECT 1 FROM deliveries WHERE status='confirmed'").fetchone() is not None
             return {'job_id': self.job_id, 'manifest_sha256': digest(manifest),
                     'task_spec_sha256': self.spec_digest(manifest,settings),
                     'files': [{'index': r['idx'], 'name': manifest['files'][r['idx']]['name'],
                                'size': manifest['files'][r['idx']]['size'], 'phase': r['phase'],
                                'reason':safe_reason(r['reason']) if r['reason'] is not None else None}
                               for r in rows], 'unknown_operations': unknown,
-                    'cloud_backend_connected': backend == 'official-api', 'upload_backend': backend, 'delivered': False,
+                    'cloud_backend_connected': backend == 'official-api', 'upload_backend': backend, 'delivered': delivered,
+                    'delivery_evidence': 'operator-attestation' if delivered else None,
                     'source_admission': settings['source_admission']}
 
     def file_root(self, index):
