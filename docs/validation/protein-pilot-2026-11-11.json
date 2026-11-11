@@ -58,11 +58,17 @@
     "random_code": true
   },
   "delivery": {
-    "status": "pending_recipient",
+    "status": "recipient_confirmed",
     "private_receipt_saved": true,
     "receipt_associated_with_source_task": true,
-    "recipient_confirmed": false,
-    "delivered": false
+    "recipient_confirmed": true,
+    "delivered": true,
+    "confirmation_evidence": "explicit user reply: extracted and downloaded successfully in response to logged-out receipt test",
+    "pending_record_retained": true,
+    "history": [
+      "pending",
+      "confirmed"
+    ]
   },
   "cleanup": {
     "phase": "cleaned",
@@ -75,7 +81,7 @@
     "small-file result only",
     "periodic RSS can miss peaks and double-count shared pages",
     "upload/readback duration is combined, not bulk throughput",
-    "recipient confirmation pending",
-    "large-file and real failure acceptance incomplete"
+    "large-file and real failure acceptance incomplete",
+    "recipient success is user-reported, not independent browser or downloaded-file hash verification"
   ]
 }
