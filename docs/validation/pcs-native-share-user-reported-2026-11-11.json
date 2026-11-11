@@ -15,7 +15,9 @@
   "agent_read_login_config": false,
   "independent_share_record_check": false,
   "server_expiry_verified": false,
-  "recipient_access_verified": false,
+  "recipient_access_verified": true,
   "new_upload_performed": false,
-  "private_identifiers_and_link_omitted": true
+  "private_identifiers_and_link_omitted": true,
+  "recipient_access_evidence": "user_confirmed_logged_out_browser_extraction_and_download",
+  "agent_independent_recipient_check": false
 }
