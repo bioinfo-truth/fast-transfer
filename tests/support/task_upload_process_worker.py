@@ -12,7 +12,7 @@ from test_task_upload import Cloud, MemoryAPI, ACCOUNT
 from test_sdk_codec import HELPER, sha
 from fast_transfer.sdk_codec import SDKRequestEncoder
 from fast_transfer.task import Task
-from fast_transfer.task_upload import TaskProtocol, run_next
+from fast_transfer.task_upload import TaskProtocol, run_next, PauseSignal
 from fast_transfer.task_inspect import inspect_commit
 
 
@@ -50,12 +50,16 @@ def main():
     parent,job,guard_path,snapshot,checkpoint,result_path,proof_path=sys.argv[1:]
     cloud=load_cloud(snapshot);task=Task(parent,job)
     codec=SDKRequestEncoder(HELPER,sha(HELPER),Path(guard_path),sha(Path(guard_path)))
+    requested=PauseSignal()
     def pause():
         print('READY',flush=True)
         while True:signal.pause()
     class PersistentAPI(MemoryAPI):
         def exchange(self,req):
             reply=super().exchange(req);save_cloud(cloud,snapshot)
+            if checkpoint=='graceful-part' and req.purpose=='upload':
+                print('READY',flush=True)
+                while not requested.requested:signal.pause()
             if checkpoint=='unknown-commit' and req.method=='POST' and req.params.get('method')=='create':
                 form=dict(__import__('urllib.parse',fromlist=['parse_qsl']).parse_qsl(req.body.decode()))
                 if form.get('isdir')=='0':pause()
@@ -66,7 +70,9 @@ def main():
         if checkpoint==operation+':'+str(part):pause()
     if checkpoint=='inspect':
         result=inspect_commit(task,factory,ACCOUNT,proof_path,approved_task_spec_sha256=task.view()['task_spec_sha256'])
-    else:result=run_next(task,factory,ACCOUNT,checkpoint_hook=hook)
+    else:
+        with requested:
+            result=run_next(task,factory,ACCOUNT,checkpoint_hook=hook,pause_requested=lambda:requested.requested)
     save_cloud(cloud,snapshot);Path(result_path).write_text(json.dumps(result))
 
 

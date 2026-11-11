@@ -95,3 +95,31 @@ class UploadProcessTests(unittest.TestCase):
         self.assertEqual(cloud.events.count('commit'),1);self.assertEqual(cloud.events.count('part:0'),1)
         self.assertEqual(cloud.events.count('readback'),1)
         self.assertEqual(reopened.view()['unknown_operations'],0)
+
+    def test_sigusr1_during_part_returns_after_receipt_then_fresh_exec_resumes(self):
+        self.data={'fixture.fna':b'A'*(4*1024**2)+b'G'*123}
+        self.configure();self.prepare();save_cloud(self.cloud,self.snapshot)
+        process=self.start('graceful-part')
+        try:
+            ready,_,_=select.select([process.stdout],[],[],20)
+            self.assertTrue(ready,'worker did not enter part response')
+            self.assertEqual(process.stdout.readline(),b'READY\n')
+            self.assertIsNone(process.poll())
+            os.kill(process.pid,signal.SIGUSR1)
+            out,err=process.communicate(timeout=20)
+            self.assertEqual(process.returncode,0,repr((out,err)))
+        finally:
+            if process.poll() is None:
+                os.killpg(process.pid,signal.SIGKILL);process.wait(timeout=10)
+            process.stdout.close();process.stderr.close()
+        result=json.loads(self.result.read_text())
+        self.assertEqual(result['status'],'paused');self.assertTrue(result['stop_confirmed'])
+        reopened=Task(self.root,self.task.job_id)
+        self.assertEqual(reopened.view()['unknown_operations'],0)
+        cloud=load_cloud(self.snapshot)
+        self.assertEqual(cloud.events.count('part:0'),1)
+        self.assertEqual(cloud.events.count('part:1'),0);self.assertEqual(cloud.events.count('commit'),0)
+        cloud=self.finish()
+        for operation in ('directory','precreate','part:0','part:1','commit'):
+            self.assertEqual(cloud.events.count(operation),1)
+        self.assertEqual(reopened.view()['files'][0]['phase'],'test_cloud_verified')

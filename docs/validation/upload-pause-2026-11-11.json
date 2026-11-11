@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-11",
+  "status": "offline-validated-not-deployed",
+  "feature": "SIGUSR1 upload pause at durable receipt boundaries",
+  "network": "inherited seccomp denial for test parent and children",
+  "actual_sdk_encoder": true,
+  "synthetic_cloud": true,
+  "real_baidu_requests": false,
+  "existing_unknown_part48_modified": false,
+  "tests": [
+    {
+      "modules": [
+        "test_task_upload",
+        "test_task_upload_process"
+      ],
+      "passed": 26,
+      "log_sha256": "856fd8a76afa060de839a923e8bd3171654f1c8291f1e4ef4340bb241675d56f"
+    },
+    {
+      "modules": [
+        "test_resources",
+        "test_task_inspect",
+        "test_task_delivery",
+        "test_delivery",
+        "test_task_handoff",
+        "test_task_cleanup",
+        "test_task",
+        "test_baidu_protocol",
+        "test_sdk_codec"
+      ],
+      "passed": 94,
+      "log_sha256": "17e63c430a996bf783b7f181d98e0a13c3e62d65c54d7205a969ddf38daa4148"
+    }
+  ],
+  "actual_process_signal_test": {
+    "signal": "SIGUSR1",
+    "worker_verified_live_before_signal": true,
+    "signal_during_part_exchange": true,
+    "response_parsed_and_receipt_saved_before_exit": true,
+    "paused_result": true,
+    "unknown_count_after_pause": 0,
+    "fresh_exec_resume": true,
+    "confirmed_mutations_not_repeated": true
+  }
+}

@@ -144,6 +144,87 @@ class TaskUploadTests(unittest.TestCase):
         self.task=Task(self.root,self.task.job_id)
         self.run_upload();self.assertEqual(self.count('part:0'),1);self.assertEqual(self.count('part:1'),1);self.assertEqual(self.count('precreate'),1)
 
+    def test_pause_requested_during_http_saves_receipt_before_stopping(self):
+        self.data={'fixture.fna':b'A'*(4*1024**2)+b'C'*123};self.configure();self.prepare()
+        requested=[False];exchange=MemoryAPI.exchange
+        def request_pause(client,req):
+            response=exchange(client,req)
+            if req.purpose=='upload':requested[0]=True
+            return response
+        with patch.object(MemoryAPI,'exchange',request_pause):
+            result=self.run_upload(pause_requested=lambda:requested[0])
+        self.assertEqual(result['status'],'paused');self.assertTrue(result['stop_confirmed'])
+        self.assertTrue(self.last.client.stopped)
+        self.assertEqual(self.task.view()['unknown_operations'],0)
+        self.assertEqual(self.count('part:0'),1);self.assertEqual(self.count('part:1'),0)
+        self.assertEqual(self.count('commit'),0)
+        self.task=Task(self.root,self.task.job_id);self.run_upload()
+        for op in ('directory','precreate','part:0','part:1','commit'):
+            self.assertEqual(self.count(op),1)
+
+    def test_pause_does_not_turn_failed_inflight_write_into_confirmation(self):
+        self.prepare();requested=[False];exchange=MemoryAPI.exchange
+        def fail_after_effect(client,req):
+            response=exchange(client,req)
+            if req.purpose=='upload':
+                requested[0]=True
+                raise StageFailure('http_io_failure')
+            return response
+        with patch.object(MemoryAPI,'exchange',fail_after_effect):
+            with self.assertRaisesRegex(StageFailure,'http_io_failure'):
+                self.run_upload(pause_requested=lambda:requested[0])
+        self.assertEqual(self.task.view()['unknown_operations'],1)
+        calls=self.factory_calls
+        with self.assertRaisesRegex(StageFailure,'unknown_operation'):
+            self.run_upload(pause_requested=lambda:True)
+        self.assertEqual(self.factory_calls,calls);self.assertEqual(self.count('part:0'),1)
+
+    def test_pause_before_start_never_reaches_factory(self):
+        self.prepare();result=self.run_upload(pause_requested=lambda:True)
+        self.assertEqual(result['status'],'paused');self.assertTrue(result['stop_confirmed'])
+        self.assertEqual(self.factory_calls,0);self.assertFalse(self.cloud.events)
+        self.assertEqual(self.task.view()['unknown_operations'],0)
+
+    def test_pause_after_commit_resumes_only_readback(self):
+        self.prepare();requested=[False]
+        def hook(op,part):
+            if op=='commit':requested[0]=True
+        result=self.run_upload(pause_requested=lambda:requested[0],checkpoint_hook=hook)
+        self.assertEqual(result['status'],'paused');self.assertEqual(self.count('readback'),0)
+        self.assertEqual(self.task.view()['unknown_operations'],0)
+        self.run_upload();self.assertEqual(self.count('commit'),1);self.assertEqual(self.count('readback'),1)
+
+    def test_pause_after_control_receipts_preserves_reusable_state(self):
+        for operation in ('directory','precreate'):
+            with self.subTest(operation=operation):
+                self.configure();self.prepare();requested=[False]
+                def hook(op,part):
+                    if op==operation:requested[0]=True
+                result=self.run_upload(pause_requested=lambda:requested[0],checkpoint_hook=hook)
+                self.assertEqual(result['status'],'paused')
+                self.assertEqual(self.task.view()['unknown_operations'],0)
+                self.assertEqual(self.count('part:0'),0)
+                self.run_upload()
+                for op in ('directory','precreate','part:0','commit'):
+                    self.assertEqual(self.count(op),1)
+
+    def test_pause_signal_restores_previous_handler_even_on_exception(self):
+        import signal
+        from fast_transfer.task_upload import PauseSignal
+        original=signal.getsignal(signal.SIGUSR1)
+        with self.assertRaisesRegex(RuntimeError,'fixture'):
+            with PauseSignal() as pause:
+                os.kill(os.getpid(),signal.SIGUSR1)
+                self.assertTrue(pause.requested)
+                raise RuntimeError('fixture')
+        self.assertEqual(signal.getsignal(signal.SIGUSR1),original)
+
+    def test_pause_requires_adapter_stop_confirmation(self):
+        self.prepare();self.cloud.stop_ok=False;requested=[False]
+        def hook(op,part):requested[0]=True
+        with self.assertRaisesRegex(StageFailure,'stop_unconfirmed'):
+            self.run_upload(pause_requested=lambda:requested[0],checkpoint_hook=hook)
+
     def test_server_required_subset_does_not_shrink_commit_hash_list(self):
         self.data={'fixture.fna':b'A'*(4*1024**2)+b'C'*123};self.configure();self.cloud.required=[1];self.prepare()
         self.run_upload();self.assertEqual(self.count('part:0'),0);self.assertEqual(self.count('part:1'),1);self.assertEqual(self.count('commit'),1)

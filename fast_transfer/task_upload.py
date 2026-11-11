@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import re
+import signal
 import sys
 import sqlite3
 import time
@@ -29,6 +30,23 @@ from .resources import ResourceSamples
 
 METADATA_CAP = 64*1024**2
 METADATA_GROWTH = 2*MAX_RECEIPT+65536
+
+
+class PauseSignal:
+    """SIGUSR1 requests a boundary pause; never raises inside an HTTP call.
+
+    SIGINT/SIGTERM retain their existing emergency interruption semantics.
+    Only the CLI main thread installs this handler, for the duration of upload.
+    """
+    def __init__(self):self.requested=False
+    def __enter__(self):
+        self.previous=signal.signal(signal.SIGUSR1,self._request)
+        return self
+    def _request(self, signum, frame):self.requested=True
+    def __exit__(self, *args):signal.signal(signal.SIGUSR1,self.previous)
+
+
+class _BoundaryPause(Exception):pass
 
 
 def request_fingerprint(req):
@@ -151,7 +169,8 @@ def _operation(db, index, operation, part=-1):
     return row
 
 
-def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None, approved_task_spec_sha256=None):
+def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None, approved_task_spec_sha256=None,
+             pause_requested=None):
     """Upload and stream-verify one source; factory is trusted code, never JSON.
 
     The task lock spans the worker invocation. The factory gets the independently
@@ -170,6 +189,8 @@ def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None
         # Never read credentials/reach the factory when a prior effect is unknown.
         if db.execute("SELECT 1 FROM operations WHERE outcome='unknown'").fetchone():
             fail('task_unknown_operation_requires_inspection')
+        def pause_boundary():
+            if pause_requested is not None and pause_requested():raise _BoundaryPause()
         row = next((r for r in rows if r['phase'] not in ('cloud_verified','test_cloud_verified','cleaned')),None)
         if row is None:return {'status':'no_pending_upload','cloud_verified':False}
         index = row['idx'];entry = manifest['files'][index]
@@ -184,7 +205,9 @@ def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None
         stop_confirmed = False
         active = None
         verified = None
+        paused = False
         try:
+            pause_boundary()
             source = open_regular(task.source_path(index,entry))
             identity, blocks, stamp = source_identity(source,context.checkpoint,settings['part_bytes'],entry['size'])
             stored = read_json(row['source_receipt'])
@@ -251,6 +274,9 @@ def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None
                         'operation':operation,'part':part,'part_md5':blocks[part] if part>=0 else None}
             def begin(operation, part=-1, owner=None):
                 nonlocal active
+                # Check before consuming an operation key, never after journaling
+                # but before sending: a pause must not create an unknown intent.
+                pause_boundary()
                 owner = index if owner is None else owner
                 context.metadata_write()
                 fingerprint = task.begin_operation(owner,operation,intent(operation,part),part=part,_db=db)
@@ -261,6 +287,7 @@ def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None
                 task.finish_operation(index if owner is None else owner,operation,fingerprint,receipt,part=part,_db=db)
                 context.checkpoint()
                 if checkpoint_hook is not None:checkpoint_hook(operation,part)
+                pause_boundary()
             def existing_operation(operation, part=-1, owner=None):
                 record=_operation(db,index if owner is None else owner,operation,part)
                 if record is not None and record['intent_sha256']!=digest(intent(operation,part)):
@@ -320,6 +347,7 @@ def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None
                 if receipt.get('path')!=target or receipt.get('size')!=entry['size'] or type(receipt.get('fs_id')) is not int or not 0<receipt['fs_id']<2**63:
                     fail('task_upload_state_invalid')
                 protocol.objects[target]=(receipt['fs_id'],receipt['size'])
+            pause_boundary()
             context.stage='readback';context.checkpoint()
             md5,sha,total=hashlib.md5(),hashlib.sha256(),0
             for data in protocol.readback(target,limits.readback_bytes):
@@ -329,6 +357,8 @@ def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None
             if file_stamp(source)!=stamp:fail('source_changed')
             fs_id,_=protocol.objects[target]
             verified={'path':target,'fs_id':fs_id,**identity}
+        except _BoundaryPause:
+            paused=True
         except (StageFailure,InputProblem) as exc:
             try:
                 context.metadata_write()
@@ -339,6 +369,10 @@ def run_next(task, factory, account_sha256, *, timeout=600, checkpoint_hook=None
         finally:
             if source is not None:source.close()
             if protocol is not None:stop_confirmed=protocol.stop() is True
+        if paused:
+            if protocol is not None and not stop_confirmed:fail('adapter_stop_unconfirmed')
+            return {'status':'paused','index':index,'cloud_verified':False,'delivered':False,
+                    'automatic_retry':False,'stop_confirmed':protocol is None or stop_confirmed}
         if not stop_confirmed or verified is None:fail('adapter_stop_unconfirmed')
         context.metadata_write()
         with db:
@@ -386,7 +420,10 @@ def main(argv=None):
                 result=inspect_commit(task,factory,a.expected_account_sha256,a.inspect_commit_proof,
                                       timeout=a.timeout,approved_task_spec_sha256=a.approved_task_sha256)
             else:
-                result=run_next(task,factory,a.expected_account_sha256,timeout=a.timeout,approved_task_spec_sha256=a.approved_task_sha256)
+                with PauseSignal() as pause:
+                    result=run_next(task,factory,a.expected_account_sha256,timeout=a.timeout,
+                                    approved_task_spec_sha256=a.approved_task_sha256,
+                                    pause_requested=lambda:pause.requested)
         result['resource_samples']=samples.summary()
         print(json.dumps(result,sort_keys=True));return 0
     except (StageFailure,InputProblem) as exc:
