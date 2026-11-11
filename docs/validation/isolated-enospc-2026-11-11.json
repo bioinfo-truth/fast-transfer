@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-11",
+  "authorization": "user explicitly approved bounded isolated VPS test",
+  "scope": "isolated-filesystem-and-sqlite-only",
+  "mount_namespace": "private, distinct from host init namespace",
+  "filesystem": "tmpfs",
+  "size_bytes": 33554432,
+  "mount_options": [
+    "nodev",
+    "nosuid",
+    "noexec",
+    "mode=0700",
+    "nr_inodes=1024"
+  ],
+  "network": "inherited kernel seccomp denial",
+  "actual_file_ENOSPC": true,
+  "actual_sqlite_FULL": true,
+  "intent_unknown_after_reopen": true,
+  "database_integrity_ok": true,
+  "canary_unchanged": true,
+  "process_exit_code": 0,
+  "test_mounts_remaining": 0,
+  "test_directories_remaining": 0,
+  "remote_test_script_removed": true,
+  "free_bytes_after": 23336828928,
+  "real_credentials_read": false,
+  "real_tasks_modified": false,
+  "real_upload_or_share": false,
+  "services_switched": false,
+  "harness": "tests/support/isolated_enospc.py",
+  "harness_sha256": "407fd591d51da4060a8db48e2972d73dda18a13bc1fc4bd46f4b65daca5cc560",
+  "limitations": [
+    "Minimal synthetic SQLite intent table; not the production Task worker.",
+    "No real account, source download, cloud operation or original task exercised.",
+    "Evidence does not prove arbitrary production filesystem, disk hardware failure, OOM or crash-during-journal durability.",
+    "Local unprivileged user namespace was refused; no local privileged bypass attempted. VPS private mount test was separately explicitly approved."
+  ]
+}

@@ -170,3 +170,11 @@ ft_run task_delivery --tasks-dir "$ft_tasks" "$ft_job" \
 在独立临时数据库通过 `max_page_count` 实际触发SQLITE_FULL，不填满真实磁盘。新增一个测试分别覆盖part/commit两个子场景：合成服务已接收写入，finish_operation保存回执之前，测试包装器的容量探测INSERT实际失败。原持久unknown保留、没有伪造确认/完整核验/交付，适配器停止；重新打开原Task在factory之前拒绝，不再次发片或合并。
 
 7项相关禁网测试通过，使用实际本地SDK编码器与合成服务。不是实际收据UPDATE触发SQLITE_FULL，也不是文件系统ENOSPC/日志回滚或生产磁盘耗尽验收；不保证此时还能持久化新reason。只增强数据库容量失败的恢复证据，不扩大此前真实操作范围。仓库证据为 `docs/validation/sqlite-capacity-fault-2026-11-11.json`。
+
+## 2026-11-11：获准的真实隔离文件系统耗尽测试
+
+用户明确允许后，在VPS私有挂载命名空间内创建固定32MiB tmpfs（0700、nodev/nosuid/noexec），继承性内核禁网。合成文件写入实际触发ENOSPC；已提交unknown记录的最小SQLite表更新实际触发SQLITE_FULL。释放填充文件并重开后integrity_check=ok，记录仍unknown，canary不变；进程退出0。
+
+随后独立核对测试挂载0、测试临时目录0，并按精确SHA256核对后移除远端测试脚本。未读网盘凭据、改原任务、下载真实源、上传或分享，也未切换服务。脚本保留在仓库 `tests/support/isolated_enospc.py`，应只按独立明确范围在私有挂载命名空间中运行；不随普通单元测试执行。
+
+本次补足真实文件系统错误与SQLite恢复的边界证据，**不是完整Task worker的ENOSPC验收**，不外推任意硬件故障、OOM或日志写入中途强杀的持久性。此前SQLITE_FULL page cap测试和合成Task错误仍分别保留；不将三种证据混称同一真实流程。机器记录为 `docs/validation/isolated-enospc-2026-11-11.json`。

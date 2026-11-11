@@ -80,3 +80,11 @@
 ### 2026-11-11：Issue原需求核对
 
 已核对#2/#4/#5/#7正文与现有证据。#4/#5已实现的SDK接线、预算和恢复检查项更新为完成，原早期背景保留；#7补充两任务领取与事后录单边界，Issue继续开放。性能对照按用户决定后置，真实ENOSPC/OOM、长期运行和商业保留期未完成，不用检查项勾选冒充整体Goal完成。完整表见仓库docs/current-readiness.md。
+
+## 2026-11-11：获准的真实隔离文件系统耗尽测试
+
+用户明确允许后，在VPS私有挂载命名空间内创建固定32MiB tmpfs（0700、nodev/nosuid/noexec），继承性内核禁网。合成文件写入实际触发ENOSPC；已提交unknown记录的最小SQLite表更新实际触发SQLITE_FULL。释放填充文件并重开后integrity_check=ok，记录仍unknown，canary不变；进程退出0。
+
+随后独立核对测试挂载0、测试临时目录0，并按精确SHA256核对后移除远端测试脚本。未读网盘凭据、改原任务、下载真实源、上传或分享，也未切换服务。脚本保留在仓库 `tests/support/isolated_enospc.py`，应只按独立明确范围在私有挂载命名空间中运行；不随普通单元测试执行。
+
+本次补足真实文件系统错误与SQLite恢复的边界证据，**不是完整Task worker的ENOSPC验收**，不外推任意硬件故障、OOM或日志写入中途强杀的持久性。此前SQLITE_FULL page cap测试和合成Task错误仍分别保留；不将三种证据混称同一真实流程。机器记录为 `docs/validation/isolated-enospc-2026-11-11.json`。

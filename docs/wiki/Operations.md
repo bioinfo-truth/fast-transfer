@@ -188,3 +188,11 @@ ft_run task_delivery --tasks-dir "$ft_tasks" "$ft_job" \
 以已安装版本相同归档（a6c75a1，SHA256 `0bd3a5fbfcefb4a2b6e2c4a6682c6b52ea2b9962e5f4d0c52fd05ea2d48cc2aa`）解包后，在继承性内核禁网和临时HOME中运行test_stability/test_task_recovery，共15项通过。加载的16个fast_transfer运行模块以及SDK helper/guard均核对来自归档，而非工作树；测试驱动来自已审核本地测试，未随运行包部署。
 
 覆盖通用合成任务上传/完整回读、超时/限流/认证拒绝、确认片后空间下降、SQLite容量失败前的未知意图保留、只读恢复建议与重启防重复。补充的是本地解包版本故障回归，不是VPS完整上传测试或新增真实数据交付，未读取真实凭据或发送实网请求。归档无需重建或重装。证据见仓库 `docs/validation/packaged-stability-2026-11-11.json`。
+
+## 2026-11-11：获准的真实隔离文件系统耗尽测试
+
+用户明确允许后，在VPS私有挂载命名空间内创建固定32MiB tmpfs（0700、nodev/nosuid/noexec），继承性内核禁网。合成文件写入实际触发ENOSPC；已提交unknown记录的最小SQLite表更新实际触发SQLITE_FULL。释放填充文件并重开后integrity_check=ok，记录仍unknown，canary不变；进程退出0。
+
+随后独立核对测试挂载0、测试临时目录0，并按精确SHA256核对后移除远端测试脚本。未读网盘凭据、改原任务、下载真实源、上传或分享，也未切换服务。脚本保留在仓库 `tests/support/isolated_enospc.py`，应只按独立明确范围在私有挂载命名空间中运行；不随普通单元测试执行。
+
+本次补足真实文件系统错误与SQLite恢复的边界证据，**不是完整Task worker的ENOSPC验收**，不外推任意硬件故障、OOM或日志写入中途强杀的持久性。此前SQLITE_FULL page cap测试和合成Task错误仍分别保留；不将三种证据混称同一真实流程。机器记录为 `docs/validation/isolated-enospc-2026-11-11.json`。
