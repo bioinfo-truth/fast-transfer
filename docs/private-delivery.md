@@ -57,3 +57,9 @@ python3 -m fast_transfer.task --tasks-dir /PRIVATE/TASKS show JOB_ID
 v1交接缺少出处信息，新的国内入口会明确拒绝；应在原任务重新导出v2到新文件并重新核对摘要，不手工补字段冒充已审核来源。原历史单样例私有记录不升级、不重放。
 
 7项新增来源/关联测试及55项相关回归共62项禁网测试通过，含pending后confirmed、重复关联不新增记录、确认状态不可回退、任务/摘要/来源变动拒绝、缺乏真实本地核验或未知操作拒绝。所有账号/分享/源核验记录均为合成测试数据，未进行真实跨机收据传送或新任务领取验收。
+
+## 原生元数据与内容摘要分开记录
+
+`fast-transfer-human-observation-v1`继续要求原生metadata的MD5与期望内容MD5一致，不放宽既有记录。新增v2明确`integrity=handoff-full-readback`：路径/fs_id/大小必须逐项匹配已验证v2交接清单，`native_md5`保存实际原生元数据摘要；内容MD5/SHA256保留在handoff，依据已完成的官方API完整回读，不把两者混写成相同。
+
+本次834MB实测原生MD5字段与独立源/完整回读MD5不同，具体平台表示/计算原因尚未确认；不能据此泛化所有网盘MD5的语义。没有绕过内容核验：两文件完整回读已通过，原生精确对象身份与大小再次匹配，差异原样保留。v2不允许仅凭metadata声明完整性，仍要求handoff为official-api-full-md5-sha256-readback；也不免除用户实际领取/下载确认。旧v1观察不会自动转换。

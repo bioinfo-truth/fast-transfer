@@ -75,3 +75,31 @@ class DeliveryTests(unittest.TestCase):
     def test_public_observation_refused(self):
         self.observation.chmod(0o644)
         with self.assertRaises(InputProblem):self.run_record()
+
+    def v2(self):
+        self.observed['schema']='fast-transfer-human-observation-v2'
+        self.observed['integrity']='handoff-full-readback'
+        for item in self.observed['metadata']:
+            item.pop('md5');item['native_md5']='a'*32
+
+    def test_v2_keeps_native_digest_separate_from_verified_content_digest(self):
+        self.v2();self.observed['recipient']={'status':'pending','logged_out':False,'downloaded':False,'confirmed_at':None}
+        self.save();self.assertFalse(self.run_record()['delivered'])
+        record=json.loads(self.receipt.read_text())
+        self.assertEqual(record['human_observation']['metadata'][0]['native_md5'],'a'*32)
+        self.assertEqual(record['handoff']['files'][0]['md5'],self.doc['files'][0]['md5'])
+        self.assertEqual(record['human_observation']['integrity'],'handoff-full-readback')
+
+    def test_v2_identity_or_integrity_mismatch_is_rejected(self):
+        self.v2();original=copy.deepcopy(self.observed)
+        for key,value in [('fs_id',True),('bytes',1),('path','other'),('index',True),('native_md5','invalid')]:
+            self.observed=copy.deepcopy(original);self.observed['metadata'][0][key]=value;self.save()
+            with self.assertRaises(InputProblem):self.run_record()
+        self.observed=copy.deepcopy(original);self.observed['integrity']='metadata-only';self.save()
+        with self.assertRaises(InputProblem):self.run_record()
+
+    def test_v1_still_requires_matching_md5_and_v2_does_not_waive_recipient(self):
+        self.observed['metadata'][0]['md5']='a'*32;self.save()
+        with self.assertRaises(InputProblem):self.run_record()
+        self.v2();self.observed['recipient']['downloaded']=False;self.save()
+        with self.assertRaises(InputProblem):self.run_record()

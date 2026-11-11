@@ -85,13 +85,30 @@ def record_delivery(handoff, expected_sha256, account_sha256, observation, outpu
 
 
 def validate_observation(doc,observed):
+    v2=type(observed) is dict and observed.get('schema')=='fast-transfer-human-observation-v2'
+    fields={'schema','job_id','task_spec_sha256','metadata','share','recipient'}
     if (type(observed) is not dict
-            or set(observed)!={'schema','job_id','task_spec_sha256','metadata','share','recipient'}
-            or observed['schema']!='fast-transfer-human-observation-v1'
+            or set(observed)!=(fields|{'integrity'} if v2 else fields)
+            or observed['schema'] not in ('fast-transfer-human-observation-v1','fast-transfer-human-observation-v2')
             or observed['job_id']!=doc['job_id'] or observed['task_spec_sha256']!=doc['task_spec_sha256']):
         fail('delivery_observation_invalid')
     expected=[{k:item[k] for k in ('index','path','fs_id','bytes','md5')} for item in doc['files']]
-    if encoded(observed['metadata'])!=encoded(expected):fail('delivery_native_metadata_mismatch')
+    if v2:
+        # Native metadata MD5 is retained as observed, never substituted for a
+        # content digest. Integrity comes from the already validated handoff's
+        # full official-API MD5/SHA256 readback of these exact objects.
+        if (observed['integrity']!='handoff-full-readback'
+                or doc.get('verification')!='official-api-full-md5-sha256-readback'
+                or type(observed['metadata']) is not list
+                or len(observed['metadata'])!=len(expected)):
+            fail('delivery_native_metadata_mismatch')
+        for item,want in zip(observed['metadata'],expected):
+            if (type(item) is not dict or set(item)!={'index','path','fs_id','bytes','native_md5'}
+                    or any(item[k]!=want[k] for k in ('index','path','fs_id','bytes'))
+                    or type(item['index']) is not int or type(item['fs_id']) is not int or type(item['bytes']) is not int
+                    or not matches(item['native_md5'],'[0-9a-f]{32}')):
+                fail('delivery_native_metadata_mismatch')
+    elif encoded(observed['metadata'])!=encoded(expected):fail('delivery_native_metadata_mismatch')
     share=observed['share'];recipient=observed['recipient']
     if (type(share) is not dict or set(share)!={'url','code','created_at','expires_at'}
             or not matches(share['url'],r'https://pan\.baidu\.com/s/[A-Za-z0-9_-]{5,128}')
