@@ -1,0 +1,14 @@
+{
+  "tests": 108,
+  "new_process_tests": 2,
+  "sigkill_scenarios": 4,
+  "passed": true,
+  "network": "inherited seccomp deny",
+  "sdk": "actual pinned helper",
+  "cloud": "synthetic JSON-persisted state",
+  "processes": "fresh exec, explicit checkpoint, SIGKILL and reap, fresh exec resume",
+  "real_account_actions": false,
+  "real_vps_resource_acceptance": false,
+  "power_failure_acceptance": false,
+  "command": "python3 -I -S -B tests/support/run_workflow_isolated.py test_task_upload_process test_task_inspect test_task_delivery test_delivery test_task_handoff test_task_cleanup test_task_upload test_task test_baidu_protocol test_sdk_codec"
+}
