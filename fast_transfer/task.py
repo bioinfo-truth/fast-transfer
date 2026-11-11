@@ -201,6 +201,55 @@ class Task:
     def spec_digest(self, manifest, settings):
         return digest({'job_id':self.job_id,'manifest_sha256':digest(manifest),'settings':settings})
 
+    def _recovery(self, db, rows, settings, backend, delivered):
+        """Advisory local state only: never execute or grant the suggested action."""
+        unknown = list(db.execute("SELECT idx,operation,part FROM operations WHERE outcome='unknown' ORDER BY idx,operation,part"))
+        detail = []
+        for op in unknown:
+            if (type(op['idx']) is not int or not 0 <= op['idx'] < len(rows)
+                    or op['operation'] not in OPERATIONS or type(op['part']) is not int
+                    or (op['operation'] != 'part' and op['part'] != -1)
+                    or (op['operation'] == 'part' and not 0 <= op['part'] < 1024)):
+                fail('task_record_invalid')
+            detail.append({'index':op['idx'],'operation':op['operation'],'part':op['part']})
+        result = {'advisory_only':True,'automatic_action':False,'unknown':detail,
+                  'index':None,'action':'manual_review'}
+        if unknown:
+            if len(unknown) == 1:
+                op = unknown[0]; result['index'] = op['idx']
+                if op['operation'] == 'commit':result['action'] = 'inspect_commit_proof'
+                elif op['operation'] == 'part':
+                    manifest, _, _ = self.context(db)
+                    count = (manifest['files'][op['idx']]['size']+settings['part_bytes']-1)//settings['part_bytes']
+                    attempted = False
+                    if db.execute("SELECT 1 FROM sqlite_master WHERE name='part_retry_attempts' AND type='table'").fetchone():
+                        attempted = db.execute('SELECT 1 FROM part_retry_attempts WHERE idx=? AND part=?',
+                                               (op['idx'],op['part'])).fetchone() is not None
+                    if op['part'] < count-1 and not attempted:
+                        result['action'] = 'review_one_time_part_retry'
+            return result
+        if delivered:
+            result['action'] = 'delivery_recorded'; return result
+        row = next((r for r in rows if r['phase'] not in ('cloud_verified','test_cloud_verified','cleaned')),None)
+        if row is not None:
+            result['index'] = row['idx']
+            phase = row['phase']
+            result['action'] = {'pending':'download_next','downloading':'recover_source',
+                                'source_failed':'recover_source','source_verified':'resume_upload'}.get(phase,'manual_review')
+            if phase == 'uploading':
+                commit = db.execute("SELECT 1 FROM operations WHERE idx=? AND operation='commit' AND outcome='confirmed'",
+                                    (row['idx'],)).fetchone()
+                result['action'] = 'readback_only' if commit else 'resume_upload'
+            return result
+        if backend != 'official-api' or any(r['phase']=='test_cloud_verified' for r in rows):
+            result['action'] = 'synthetic_only'; return result
+        result['action'] = 'export_or_check_handoff'
+        if db.execute("SELECT 1 FROM sqlite_master WHERE name='deliveries' AND type='table'").fetchone():
+            last = db.execute('SELECT status FROM deliveries ORDER BY attached DESC,rowid DESC LIMIT 1').fetchone()
+            if last is not None:
+                result['action'] = 'await_recipient' if last['status']=='pending' else 'review_recipient_failure'
+        return result
+
     def view(self):
         with self.locked() as db:
             manifest, settings, rows = self.context(db)
@@ -222,7 +271,8 @@ class Task:
                               for r in rows], 'unknown_operations': unknown,
                     'cloud_backend_connected': backend == 'official-api', 'upload_backend': backend, 'delivered': delivered,
                     'delivery_evidence': 'operator-attestation' if delivered else None,
-                    'source_admission': settings['source_admission']}
+                    'source_admission': settings['source_admission'],
+                    'recovery':self._recovery(db,rows,settings,backend,delivered)}
 
     def file_root(self, index):
         return self.root/'files'/str(index)

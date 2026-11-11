@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-11",
+  "scope": "local-generic-state-and-recovery-audit",
+  "evidence": "synthetic-only-with-local-sdk",
+  "network": "kernel-seccomp-denial-inherited-by-children",
+  "runs": [
+    {
+      "kind": "recovery-regression",
+      "passed": 224,
+      "sha256": "0230063eb5697565e8ee108c767b9e191fc3a570e7160933342d2440da9ad34c"
+    },
+    {
+      "kind": "recovery-final-tests",
+      "passed": 15,
+      "sha256": "7a08d005c22bb10cefdf853a88221ece8c79b1cc479632acce050ecbdfb80afb"
+    }
+  ],
+  "new_tests": 8,
+  "reused": [
+    "confirmed-part and commit exec/SIGKILL/restart protection",
+    "unknown commit read-only inspection and wrong-object refusal",
+    "once-only nonfinal part retry preserves original unknown and consumes failed attempt",
+    "handoff rejects unverified/synthetic/unknown records",
+    "pending not delivered and confirmed receipt cannot regress"
+  ],
+  "new_coverage": [
+    "source phase advisory and database byte identity",
+    "show CLI advisory with no factory and unchanged database",
+    "confirmed commit readback-only recommendation",
+    "unknown commit unchanged under rate/auth/timeout/empty reason",
+    "unknown directory/multiple unknown/manual",
+    "final unknown part never suggests replay",
+    "failed consumed retry remains manual after reopening",
+    "synthetic-only and handoff/recipient advice"
+  ],
+  "advice_is_permission": false,
+  "new_schema_or_migration": false,
+  "actual_credentials_read": false,
+  "real_authentication": false,
+  "real_transfer": false,
+  "real_share": false,
+  "deployed": false,
+  "remote_published": false,
+  "external_model_calls": false,
+  "goal_observed_status": "blocked",
+  "remaining": [
+    "actual runtime ENOSPC and ability to persist new failure when disk is exhausted",
+    "natural credential expiry and refresh",
+    "long-term continuous operation",
+    "remote publication and deployment not performed in this local-only scope"
+  ],
+  "limitations": [
+    "Handoff export is not persisted as a task event; advice explicitly says export OR check and does not assert exported/shared.",
+    "Recovery advice is a local summary; existing execution commands independently validate scope and receipts."
+  ]
+}

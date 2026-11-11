@@ -142,3 +142,25 @@ ft_run task_delivery --tasks-dir "$ft_tasks" "$ft_job" \
 ## 2026-11-11：离线稳定性补充
 
 运行中低空间已通过合成故障注入验证停止与跳过确认片恢复，不是实际ENOSPC验收。空间不足可能阻止新reason写入；以已有持久意图/收据为准，不承诺磁盘耗尽后仍能落日志。新增错误分类与测试尚未部署VPS；既有真实样例不重跑。详见仓库 `docs/workflow-stability.md`。
+
+## 2026-11-11：状态诊断与重复操作审计
+
+`task show` 新增 `recovery`：仅基于同一锁内的本地状态给建议，`advisory_only=true`、`automatic_action=false`，不读认证、不执行恢复、不输出私有收据/分享/会话。建议不是授权或服务端证明；执行入口仍独立核验原Task、摘要、账号和已授权范围。阶段状态及delivered原有含义不变。
+
+| recovery.action | 对应入口和限制 |
+| --- | --- |
+| download_next | 原Task的 `task ... download-next JOB`；仍须通过来源、空间和原有执行授权，不能据建议新增真实传输 |
+| recover_source | `task ... recover-source JOB --index INDEX`，本地独立校验；若不完整，保留调查片段后显式 `restart-incomplete-source`，不承诺Range续传 |
+| resume_upload | 原参数 `task_upload`，跳过确认目录/预上传/分片；不等于重新建任务 |
+| readback_only | 原上传参数加 `--readback-only`，必须有合并确认回执且拒绝写请求 |
+| inspect_commit_proof | 唯一未知commit，原参数加 `--inspect-commit-proof` 和精确定位文件；不重复合并 |
+| review_one_time_part_retry | 仅提示人工审议：唯一未知非最终片且尚无尝试记录；明确允许后才能使用 `--retry-unknown-part-once`，失败耗用次数不重置 |
+| manual_review | 目录/预上传未知、多个未知、最终片未知、已耗用有限重试或人工阶段；不自动改错误码/清unknown |
+| synthetic_only | 合成记录不能交付或晋升真实核验 |
+| export_or_check_handoff | 所有文件阶段为真实核验/清理且绑定官方后端；使用 `task_handoff --output` 的原有入口核查/导出，导出器仍独立检查全部核验收据。任务不存导出事件，因此不能推断已交接、已分享 |
+| await_recipient / review_recipient_failure | 已关联pending/failed观察，等待领取或人工调查；不自动重新分享。经私有 `delivery record` 追加观察，再用 `task_delivery --receipt --receipt-sha256` 关联原任务 |
+| delivery_recorded | 已有关联confirmed本人领取收据；不重复分享、上传或要求同一文件再领取 |
+
+未知写入优先于错误类别：即使reason变成限流、认证拒绝、超时或空值，未知commit仍只建议核查，不被清零。一次非最终片重试失败后保留原unknown及尝试，重开诊断转人工。show在合成测试中保持SQLite字节摘要不变，使用既有排他锁，无新迁移或持久表。
+
+审计复用既有实际exec/SIGKILL/重新exec、unknown commit GET-only核查、有限重试耗用、交接拒绝未核验及pending/confirmed防回退测试；不重复实现上传/交付逻辑。新增通用合成测试入口 `tests/test_task_recovery.py`，领取confirmed/pending诊断也接入原有收据测试。无实网、部署或新交付。本轮仅本地工程，Wiki本地镜像同步，远端发布待后续允许网络时进行。

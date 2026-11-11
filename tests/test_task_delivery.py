@@ -24,6 +24,7 @@ class TaskDeliveryTests(unittest.TestCase):
         self.assertTrue(self.attach()['delivered'])
         view=self.task.view();self.assertTrue(view['delivered'])
         self.assertEqual(view['delivery_evidence'],'operator-attestation')
+        self.assertEqual(view['recovery']['action'],'delivery_recorded')
         self.assertNotIn('SYNTHETIC_TEST_LINK',json.dumps(view))
         self.assertEqual(self.attach()['status'],'receipt_already_attached')
         with self.task.locked() as db:self.assertEqual(db.execute('SELECT COUNT(*) FROM deliveries').fetchone()[0],1)
@@ -33,7 +34,9 @@ class TaskDeliveryTests(unittest.TestCase):
         self.observation.write_text(encoded(self.observed));pending=self.root/'pending.json'
         result=record_delivery(self.output,self.digest,'b'*64,self.observation,pending)
         self.assertFalse(attach_receipt(self.task,pending,result['receipt_sha256'])['delivered'])
-        self.assertFalse(self.task.view()['delivered']);self.attach()
+        self.assertFalse(self.task.view()['delivered'])
+        self.assertEqual(self.task.view()['recovery']['action'],'await_recipient')
+        self.attach()
         # A different failed receipt cannot erase a prior confirmed delivery.
         self.observed['recipient']['status']='failed';self.observation.write_text(encoded(self.observed))
         failed=self.root/'failed.json';result=record_delivery(self.output,self.digest,'b'*64,self.observation,failed)
