@@ -38,7 +38,7 @@ python3 -m fast_transfer.task_handoff --tasks-dir /PRIVATE/TASKS JOB_ID \
 
 - 完整源落盘、收据保存前中断：`recover-source JOB_ID --index 0`只重验已有文件，成功后不重新下载。
 - 不完整源：`restart-incomplete-source JOB_ID --index 0`是显式重启；只清理任务已知部分载荷。已经有远端操作意图、完整长度但需核验的文件或未知文件时拒绝。
-- 上传/合并未知：`show`的unknown_operations非零时保留任务/会话，不删数据库、不换job ID重跑。当前没有通用云端未知结果核查/恢复命令，下一步接只读核查与人工接续；不能把“不重发”称为全部恢复已实现。
+- 上传/合并未知：`show`的unknown_operations非零时保留任务/会话，不删数据库、不换job ID重跑。唯一未知为commit时已有[只读精确对象完整核查](unknown-commit-inspection.md)，其他未知阶段仍未接管；不能把“不重发”称为全部恢复已实现。
 - 本人原生分享若超时：不重复share set，先由本人核查对应分享记录。客户端退出码不足以单独证明分享成功，需看到结果并确认领取。既有原样例已分享，勿重复操作。
 
 国内原生客户端对**后续新对象**可用的命令模板如下，前提是已通过私有清单明确新路径并核对fsid/大小/摘要；不要直接复用上轮终端的旧sample_path：

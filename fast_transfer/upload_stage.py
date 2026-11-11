@@ -46,6 +46,7 @@ SAFE_REASONS = frozenset('''
     sdk_codec_artifact_rejected sdk_codec_input_rejected sdk_codec_deadline
     sdk_codec_failed sdk_codec_output_rejected sdk_codec_binding_mismatch
     sdk_codec_memory_budget sdk_codec_memory_unknown
+    task_inspection_read_only task_inspection_locator_invalid task_inspection_commit_only
     task_write_not_journaled task_backend_invalid task_upload_state_invalid
     task_upload_scope_invalid task_backend_identity_changed task_upload_unbound_history
     task_unknown_operation_requires_inspection task_source_not_verified

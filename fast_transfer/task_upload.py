@@ -42,6 +42,11 @@ class TaskHTTP(PinnedBaiduHTTPClient):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._armed = None
+        self.read_only = False
+
+    def exchange(self, req):
+        if self.read_only and req.method != 'GET':fail('task_inspection_read_only')
+        return super().exchange(req)
 
     def arm(self, req):
         self.grant.check(req.binding)
@@ -354,6 +359,7 @@ def main(argv=None):
     p.add_argument('--sdk-helper',type=Path,required=True);p.add_argument('--sdk-helper-sha256',required=True)
     p.add_argument('--sdk-guard',type=Path,required=True);p.add_argument('--sdk-guard-sha256',required=True)
     p.add_argument('--timeout',type=float,default=600)
+    p.add_argument('--inspect-commit-proof',type=Path)
     a=p.parse_args(argv)
     last_protocol=[None]
     try:
@@ -372,7 +378,12 @@ def main(argv=None):
             backend=TaskProtocol(client,app_name,target,a.expected_account_sha256,limits,codec)
             last_protocol[0]=backend
             return backend
-        result=run_next(task,factory,a.expected_account_sha256,timeout=a.timeout,approved_task_spec_sha256=a.approved_task_sha256)
+        if a.inspect_commit_proof is not None:
+            from .task_inspect import inspect_commit
+            result=inspect_commit(task,factory,a.expected_account_sha256,a.inspect_commit_proof,
+                                  timeout=a.timeout,approved_task_spec_sha256=a.approved_task_sha256)
+        else:
+            result=run_next(task,factory,a.expected_account_sha256,timeout=a.timeout,approved_task_spec_sha256=a.approved_task_sha256)
         print(json.dumps(result,sort_keys=True));return 0
     except (StageFailure,InputProblem) as exc:
         print(json.dumps({'status':'manual_review','reason':safe_reason(exc.code),
@@ -386,4 +397,6 @@ def main(argv=None):
 
 
 # No raw exception text escapes the CLI boundary.
-if __name__=='__main__':sys.exit(main())
+if __name__=='__main__':
+    from .task_upload import main as canonical_main
+    sys.exit(canonical_main())
