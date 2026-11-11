@@ -1,0 +1,11 @@
+{
+  "tests": 48,
+  "new_cleanup_tests": 8,
+  "passed": true,
+  "network": "inherited seccomp deny",
+  "records_and_payloads": "synthetic temporary fixtures",
+  "cleanup_sigkill_test": true,
+  "real_vps_cleanup": false,
+  "upload_sigkill_acceptance": false,
+  "command": "python3 -I -S -B tests/support/run_workflow_isolated.py test_task_cleanup test_task_handoff test_task_upload test_task"
+}
