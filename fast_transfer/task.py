@@ -20,14 +20,14 @@ from uuid import uuid4
 from .download import download_verified
 from .intake import InputProblem, load_manifest, require_accepted
 from .space import DiskProbe, SpaceGuard, BackendNeeds, preflight_workspace
-from .upload_stage import open_regular, source_identity, StageFailure
+from .upload_stage import open_regular, source_identity, StageFailure, safe_reason
 from .workflow import digest
 
 MAX_JSON = 1024 * 1024
 MAX_RECEIPT = 64 * 1024
 SOURCE_PHASES = ('pending', 'downloading', 'source_verified', 'source_failed')
 OPERATIONS = frozenset(('directory', 'precreate', 'part', 'commit'))
-PHASES = frozenset((*SOURCE_PHASES, 'uploading', 'cloud_verified', 'cleaned', 'manual_review'))
+PHASES = frozenset((*SOURCE_PHASES, 'uploading', 'cloud_verified', 'test_cloud_verified', 'cleaned', 'manual_review'))
 
 
 def fail(code):
@@ -164,6 +164,16 @@ class Task:
                 db.close()
             os.close(lock)
 
+    @contextlib.contextmanager
+    def _using_db(self, db=None):
+        """Internal worker reuse while its outer task lock remains held."""
+        if db is not None:
+            self.context(db)
+            yield db
+        else:
+            with self.locked() as connection:
+                yield connection
+
     def context(self, db):
         row = db.execute('SELECT * FROM meta WHERE id=1').fetchone()
         if row is None:
@@ -187,15 +197,26 @@ class Task:
             fail('task_record_invalid')
         return manifest, settings, rows
 
+    def spec_digest(self, manifest, settings):
+        return digest({'job_id':self.job_id,'manifest_sha256':digest(manifest),'settings':settings})
+
     def view(self):
         with self.locked() as db:
             manifest, settings, rows = self.context(db)
             unknown = db.execute("SELECT COUNT(*) FROM operations WHERE outcome='unknown'").fetchone()[0]
+            backend = None
+            if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='upload_context'").fetchone():
+                row = db.execute('SELECT kind FROM upload_context WHERE id=1').fetchone()
+                if row is not None:
+                    if row['kind'] not in ('official-api','test-fixture'):fail('task_record_invalid')
+                    backend = row['kind']
             return {'job_id': self.job_id, 'manifest_sha256': digest(manifest),
+                    'task_spec_sha256': self.spec_digest(manifest,settings),
                     'files': [{'index': r['idx'], 'name': manifest['files'][r['idx']]['name'],
-                               'size': manifest['files'][r['idx']]['size'], 'phase': r['phase']}
+                               'size': manifest['files'][r['idx']]['size'], 'phase': r['phase'],
+                               'reason':safe_reason(r['reason']) if r['reason'] is not None else None}
                               for r in rows], 'unknown_operations': unknown,
-                    'cloud_backend_connected': False, 'delivered': False,
+                    'cloud_backend_connected': backend == 'official-api', 'upload_backend': backend, 'delivered': False,
                     'source_admission': settings['source_admission']}
 
     def file_root(self, index):
@@ -215,7 +236,7 @@ class Task:
         downloader = downloader or download_verified
         with self.locked() as db:
             manifest, settings, rows = self.context(db)
-            pending = next((r for r in rows if r['phase'] not in ('cloud_verified', 'cleaned')), None)
+            pending = next((r for r in rows if r['phase'] not in ('cloud_verified', 'test_cloud_verified', 'cleaned')), None)
             if pending is None:
                 return {'status': 'no_pending_source'}
             index = pending['idx']
@@ -312,7 +333,7 @@ class Task:
             fail('task_file_index_invalid')
         return row
 
-    def begin_operation(self, index, operation, intent, *, part=-1):
+    def begin_operation(self, index, operation, intent, *, part=-1, _db=None):
         """Commit an intent before a backend call. Existing keys never replay.
 
         The caller must independently enforce scope, payload and live permission.
@@ -324,7 +345,7 @@ class Task:
                 or type(intent) is not dict):
             fail('task_operation_invalid')
         fingerprint = digest(read_json(encoded(intent, MAX_RECEIPT)))
-        with self.locked() as db:
+        with self._using_db(_db) as db:
             row = self.file_row(db, index)
             if row['phase'] not in ('source_verified','uploading'):
                 fail('task_source_not_verified')
@@ -339,7 +360,7 @@ class Task:
                 db.execute("UPDATE files SET phase='uploading' WHERE idx=?", (index,))
         return fingerprint
 
-    def finish_operation(self, index, operation, fingerprint, receipt, *, part=-1):
+    def finish_operation(self, index, operation, fingerprint, receipt, *, part=-1, _db=None):
         """Save a private receipt, not a real-cloud success assertion.
 
         Never persist credentials. The typed backend must restrict receipt fields
@@ -352,10 +373,12 @@ class Task:
         allowed = {'directory': {'fs_id', 'path'},
                    'precreate': {'uploadid', 'required', 'path', 'size', 'hashes', 'host', 'directory_id'},
                    'part': {'part', 'md5', 'bytes'},
-                   'commit': {'fs_id', 'path', 'size', 'md5'}}[operation]
+                   'commit': {'fs_id', 'path', 'size'}}[operation]
+        if operation == 'commit' and set(receipt) == allowed|{'md5'}:
+            allowed = allowed|{'md5'}  # Legacy private receipts; new commits need no invented hash.
         if set(receipt) != allowed:
             fail('task_operation_receipt_invalid')
-        with self.locked() as db:
+        with self._using_db(_db) as db:
             manifest, settings, _ = self.context(db)
             row = self.file_row(db, index)
             entry = manifest['files'][index]

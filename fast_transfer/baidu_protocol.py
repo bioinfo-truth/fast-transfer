@@ -192,7 +192,7 @@ class BaiduProtocol:
         required = obj.get('block_list')
         if required == [] and count == 1:
             required = [0]  # Explicit special case on the official precreate page.
-        if obj.get('path') != path:
+        if obj.get('path') != path and not ('path' not in obj and getattr(self, 'precreate_path_optional', False)):
             fail('protocol_path_changed')
         if (type(obj.get('return_type')) is not int or obj['return_type'] != 1
                 or not isinstance(obj.get('uploadid'), str) or not 1 <= len(obj['uploadid']) <= 512
@@ -203,8 +203,17 @@ class BaiduProtocol:
         if checkpoint is not None:
             checkpoint({'path':path,'size':size,'block_md5':list(hashes),
                         'uploadid':obj['uploadid'],'required_parts':list(required)})
+        host = self.locate_upload_host(path, obj['uploadid'])
+        session = UploadSession(path, size, tuple(hashes), obj['uploadid'],
+                                host, tuple(required))
+        self.sessions.append(session)
+        self.confirmations[id(session)] = {}
+        self.session_bindings[id(session)] = (path, size, session.hashes, session.uploadid, session.host, session.required)
+        return session
+
+    def locate_upload_host(self, path, uploadid):
         located = self.request('GET', LOCATE, {'method': 'locateupload', 'appid': 250528,
-                                              'path': path, 'uploadid': obj['uploadid'], 'upload_version': '2.0'})
+                                              'path': path, 'uploadid': uploadid, 'upload_version': '2.0'})
         servers = located.get('servers')
         if not isinstance(servers, list) or not servers or not isinstance(servers[0], dict):
             fail('protocol_shape_invalid')
@@ -212,12 +221,7 @@ class BaiduProtocol:
         u = destination(host, 'readback')
         if u.path not in ('', '/') or u.query:
             fail('http_url_rejected')
-        session = UploadSession(path, size, tuple(hashes), obj['uploadid'],
-                                urllib.parse.urlunsplit(('https', u.netloc, '', '', '')), tuple(required))
-        self.sessions.append(session)
-        self.confirmations[id(session)] = {}
-        self.session_bindings[id(session)] = (path, size, session.hashes, session.uploadid, session.host, session.required)
-        return session
+        return urllib.parse.urlunsplit(('https', u.netloc, '', '', ''))
 
     def required_parts(self, session):
         self.session(session)

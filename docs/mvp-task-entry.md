@@ -1,6 +1,6 @@
 # 通用任务入口：持久状态和源下载
 
-2026-11-11。`fast_transfer.task`是人工录单MVP的通用任务层，不再绑定原单次NCBI样例。**本轮已接源下载；通用云端上传、交付和自动清理尚未接入，不是完整MVP。** 不读取认证配置，不把manifest或本地收据当作远端权限。
+2026-11-11。`fast_transfer.task`是人工录单MVP的通用任务层，不再绑定原单次NCBI样例。**已接源下载及独立的SDK/API上传执行器；交付和自动清理尚未接入，不是完整MVP。** 不读取认证配置，不把manifest或本地收据当作远端权限。
 
 ## 操作
 
@@ -32,9 +32,9 @@ python3 -m fast_transfer.task --tasks-dir /PRIVATE/TASKS restart-incomplete-sour
 
 每个任务目录0700，锁和SQLite数据库0600。使用`flock`限制同任务操作并发，SQLite FULL同步事务管理manifest快照、逐文件状态及远端操作意图，不另写一套JSON原子替换机制。SQLite仅保存本地记录，不是服务端成功/账号资格的证明；没有实测断电恢复，也不是多租户隔离系统。
 
-内部`begin_operation`在外部调用前持久消耗directory/precreate/part/commit键，结果先记unknown。已消耗键不能再次启动；仍有未知操作时，不允许继续创建下一项。`finish_operation`仅接受匹配意图摘要、任务目标和严格白名单结构的私有收据，支持保存uploadid/分片信息；令牌/密码/Cookie不属于收据字段。它不发送请求、不授予运行权限，也不自动把任务标为cloud_verified或delivered。SDK薄适配器及可信运行范围需后续接入这些方法。
+内部`begin_operation`在外部调用前持久消耗directory/precreate/part/commit键，结果先记unknown。已消耗键不能再次启动；仍有未知操作时，不允许继续创建下一项。`finish_operation`仅接受匹配意图摘要、任务目标和严格白名单结构的私有收据，支持保存uploadid/分片信息；令牌/密码/Cookie不属于收据字段。它不发送请求、不授予运行权限，也不自动把任务标为cloud_verified或delivered。SDK薄适配器及可信运行范围现由独立的`fast_transfer.task_upload`接入，见[上传执行说明](mvp-task-upload.md)。
 
-数据库原始值与会话收据只在私有目录内；公开`show`只给文件名、索引、大小、阶段、未知操作数量和明确的`cloud_backend_connected=false`、`delivered=false`。旧`workflow`保持模拟用途，不将其成功标志转换成真实交付。
+数据库原始值与会话收据只在私有目录内；公开`show`只给文件名、索引、大小、阶段、未知操作数量及后端类型、`task_spec_sha256`；仅实际官方后端绑定显示`cloud_backend_connected=true`，它不是上传验收证明，`delivered=false`保持不变。旧`workflow`保持模拟用途，不将其成功标志转换成真实交付。
 
 ## 已执行验证
 
@@ -46,4 +46,4 @@ python3 -I -S -B tests/support/run_workflow_isolated.py \
   test_workflow test_workflow_process test_upload_stage
 ```
 
-该runner在执行前施加继承性seccomp禁网并使用独立临时HOME。命令行帮助也已在隔离Python导入路径中检查通过。未部署到VPS，未读取凭据或执行新远端写入。下一步为SDK薄适配器、真实上传/回读接线、逐文件清理及私有交付单，然后再做真实不同任务验收。
+该runner在执行前施加继承性seccomp禁网并使用独立临时HOME。命令行帮助也已在隔离Python导入路径中检查通过。未部署到VPS，未读取凭据或执行新远端写入。后续新增通用上传与恢复执行器见[上传执行说明](mvp-task-upload.md)；仍需逐文件清理、私有交付单和真实不同任务验收。
