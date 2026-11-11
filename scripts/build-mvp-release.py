@@ -23,6 +23,7 @@ tracked=subprocess.check_output(['git','ls-files','fast_transfer','examples/ncbi
 files={name:((repo/name).read_bytes(),0o600) for name in tracked if name.endswith(('.py','.json','.md','.txt'))}
 files['bin/ft-sdk-codec']=(a.helper.read_bytes(),0o500)
 files['licenses/baidu-drive-sdk-go-LICENSE']=(a.sdk_license.read_bytes(),0o600)
+files['third_party/baidupcs-go/LICENSE']=((repo/'third_party/baidupcs-go/LICENSE').read_bytes(),0o600)
 files['licenses/SDK-SOURCE.txt']=(b'github.com/baidu-netdisk/baidu-drive-sdk-go\ncommit 472e4a1b111eac1d6307e38802f8fe7adf7e8c21\nSDK request encoder; Apache-2.0.\n',0o600)
 launcher='''"""Use /usr/bin/python3 -I -S -B launcher.py COMMAND [arguments]."""
 import os,resource,runpy,sys
