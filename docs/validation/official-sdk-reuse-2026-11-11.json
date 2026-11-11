@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-11",
+  "sdk_commit": "472e4a1b111eac1d6307e38802f8fe7adf7e8c21",
+  "sdk_module": "github.com/baidu-netdisk/baidu-drive-sdk-go",
+  "sdk_version": "v0.0.0-20260926085836-472e4a1b111e",
+  "dependency_checksum_verification": "public Go proxy and sum.golang.org",
+  "go_version_used": "1.27.3",
+  "go_version_required_by_module": "1.26.2",
+  "contract_tests_passed": 5,
+  "vet": "pass",
+  "test_network": "child seccomp denied; synthetic RoundTripper only",
+  "production_adapter_wired": false,
+  "vps_deployed": false,
+  "real_credentials_used": false,
+  "live_requests_sent": false,
+  "source_sha256": {
+    "integrations/baidu-sdk-go/README.md": "fd408a65413b4433fa90239c5eb79d947d297e2b2d544e592f8a810e768776dc",
+    "integrations/baidu-sdk-go/go.mod": "a33c53dc37d2bcedaf959b9d2a55fc5256206022ddc6a9e98bbd0fa3179d0952",
+    "integrations/baidu-sdk-go/go.sum": "b7d136068b5643cdfc128b1e51993e242fb5186e7f3205f7285613d268468271",
+    "integrations/baidu-sdk-go/upload_contract_test.go": "8c1b693b27aa5fcac004a28b0411bf5756794b9cb925a9c815f02f2b833f260d"
+  }
+}
