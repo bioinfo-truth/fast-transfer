@@ -7,7 +7,7 @@ import urllib.parse
 from dataclasses import dataclass, field
 from pathlib import PurePosixPath
 
-from .baidu_http import HTTPRequest, JSON_LIMIT, destination, response_headers, fail
+from .baidu_http import HTTPRequest, JSON_LIMIT, destination, response_headers, require_success_status, fail
 from .upload_stage import TransferLimits
 
 FILE = 'https://pan.baidu.com/rest/2.0/xpan/file'
@@ -90,8 +90,7 @@ class BaiduProtocol:
             self.checkpoint()
             if reply.status in (301, 302, 303, 307, 308):
                 fail('http_redirect_rejected')
-            if reply.status != 200:
-                fail('http_status_rejected')
+            require_success_status(reply.status)
             length = response_headers(reply)
             if length is not None and length > JSON_LIMIT:
                 fail('http_limit_exceeded')
@@ -308,7 +307,7 @@ class BaiduProtocol:
                     url = urllib.parse.urljoin(url, location)  # Unauthenticated base: never forward a token.
                     destination(url, 'readback'); auth = False
                     continue
-                if reply.status != 200: fail('http_status_rejected')
+                require_success_status(reply.status)
                 length = response_headers(reply)
                 if length is not None and length != meta['size']: fail('protocol_readback_mismatch')
                 total = 0

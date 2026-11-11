@@ -77,6 +77,9 @@ cloud_verified才是此文件真实核验完成，test_cloud_verified不得交�
 | 唯一unknown=commit | 不重复合并；准备0600精确对象定位文件，使用原参数追加`--inspect-commit-proof /PRIVATE/locator.json`，核对身份/大小并完整双摘要回读，见[说明](unknown-commit-inspection.md) |
 | 唯一unknown=非最终part | 普通续传仍拒绝。明确允许相同会话/序号/字节有限重传时，原参数追加`--retry-unknown-part-once PART`；一次尝试先落日志，原unknown快照保留，失败不循环；不适用于最终片、合并或分享 |
 | 目录/预上传未知、多个未知、快速完成分支未支持 | 保留状态转人工，不清空意图或新建替代Task绕过 |
+| http_timeout / http_deadline / http_io_failure | 先等worker终态，检查unknown和确认回执；有unknown走对应核查入口，不能仅凭超时重发；已确认合并仅回读恢复 |
+| http_rate_limited（HTTP429） | 停止本轮，人工等待服务恢复；不自动循环或无限等待Retry-After。重开仍按原Task收据/unknown选择入口 |
+| http_auth_rejected（HTTP401） / http_access_denied（HTTP403） | 停止本轮，检查指定授权或访问权限；403不等于令牌过期，不自动刷新或换账号 |
 | uinfo/账号/凭据错误 | 停止写入，查安全诊断和指定认证文件，不索密码或自动刷新/换账号；有效令牌须在原位置按已有流程恢复 |
 | 空间/内存/配额拒绝、source_changed | 暂停接单/执行，核对实际资源或源身份；不降低校验、改源摘要或重放成功操作 |
 | 原生分享超时/结果不明 | 保留分享意图/输出，先核查分享记录；不再次share set |
@@ -135,3 +138,7 @@ ft_run task_delivery --tasks-dir "$ft_tasks" "$ft_job" \
 - 单worker、单文件默认1GiB、每Task最多100文件是已有入口边界；多用户并发、无限流式传输、自动续期、客户身份认证、支付和计费不在本阶段。
 
 真实记录：[蛋白任务](protein-pilot-2026-11-11.md)、[鼠多文件任务](mouse-pilot-2026-11-11.md)、[源/令牌/空间故障](source-token-faults-2026-11-11.md)。当前服务速度、配额和平台权限以具体账号与实测为准，人工队列不自动向客户报时或发消息。
+
+## 2026-11-11：离线稳定性补充
+
+运行中低空间已通过合成故障注入验证停止与跳过确认片恢复，不是实际ENOSPC验收。空间不足可能阻止新reason写入；以已有持久意图/收据为准，不承诺磁盘耗尽后仍能落日志。新增错误分类与测试尚未部署VPS；既有真实样例不重跑。详见仓库 `docs/workflow-stability.md`。

@@ -159,6 +159,8 @@ class HTTPReply:
                 yield data
         except StageFailure:
             raise
+        except TimeoutError:
+            fail('http_timeout')
         except Exception:
             fail('http_io_failure')
         finally:
@@ -171,6 +173,14 @@ class HTTPReply:
                 self._close()
             except Exception:
                 fail('http_io_failure')
+
+
+def require_success_status(status):
+    """Classify HTTP status only; never infer a platform errno or retry a write."""
+    if status == 429: fail('http_rate_limited')
+    if status == 401: fail('http_auth_rejected')
+    if status == 403: fail('http_access_denied')
+    if status != 200: fail('http_status_rejected')
 
 
 def response_headers(reply):
@@ -306,6 +316,9 @@ class PinnedBaiduHTTPClient:
         except StageFailure:
             self._discard(response, connection)
             raise
+        except TimeoutError:
+            self._discard(response, connection)
+            fail('http_timeout')
         except Exception:
             self._discard(response, connection)
             fail('http_io_failure')

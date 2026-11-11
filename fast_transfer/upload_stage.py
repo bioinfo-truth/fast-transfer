@@ -39,6 +39,7 @@ SAFE_REASONS = frozenset('''
     candidate_fake_only candidate_replay_rejected candidate_terminal candidate_expired
     http_runtime_locked http_stopped http_scope_invalid http_url_rejected http_redirect_rejected
     http_header_rejected http_status_rejected http_limit_exceeded http_deadline http_io_failure
+    http_timeout http_rate_limited http_auth_rejected http_access_denied
     http_auth_missing http_concurrent_request protocol_json_invalid protocol_api_error
     protocol_conflict protocol_identity_mismatch protocol_account_limits_unknown protocol_quota_insufficient
     protocol_strict_conflict_unproven protocol_shape_invalid protocol_path_changed protocol_part_mismatch

@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-11",
+  "scope": "generic-workflow-stability-offline",
+  "evidence_kind": "synthetic-with-actual-local-sdk-encoder",
+  "network": "child-inherited-kernel-seccomp-denial",
+  "regression": {
+    "tests": 216,
+    "result": "passed",
+    "log_sha256": "1cc8dcdc5c77ac08196160c21a3ae17f1ccae7a8f6646428c88ee9fd7e397f7e",
+    "modules": [
+      "test_stability",
+      "test_intake",
+      "test_safe_download",
+      "test_space",
+      "test_stop_boundaries",
+      "test_baidu_md5",
+      "test_resources",
+      "test_task_upload_process",
+      "test_task_retry",
+      "test_task_inspect",
+      "test_task_delivery",
+      "test_delivery",
+      "test_task_handoff",
+      "test_task_cleanup",
+      "test_task_upload",
+      "test_task",
+      "test_baidu_protocol",
+      "test_sdk_codec"
+    ]
+  },
+  "new_tests": 6,
+  "covered": [
+    "probe HTTP429/401/403 single request safe reason durable and no mutations",
+    "socket timeout while reading closes stream",
+    "socket timeout awaiting response closes connection with no retry",
+    "part effect then timeout remains unknown and restart stops before factory",
+    "free-space drop after confirmed part stops before next part then restored-space resume skips it",
+    "readback HTTP429 after commit then GET-only recovery with exactly one commit"
+  ],
+  "real_authentication": false,
+  "real_transfers": false,
+  "real_shares": false,
+  "vps_deployed": false,
+  "external_model_calls": false,
+  "goal_control": {
+    "observed_status": "blocked",
+    "objective_updated": false,
+    "active_restored": false,
+    "limitation": "available tools cannot edit an unfinished objective or resume blocked goal"
+  },
+  "unverified": [
+    "actual runtime ENOSPC",
+    "natural credential expiry and refresh",
+    "long duration continuous operation"
+  ],
+  "caveats": [
+    "Low space may prevent a fresh reason write; preserve and use previously durable intents and receipts.",
+    "HTTP403 denotes access refusal, not proof of expired credentials.",
+    "Synthetic verification never grants real cloud verification or delivered status."
+  ]
+}
