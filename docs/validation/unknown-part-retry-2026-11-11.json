@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-11",
+  "runtime_revision": "15aa7d8baf928ad233b2d6eb48e844c9aa92da61",
+  "new_user_policy": "explicit one-shot identical unknown nonfinal part replay allowed; final mutations excluded",
+  "authorization_verified_in_existing_conversation": true,
+  "original_task_reused": true,
+  "original_session_reused": true,
+  "part": 48,
+  "bytes": 8388608,
+  "original_outcome": "unknown",
+  "original_unknown_snapshot_retained": true,
+  "new_attempts": 1,
+  "new_attempt_status": "confirmed",
+  "returned_md5_matches_local_part": true,
+  "only_part48_posted": true,
+  "session_recreated": false,
+  "full_file_verified_by_this_step": false,
+  "resources": {
+    "schema": "fast-transfer-resource-samples-v1",
+    "samples": 252,
+    "sample_errors": 0,
+    "interval_seconds": 0.05,
+    "elapsed_seconds": 12.829371,
+    "minimum_sampled_free_bytes": 23421890560,
+    "peak_sampled_self_rss_kib": 69888,
+    "peak_sampled_process_tree_rss_kib": 82676,
+    "process_tree_truncated": false,
+    "sampler_stopped": true,
+    "complete": true,
+    "measurement": "periodic-rss-sum-may-double-count-shared-pages-and-miss-peaks"
+  },
+  "client_stopped": true,
+  "credential_released": true,
+  "tests": [
+    {
+      "passed": 32,
+      "log_sha256": "8f5e290223a81d3f2883beff91fa31b4014fc361740e5b69ec2c82e2681110d0",
+      "network": "seccomp denied",
+      "cloud": "synthetic",
+      "sdk_encoder": "actual"
+    },
+    {
+      "passed": 94,
+      "log_sha256": "d6a67ed50f49eb8537a79f355246e77fc743cff7438ccecb06dc0e2ca8b458ef",
+      "network": "seccomp denied",
+      "cloud": "synthetic",
+      "sdk_encoder": "actual"
+    }
+  ]
+}

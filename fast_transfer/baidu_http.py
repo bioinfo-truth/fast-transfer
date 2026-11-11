@@ -249,7 +249,11 @@ class PinnedBaiduHTTPClient:
             connection = self.factory(u.hostname, addresses[0], IO_TIMEOUT)
             if hasattr(connection, 'set_debuglevel'):
                 connection.set_debuglevel(0)
-            deadline = min(time.monotonic()+REQUEST_BUDGET, self.grant.expires_monotonic)
+            # A full-file readback can exceed a small control request's 120s
+            # budget. It remains bounded by the reviewed task grant (<=900s),
+            # with the same 30s socket idle timeout and byte/length limits.
+            deadline = (self.grant.expires_monotonic if req.purpose == 'readback'
+                        else min(time.monotonic()+REQUEST_BUDGET, self.grant.expires_monotonic))
             query = u.query
             if params:
                 query += ('&' if query else '')+urllib.parse.urlencode(params)

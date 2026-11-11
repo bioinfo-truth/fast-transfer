@@ -241,6 +241,21 @@ class ProtocolTests(unittest.TestCase):
 
 
 class ChannelTests(unittest.TestCase):
+    def test_readback_uses_remaining_grant_while_control_keeps_short_budget(self):
+        for purpose,expires,expected in (('readback',1750,1750),('control',1750,1120),
+                                         ('readback',1040,1040),('control',1040,1040)):
+            with self.subTest(purpose=purpose,expires=expires),patch('time.monotonic',return_value=1000):
+                grant=RuntimeGrant(True,TARGET,ACCOUNT,'b'*64,'test-only',expires)
+                raw=Mock(status=200);raw.getheaders.return_value=[('Content-Length','8')]
+                conn=Mock();conn.getresponse.return_value=raw
+                client=PinnedBaiduHTTPClient(grant=grant,credential_provider=lambda:'fixture-token',
+                    resolver=lambda _:['8.8.8.8'],connection_factory=Mock(return_value=conn))
+                req=(HTTPRequest('GET','https://d.pcs.baidu.com/data',TARGET,'readback',auth=False)
+                     if purpose=='readback' else HTTPRequest('GET',FILE,TARGET,params={'method':'meta'}))
+                response=client.exchange(req)
+                self.assertEqual(response.deadline,expected)
+                self.assertTrue(client.stop())
+
     def grant(self):
         return RuntimeGrant(True, TARGET, ACCOUNT, 'b'*64, 'test-only-no-credentials', time.monotonic()+60)
 
