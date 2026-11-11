@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-11",
+  "revision": "a6c75a1697fff73ce40e0ca53dfeb22bdd41b6aa",
+  "archive_sha256": "0bd3a5fbfcefb4a2b6e2c4a6682c6b52ea2b9962e5f4d0c52fd05ea2d48cc2aa",
+  "tests_passed": 15,
+  "test_modules": [
+    "test_stability",
+    "test_task_recovery"
+  ],
+  "network": "inherited kernel seccomp denial",
+  "temporary_home": true,
+  "runtime_modules_loaded_from_archive": 16,
+  "all_runtime_imports_from_archive": true,
+  "helper_and_guard_from_archive": true,
+  "log_sha256": "79d7d52b046c52fd1f352ad2577d47492ef41d80fda0e1359f8664682341b8a3",
+  "service": "synthetic generic files only",
+  "real_credentials": false,
+  "real_source_download": false,
+  "real_upload_or_share": false,
+  "scope": "local unpacked release fault and recovery regression"
+}

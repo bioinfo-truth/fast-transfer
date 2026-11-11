@@ -70,3 +70,9 @@
 在独立临时数据库通过 `max_page_count` 实际触发SQLITE_FULL，不填满真实磁盘。新增一个测试分别覆盖part/commit两个子场景：合成服务已接收写入，finish_operation保存回执之前，测试包装器的容量探测INSERT实际失败。原持久unknown保留、没有伪造确认/完整核验/交付，适配器停止；重新打开原Task在factory之前拒绝，不再次发片或合并。
 
 7项相关禁网测试通过，使用实际本地SDK编码器与合成服务。不是实际收据UPDATE触发SQLITE_FULL，也不是文件系统ENOSPC/日志回滚或生产磁盘耗尽验收；不保证此时还能持久化新reason。只增强数据库容量失败的恢复证据，不扩大此前真实操作范围。仓库证据为 `docs/validation/sqlite-capacity-fault-2026-11-11.json`。
+
+## 2026-11-11：从实际运行包执行稳定性回归
+
+以已安装版本相同归档（a6c75a1，SHA256 `0bd3a5fbfcefb4a2b6e2c4a6682c6b52ea2b9962e5f4d0c52fd05ea2d48cc2aa`）解包后，在继承性内核禁网和临时HOME中运行test_stability/test_task_recovery，共15项通过。加载的16个fast_transfer运行模块以及SDK helper/guard均核对来自归档，而非工作树；测试驱动来自已审核本地测试，未随运行包部署。
+
+覆盖通用合成任务上传/完整回读、超时/限流/认证拒绝、确认片后空间下降、SQLite容量失败前的未知意图保留、只读恢复建议与重启防重复。补充的是本地解包版本故障回归，不是VPS完整上传测试或新增真实数据交付，未读取真实凭据或发送实网请求。归档无需重建或重装。证据见仓库 `docs/validation/packaged-stability-2026-11-11.json`。
