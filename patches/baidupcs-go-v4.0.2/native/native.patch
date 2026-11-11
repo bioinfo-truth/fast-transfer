@@ -8,12 +8,34 @@
  	"os"
  	"os/exec"
  	"path"
-@@ -420,7 +421,26 @@
+@@ -420,7 +421,48 @@
  			After:    saveFunc,
  			Action: func(c *cli.Context) error {
  				var bduss, ptoken, stoken, cookies string
 -				if c.IsSet("cookies") {
-+				if c.Bool("cookies-prompt") {
++				if c.Bool("bduss-prompt") {
++					file, e := os.OpenFile("/dev/tty", os.O_RDWR, 0)
++					if e != nil {
++						return fmt.Errorf("interactive terminal required")
++					}
++					defer file.Close()
++					values := []*string{&bduss, &stoken}
++					for i, label := range []string{"BDUSS", "STOKEN"} {
++						fmt.Fprint(file, label+" (hidden): ")
++						raw, e := terminal.ReadPassword(int(file.Fd()))
++						fmt.Fprintln(file)
++						if e != nil {
++							return fmt.Errorf("credential input failed")
++						}
++						*values[i] = strings.TrimSpace(string(raw))
++						for j := range raw {
++							raw[j] = 0
++						}
++						if *values[i] == "" {
++							return fmt.Errorf("empty credential")
++						}
++					}
++				} else if c.Bool("cookies-prompt") {
 +					file, e := os.OpenFile("/dev/tty", os.O_RDWR, 0)
 +					if e != nil {
 +						return fmt.Errorf("interactive terminal required")
@@ -36,10 +58,11 @@
  					cookies = c.String("cookies")
  				} else if c.IsSet("bduss") {
  					bduss = c.String("bduss")
-@@ -448,6 +468,7 @@
+@@ -448,6 +490,8 @@
  				return nil
  			},
  			Flags: []cli.Flag{
++				cli.BoolFlag{Name: "bduss-prompt", Usage: "分别隐藏输入BDUSS和STOKEN，使用原生登录和本机配置保存"},
 +				cli.BoolFlag{Name: "cookies-prompt", Usage: "隐藏输入Cookie，使用原生登录和本机配置保存"},
  				cli.StringFlag{
  					Name:  "username",
