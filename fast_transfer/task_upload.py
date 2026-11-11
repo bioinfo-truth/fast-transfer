@@ -394,7 +394,9 @@ def main(argv=None):
     p.add_argument('--sdk-helper',type=Path,required=True);p.add_argument('--sdk-helper-sha256',required=True)
     p.add_argument('--sdk-guard',type=Path,required=True);p.add_argument('--sdk-guard-sha256',required=True)
     p.add_argument('--timeout',type=float,default=600)
-    p.add_argument('--inspect-commit-proof',type=Path)
+    mode=p.add_mutually_exclusive_group()
+    mode.add_argument('--inspect-commit-proof',type=Path)
+    mode.add_argument('--retry-unknown-part-once',type=int,help='Explicit policy exception: one replay of same unknown nonfinal part; retains original history.')
     a=p.parse_args(argv)
     last_protocol=[None]
     samples=None
@@ -415,7 +417,11 @@ def main(argv=None):
             last_protocol[0]=backend
             return backend
         with ResourceSamples(task.root) as samples:
-            if a.inspect_commit_proof is not None:
+            if a.retry_unknown_part_once is not None:
+                from .task_retry import retry_unknown_part
+                result=retry_unknown_part(task,factory,a.expected_account_sha256,a.retry_unknown_part_once,
+                                          timeout=a.timeout,approved_task_spec_sha256=a.approved_task_sha256)
+            elif a.inspect_commit_proof is not None:
                 from .task_inspect import inspect_commit
                 result=inspect_commit(task,factory,a.expected_account_sha256,a.inspect_commit_proof,
                                       timeout=a.timeout,approved_task_spec_sha256=a.approved_task_sha256)
