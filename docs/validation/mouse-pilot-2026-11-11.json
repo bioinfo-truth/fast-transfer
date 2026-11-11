@@ -137,5 +137,20 @@
     "service_activated": false,
     "old_releases_retained": true
   },
-  "goal_status": "active"
+  "goal_status": "active",
+  "observed_wall_timing": {
+    "source_started_at": 1794375446,
+    "recipient_confirmed_at": 1794379378,
+    "wall_elapsed_seconds": 3932,
+    "includes_human_wait_and_experimental_stops": true,
+    "not_bandwidth_or_slo": true,
+    "recipient_evidence": "user-confirmation"
+  },
+  "human_interventions_observed": [
+    "Explicit user policy decision permitting the one bounded replay",
+    "User confirmation that both files were extracted and downloaded"
+  ],
+  "manual_steps_total": null,
+  "manual_labor_seconds": null,
+  "intervention_limit": "Listed evidenced user actions, not a complete time-and-motion audit; agent recovery and engineering work are not zero-cost automation"
 }
