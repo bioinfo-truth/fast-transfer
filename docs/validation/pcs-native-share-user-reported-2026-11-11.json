@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-11",
+  "evidence": "user_terminal_output_reported_in_conversation",
+  "native_login": "user_reported_success",
+  "original_metadata_comparison": {
+    "file_id": true,
+    "path": true,
+    "size": true,
+    "md5": true
+  },
+  "share_creation": "user_reported_success",
+  "requested_period_days": 1,
+  "password_selection": "native_random",
+  "agent_created_share": false,
+  "agent_read_login_config": false,
+  "independent_share_record_check": false,
+  "server_expiry_verified": false,
+  "recipient_access_verified": false,
+  "new_upload_performed": false,
+  "private_identifiers_and_link_omitted": true
+}
