@@ -1,5 +1,7 @@
 # 人工录单试运行操作手册
 
+> 2026-11-11最终验收：既定人工录单、单账号/单worker、审核manifest、官方SDK/API及境内人工原生分享MVP已逐项核对；两个不同真实任务本人领取确认、失败恢复/资源保护/逐文件清理、运行包和操作入口有证据。完整验收表见仓库docs/mvp-final-acceptance.md。生产SLA、长期运行、worker真实ENOSPC/OOM、自动刷新、收费/淘宝等不在已验收承诺内；后置性能工作和相关边界Issue继续开放，不合并草稿PR，不解除此前受阻操作限制。
+
 > 2026-11-11最新：用户明确允许安装检查及同步GitHub/Wiki。a6c75a1稳定性运行包已独立安装VPS，51载荷核验、7入口及合成任务创建/只读恢复诊断在禁网下通过，旧版保留、服务未切换，未读取网盘凭据或真实下载/上传/分享。此前“待部署/待发布”属历史状态。实际资源耗尽、自然认证到期和长期运行尚未验收。仓库证据：docs/validation/stability-runtime-deployment-2026-11-11.json。Goal为active，既有受阻来源/操作限制不变。
 
 > 2026-11-11最新：用户已将同一Goal恢复active；较早blocked叙述是历史状态。成本/工时和跨地区测速后置。新增错误分类与恢复建议通过224项禁网回归，尚未部署；不能将历史VPS运行包等同本地新代码。本轮只做本地工程，远端发布待后续允许联网时同步。操作入口见[Operations](https://github.com/bioinfo-truth/fast-transfer/wiki/Operations)。

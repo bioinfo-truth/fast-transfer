@@ -1,5 +1,9 @@
 # MVP验收状态与下一道门槛
 
+## 2026-11-11：最终人工MVP验收
+
+既定单账号、单worker、人工审核manifest/原生分享的MVP必要交付已逐项核对，见[最终验收表](mvp-final-acceptance.md)。两个不同真实任务领取确认、失败恢复、固定SDK/API、资源保护/清理、运行包及文档均有独立证据。长期运行、生产worker实际ENOSPC/OOM、自然到期/刷新和商业SLA继续保留未验收边界，不宣称已实现。下方历史“未完成”按原时点解释；性能/成本工时按用户明确决定后置。
+
 ## 2026-11-11：已获授权并完成稳定性运行包安装检查
 
 用户明确允许安装检查及同步GitHub/Wiki。同一Goal已由用户恢复active。a6c75a1697fff73ce40e0ca53dfeb22bdd41b6aa已安装至VPS独立版本目录，归档SHA256 `0bd3a5fbfcefb4a2b6e2c4a6682c6b52ea2b9962e5f4d0c52fd05ea2d48cc2aa`。52个成员/51个载荷的摘要、权限、所有权和Python语法核对通过；7个CLI帮助、readback-only选项、通用合成任务创建与show恢复建议及数据库不变检查均在继承性内核禁网、临时HOME下通过。
