@@ -1,0 +1,13 @@
+{
+  "checked_at_utc": "2026-11-10T14:21:59.208434+00:00",
+  "request_count": 1,
+  "identity_success": true,
+  "existing_account_match": null,
+  "application_binding_verified": false,
+  "share_permission_verified": false,
+  "authorization_changed": false,
+  "closed": true,
+  "http_status": 200,
+  "errno": 0,
+  "outcome": "identity_accepted"
+}

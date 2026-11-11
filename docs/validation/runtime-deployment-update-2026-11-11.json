@@ -1,0 +1,30 @@
+{
+  "revision": "63a9840fba769df14c7b6f0c0902f986c94a4162",
+  "archive_sha256": "2368680205ec1deab920bf66460935d271de5d8d8e7503585cf707b0e608d4a0",
+  "archive_files": 50,
+  "verified_payload_files": 49,
+  "vps_installed": true,
+  "service_activated": false,
+  "sdk_part_bytes": 4194304,
+  "resource_samples": {
+    "samples": 9,
+    "sample_errors": 0,
+    "interval_seconds": 0.05,
+    "elapsed_seconds": 0.369537,
+    "minimum_sampled_free_bytes": 24289992704,
+    "peak_sampled_self_rss_kib": 38140,
+    "peak_sampled_process_tree_rss_kib": 58192,
+    "sampler_stopped": true,
+    "complete": true
+  },
+  "parent_lifetime_peak_rss_kib": 48676,
+  "child_lifetime_peak_rss_kib": 29384,
+  "candidate_unchanged": true,
+  "candidate_phase": "pending",
+  "unknown_operations": 0,
+  "credentials_read": false,
+  "baidu_requests": 0,
+  "source_downloaded": false,
+  "full_task_acceptance": false,
+  "new_object_authorization": "pending"
+}

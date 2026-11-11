@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-10",
+  "scope": "credential-free candidate binding; no official service access",
+  "new_binding_tests": 17,
+  "affected_official_driver_tests": 13,
+  "affected_sse_regression_tests": 17,
+  "tests_passed": 47,
+  "failures": 0,
+  "skipped": 0,
+  "real_credentials_read": false,
+  "official_service_connected": false,
+  "real_share_attempted": false,
+  "fresh_process_no_replay_test": true,
+  "job_lock_and_persist_failure_tests": true,
+  "business_envelope_officially_verified": false,
+  "credential_application_scope_verified": false,
+  "share_mapping_verified": false,
+  "files_sha256": {
+    "fast_transfer/mcp_binding.py": "82ba8095855831526fe629f47bbd1e022daa1dbae76d2dc834f083c1f2e01eee",
+    "fast_transfer/mcp_sse.py": "9f46cff5e6412d298f469895ab7c5e2787155db6e3fba9c509da656b05a573c9",
+    "fast_transfer/mcp_official_http.py": "bf9e93a6abb6442522001084662ae8fba10ce0968d34a5d5ac1937545999ffc4",
+    "tests/test_mcp_binding.py": "12836ade1e984781dc0ebc8127f229cfad7cf833b041f7938153d8c61978e79e",
+    "tests/test_mcp_official_http.py": "b12d98718e210998908f6e937a9f68f868a89be7aa07c11c1c3570af56ffefcf",
+    "tests/test_mcp_sse.py": "48547ea4753576d501f888ce0b69240a58b9789a347fa9d9d0641c0835fc349b",
+    "tests/support/run_workflow_isolated.py": "35c6c7f51266a1030a8c308c31aaed0c34aa83e9918921094607f1b68a35d0da"
+  },
+  "output_sha256": "b35d55039d51c1832b537399780298621ee095dbf7957c042fc12e88337e641c"
+}

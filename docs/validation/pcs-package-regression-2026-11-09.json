@@ -1,0 +1,98 @@
+{
+  "date": "2026-11-09",
+  "baseline_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+  "patch_input_commit": "cb4272699a068a9dad68e3659caf30360baa0e16",
+  "toolchain": "go1.27.3 linux/amd64",
+  "requester_package_compile": "passed_go_test_c_no_execution_during_compile",
+  "requester_runtime_passed": 7,
+  "execution_filter": "^TestFT",
+  "existing_upstream_tests_executed": false,
+  "prior_six_helper_tests_repeated": false,
+  "configuration_package_compile": "passed_go_test_c",
+  "configuration_runtime_tests_prepared": 2,
+  "configuration_runtime_tests_executed": false,
+  "configuration_init_closure_nonstdlib_packages": 74,
+  "configuration_runtime_blocker": "Full transitive initializers and global side effects not cleared for execution; compile only.",
+  "requester_init_closure": [
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/baidupcs/expires",
+      "selected_source_sha256": {
+        "dataexpires.go": "0ed0824866e1aa9669a320b1df07bfbfd7b48df0ef89ca0c22eb3bd31bb3c4aa",
+        "expires.go": "a57bdc0a98b9b1e03f22ac12e3a21767e186b08052a686e1632e54e93a369159"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/baidupcs/expires/cachemap",
+      "selected_source_sha256": {
+        "cachemap.go": "34d2077a45a0f1ec6f30834e32432941b29939d8dbf47390a66ddf40b0fba33d",
+        "cacheunit.go": "84644c69d86b7133921ba2d846de9094d1b6e965709931271fdabbea9e25f2bb",
+        "utils.go": "29df0c163e10dd2491b02f115dd5e25e0f88e6fe0856212117215b8c1735dbb0"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/requester",
+      "selected_source_sha256": {
+        "dial.go": "df5af1670435b10fb84aa2d5ce908f7b22022c23feece3aad508117cf3dec166",
+        "fetch.go": "9b2c48f2db17fd713c4290e18f9ddaf97b14c741077aa03bf136736a01b2940a",
+        "http_client.go": "73e0d5e9370463e84358e421ccbc6e2e5406872a9ad6f0a3ce80904706c9aa24",
+        "requester.go": "f710add2cfdc800d8e417ac7e302c57f265b08b4a0f40d9340772b3eced3ed97",
+        "security_policy.go": "c62319e490e972397bcf0c31d04f8e58b6151ac3b1f2e662ca5111535c26f267",
+        "tcpaddr_cache.go": "55c6474402e18db2a68aca7886912f61eb84a68d52084ee88fef69e59f87fafd",
+        "util.go": "f1b06396f622dbcd0189f89330af8849c7287750da80836c6d0db6a0d9887f9b"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/requester/rio",
+      "selected_source_sha256": {
+        "buf.go": "0a3530aa937cfca2c392f4324df676deea1417312082a87148aaeb5ca0a0457d",
+        "file.go": "16a860fe203b3ea0d1539f9749b43934dd4fdec19d643b517dca89bbc16ea2dd",
+        "multi.go": "2daa81a7f36a06a73d46a2fd36130249247f1d292cd96ffd1a0b05d39131e69b",
+        "rio.go": "f336d014fed33eb81995aa7a675b34b9f67169002f25853f24621102c2199c5e"
+      }
+    },
+    {
+      "package": "github.com/rs/dnscache",
+      "selected_source_sha256": {
+        "dnscache.go": "d811ca2cfdeb9fde60dd59b606d1f659a2900e05dd3498af28a7423ed6889792"
+      }
+    },
+    {
+      "package": "golang.org/x/sync/singleflight",
+      "selected_source_sha256": {
+        "singleflight.go": "a111053ac18cb8f7e75921803158cbf3dfbaab37e29775ea2ef46e6d82af1840"
+      }
+    }
+  ],
+  "requester_init_review": "6 nonstdlib packages: in-memory HTTP client/cookiejar/TLS objects, sync.Map cache slot, unstarted DNS resolver and locks; no account configuration package or executable main",
+  "configuration_static_findings": [
+    "GetConfigDir is called at package initialization; can stat executable-adjacent config or mkdir HOME path unless absolute BAIDUPCS_GO_CONFIG_DIR supplied",
+    "NewConfig allocates struct; Init/Reload perform configuration load and are not called by these proposed tests",
+    "74 nonstdlib packages include reflection/JSON/protobuf registration and formatting environment initializers; full recursive initializer audit incomplete"
+  ],
+  "landlock_abi": 8,
+  "filesystem_policy": "scratch root content read/write allowed, only exact requester test binary executable; outside content denied including symlink escape",
+  "filesystem_probes": "new outside synthetic file and symlink reads denied with permission error in wrapper and Go test",
+  "network_policy": "inherited child seccomp socket and related syscalls denied; socket returned EPERM",
+  "launcher": "explicit_PATH_only_python_-I_-S_close_fds_stdin_devnull",
+  "target_environment": "explicit empty-profile HOME/config/tmp and two synthetic probe paths only",
+  "client_binary_executed": false,
+  "real_credentials_used": false,
+  "account_requests": 0,
+  "outside_real_user_files_read": false,
+  "system_security_configuration_changed": false,
+  "new_dependencies_downloaded": false,
+  "artifact_sha256": {
+    "patches/baidupcs-go-v4.0.2/regression/README.md": "f34192a22ebfb7c56caaf61a4fdadfc3cad92ee4c8087f6c653680e3c816c48a",
+    "patches/baidupcs-go-v4.0.2/regression/requester_regression_test.go": "e06189c2fab5073881b3eb009abf0fb5c02863b9a4b2c509438ddb3edc4482ff",
+    "patches/baidupcs-go-v4.0.2/regression/config_regression_test.go": "1e8cd42c702da2db0c7917fcd7704143dc29a82c771f8cf8c691436bae424f81",
+    "patches/baidupcs-go-v4.0.2/regression/restricted_test_exec.py": "2db13235665ca299ab8078339d76ca6bf385ad9f42ed1de9d6ceb2aa9a898bf0"
+  },
+  "test_binary_sha256": "7515807e49f81b121093a0a9cff89a9ae4e67efcf1d3dda223e919b7fffac1cb",
+  "config_test_binary_sha256": "0b1b3c82912772f16a648e9709b621fcb447346c59f8b2d3bd1c3e9cab1f210d",
+  "free_bytes_final_checkpoint": 169815601152,
+  "mvp_backend_decision": "actual_requester_behavior_evidence_improved_real_auth_and_share_not_verified",
+  "client_main_executed": false,
+  "generated_go_test_harness_main_executed": true,
+  "historical_before_config_init_review": true,
+  "config_runtime_followup_evidence": "pcs-config-runtime-2026-11-09.json"
+}

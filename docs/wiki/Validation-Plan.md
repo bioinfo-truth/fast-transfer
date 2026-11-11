@@ -1,5 +1,28 @@
 # 首轮验证方案
 
+> 2026-11-11最终验收：既定人工录单、单账号/单worker、审核manifest、官方SDK/API及境内人工原生分享MVP已逐项核对；两个不同真实任务本人领取确认、失败恢复/资源保护/逐文件清理、运行包和操作入口有证据。完整验收表见仓库docs/mvp-final-acceptance.md。生产SLA、长期运行、worker真实ENOSPC/OOM、自动刷新、收费/淘宝等不在已验收承诺内；后置性能工作和相关边界Issue继续开放，不合并草稿PR，不解除此前受阻操作限制。
+
+> 2026-11-11最新：用户明确允许安装检查及同步GitHub/Wiki。a6c75a1稳定性运行包已独立安装VPS，51载荷核验、7入口及合成任务创建/只读恢复诊断在禁网下通过，旧版保留、服务未切换，未读取网盘凭据或真实下载/上传/分享。此前“待部署/待发布”属历史状态。实际资源耗尽、自然认证到期和长期运行尚未验收。仓库证据：docs/validation/stability-runtime-deployment-2026-11-11.json。Goal为active，既有受阻来源/操作限制不变。
+
+> 2026-11-11最新：用户已将同一Goal恢复active；较早blocked叙述是历史状态。成本/工时和跨地区测速后置。新增错误分类与恢复建议通过224项禁网回归，尚未部署；不能将历史VPS运行包等同本地新代码。本轮只做本地工程，远端发布待后续允许联网时同步。操作入口见[Operations](https://github.com/bioinfo-truth/fast-transfer/wiki/Operations)。
+
+## 2026-11-11：当前优先级调整——流程稳定性
+
+用户确认：现阶段成本主要为固定订阅，VPS 不到 17 美元/年、套餐标称不限流量，百度网盘 SVIP 每年一百多元；这是用户提供的当前情况，未独立核验套餐条款及续费价格。不开发逐任务成本分摊或人工工时统计模块，也不以这些记录作为 MVP 验收前置。
+
+下一步优先核对既有流程的稳定性缺口：运行中磁盘空间下降、请求超时/限流的停止与恢复、令牌不可用时的明确提示，以及跨阶段重启后不重复上传、合并或分享。先复用现有测试与收据，针对缺口做离线故障注入；模拟证据与真实运行证据分开。自然到期/刷新、运行中 ENOSPC 和长期连续运行仍未验收，不因已有成功案例而标为完成。
+
+美国/欧洲和跨时段测速保留为后续性能工作，当前不新增源站传输、不重跑已交付任务。不引入 DSH 或其他外部模型作为稳定性开发的前置。具体工作沿用 Issues #4/#5/#7，性能对照保留 Issue #2。
+
+
+## 最新状态（2026-11-11）
+
+当前路线为通用Task＋固定官方Go SDK编码/API上传、完整双摘要回读、境内原生分享及私有收据。蛋白和834MB＋报告两个任务均由本人确认下载，delivered=true；已实测源SIGKILL恢复、无效令牌拒绝、低空间准入和真实unknown commit的只读核查，无重复合并。更广范围/生产SLA未作承诺，完整验收持续按当前目标核对。
+
+使用[操作手册](https://github.com/bioinfo-truth/fast-transfer/wiki/Operations)、[路线图](https://github.com/bioinfo-truth/fast-transfer/wiki/Roadmap)与[产品架构](https://github.com/bioinfo-truth/fast-transfer/wiki/Product-and-Architecture)。操作手册为当前命令、队列和故障恢复入口；下方保留早期工具/授权/模拟/M1–M6实验记录，其中“当前/待验证”均指原记录时点，不能覆盖最新状态或替代当前原地凭据授权。
+
+## 历史记录（保留原文）
+
 ## 环境
 
 记录 VPS 服务商、区域、套餐、系统、磁盘剩余、账号等级、网盘客户端版本及 commit、测试时间和网络条件。勿记录 token、Cookie、订单个人信息或未公开数据。
@@ -35,3 +58,35 @@
 ## 2026-11-07：AList + rclone 小文件闭环
 
 美国测试节点经 AList v3.66.0 与 rclone v1.76.0 完成 NCBI 公开文件上传百度、远端大小验证和回读 MD5 校验。标准输入上传的 AList 临时文件峰值达到完整文件大小；本组合未解决超磁盘单文件问题。64 MiB 本地 WebDAV 对照与中断重传也通过内容校验，未证明云端断点续传。详见[测试记录](https://github.com/bioinfo-truth/fast-transfer/wiki/Transfer-Tools)。分享、客户领取、令牌自动刷新、大文件和长期性能仍待验证。
+
+### 2026-11-11：通用流程稳定性离线实现
+
+新增HTTP限流/认证拒绝/访问拒绝/socket超时的安全错误分类；使用通用合成任务验证探测拒绝不写云端、分片超时未知不重发、确认片后空间骤降停止与恢复跳过、回读限流后GET-only恢复。原有成功/未知操作及领取状态保护继续复用。不新增实网认证/上传/分享，未部署VPS；实际ENOSPC、自然过期和长期运行未测。Goal控件仍blocked，工具不能修改正文或恢复active，独立工程按新授权执行。详见仓库 `docs/workflow-stability.md`。
+
+### 2026-11-11：恢复入口诊断审计（仅本地）
+
+重复操作与交付保护复用既有测试，不重写上传/分享流程。task show新增只读recovery建议，区分下载恢复/续传/GET-only回读/未知commit核查/有限片重试审议/等待领取；已耗用片重试不再建议重试，错误类别不清unknown，未导出或未分享不自行推断。新增通用合成测试与原收据测试断言，无真实认证/传输/分享/部署。本轮仅本地工程，远端同步尚未执行；具体映射见[操作手册](https://github.com/bioinfo-truth/fast-transfer/wiki/Operations)。
+
+## 2026-11-11：SQLite容量耗尽边界
+
+在独立临时数据库通过 `max_page_count` 实际触发SQLITE_FULL，不填满真实磁盘。新增一个测试分别覆盖part/commit两个子场景：合成服务已接收写入，finish_operation保存回执之前，测试包装器的容量探测INSERT实际失败。原持久unknown保留、没有伪造确认/完整核验/交付，适配器停止；重新打开原Task在factory之前拒绝，不再次发片或合并。
+
+7项相关禁网测试通过，使用实际本地SDK编码器与合成服务。不是实际收据UPDATE触发SQLITE_FULL，也不是文件系统ENOSPC/日志回滚或生产磁盘耗尽验收；不保证此时还能持久化新reason。只增强数据库容量失败的恢复证据，不扩大此前真实操作范围。仓库证据为 `docs/validation/sqlite-capacity-fault-2026-11-11.json`。
+
+## 2026-11-11：从实际运行包执行稳定性回归
+
+以已安装版本相同归档（a6c75a1，SHA256 `0bd3a5fbfcefb4a2b6e2c4a6682c6b52ea2b9962e5f4d0c52fd05ea2d48cc2aa`）解包后，在继承性内核禁网和临时HOME中运行test_stability/test_task_recovery，共15项通过。加载的16个fast_transfer运行模块以及SDK helper/guard均核对来自归档，而非工作树；测试驱动来自已审核本地测试，未随运行包部署。
+
+覆盖通用合成任务上传/完整回读、超时/限流/认证拒绝、确认片后空间下降、SQLite容量失败前的未知意图保留、只读恢复建议与重启防重复。补充的是本地解包版本故障回归，不是VPS完整上传测试或新增真实数据交付，未读取真实凭据或发送实网请求。归档无需重建或重装。证据见仓库 `docs/validation/packaged-stability-2026-11-11.json`。
+
+### 2026-11-11：Issue原需求核对
+
+已核对#2/#4/#5/#7正文与现有证据。#4/#5已实现的SDK接线、预算和恢复检查项更新为完成，原早期背景保留；#7补充两任务领取与事后录单边界，Issue继续开放。性能对照按用户决定后置，真实ENOSPC/OOM、长期运行和商业保留期未完成，不用检查项勾选冒充整体Goal完成。完整表见仓库docs/current-readiness.md。
+
+## 2026-11-11：获准的真实隔离文件系统耗尽测试
+
+用户明确允许后，在VPS私有挂载命名空间内创建固定32MiB tmpfs（0700、nodev/nosuid/noexec），继承性内核禁网。合成文件写入实际触发ENOSPC；已提交unknown记录的最小SQLite表更新实际触发SQLITE_FULL。释放填充文件并重开后integrity_check=ok，记录仍unknown，canary不变；进程退出0。
+
+随后独立核对测试挂载0、测试临时目录0，并按精确SHA256核对后移除远端测试脚本。未读网盘凭据、改原任务、下载真实源、上传或分享，也未切换服务。脚本保留在仓库 `tests/support/isolated_enospc.py`，应只按独立明确范围在私有挂载命名空间中运行；不随普通单元测试执行。
+
+本次补足真实文件系统错误与SQLite恢复的边界证据，**不是完整Task worker的ENOSPC验收**，不外推任意硬件故障、OOM或日志写入中途强杀的持久性。此前SQLITE_FULL page cap测试和合成Task错误仍分别保留；不将三种证据混称同一真实流程。机器记录为 `docs/validation/isolated-enospc-2026-11-11.json`。

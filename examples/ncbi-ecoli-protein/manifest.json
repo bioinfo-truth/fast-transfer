@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "name": "GCF_000005845.2_ASM584v2_protein.faa.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_protein.faa.gz",
+      "size": 902395,
+      "md5": "c9c1dcbe6e78af9e375396775c944a9f",
+      "source": {
+        "access": "public",
+        "record_url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000005845.2/",
+        "version": "GCF_000005845.2 / ASM584v2; protein file metadata snapshot 2026-11-11",
+        "checksum_url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/md5checksums.txt",
+        "redistribution": {
+          "status": "reviewed",
+          "basis_url": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "note": "Public non-human bacterial reference protein sequences; same NCBI Molecular Database Use Policy and third-party rights caveats as the original assembly test. Preserve source attribution. Candidate input only; operator review and separate real-account scope are still required before a new upload."
+        }
+      }
+    }
+  ]
+}

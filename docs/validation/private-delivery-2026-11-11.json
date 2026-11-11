@@ -1,0 +1,10 @@
+{
+  "tests": 55,
+  "new_delivery_tests": 7,
+  "passed": true,
+  "network": "inherited seccomp deny",
+  "records_and_shares": "synthetic fixtures",
+  "real_account_actions": false,
+  "independent_browser_verification": false,
+  "command": "python3 -I -S -B tests/support/run_workflow_isolated.py test_delivery test_task_cleanup test_task_handoff test_task_upload test_task"
+}

@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-10",
+  "new_terminal_tests": 23,
+  "related_binding_and_durable_intent_tests": 17,
+  "tests_passed": 40,
+  "failures": 0,
+  "skipped": 0,
+  "clean_tree": "prospective tracked files excluding historical untracked experiments",
+  "data_flow_review": "parent uses only synthetic bytes in owned PTY; child argv/environment contain no token; inherited seccomp denies network; no existing terminal or credential store is opened",
+  "owned_pty_echo_and_restore_verified": true,
+  "cancel_eof_timeout_sigterm_verified": true,
+  "noninteractive_and_unavailable_tty_refusal_verified": true,
+  "full_command_and_hidden_confirmation_verified": true,
+  "child_argv_environment_children_and_owned_persistent_directory_checked": true,
+  "unknown_schema_stops_before_account_or_file": true,
+  "candidate_match_does_not_enable_share": true,
+  "fresh_process_unknown_intent_no_replay_regression": true,
+  "real_credentials_read": false,
+  "oauth_started": false,
+  "official_service_accessed_this_round": false,
+  "vps_deployed": false,
+  "real_share_attempted": false,
+  "files_sha256": {
+    "fast_transfer/mcp_terminal.py": "2d4b8a6e691dafcfbddc3349e78b1600e2354d6eb607e91b4d542c79a3055fcd",
+    "tools/mcp_terminal_readonly.py": "265d736c0ce1caf19fe29dba5c4f7305acb617e886477d82942df81f112e149c",
+    "tests/test_mcp_terminal.py": "8cf9ab06d19472e48005b279b741bd778be839a550e13360f30704d58f676573",
+    "fast_transfer/mcp_binding.py": "d7de3f6cd7a1ae0fc58a2a51c83e66442d6c30b194bcca9a1a26ae7f0bebec2d",
+    "fast_transfer/mcp_official_http.py": "105ba1ee7b7d636225fe018c7092b16274d8286da46a22a3681fd024d731ebb6",
+    "fast_transfer/mcp_sse.py": "a38682c09d9414a1eb76ac9fa1162e94b8996f1add740a11fba404cd3431c4d7",
+    "tests/test_mcp_binding.py": "a93cd8e4bc3dca9e4b83fc2f88cdc8e8ed136084458c3057d4b0817bd56654c3",
+    "tests/support/run_workflow_isolated.py": "35c6c7f51266a1030a8c308c31aaed0c34aa83e9918921094607f1b68a35d0da"
+  },
+  "output_sha256": "7200249072c778710e92099fae7efaca7254f0a54973c7e9dc475426b5202300",
+  "discovery_only_requires_no_expectation_file": true,
+  "arbitrary_schema_echo_suppressed": true,
+  "initial_expanded_run": {
+    "failures": 1,
+    "cause": "constructor factory test double also replaced exact-type reference; separate genuine driver type check from patched construction",
+    "resolved": true,
+    "log": "mcp-terminal-expanded-initial-2026-11-10.txt"
+  },
+  "verified_interpreter": "Python 3.14.4 at /usr/bin/python3"
+}

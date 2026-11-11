@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-09",
+  "fixed_source_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+  "current_patch_base": "f5bfe330b3c2c5c7d48d6c6be7010007c227fbf1",
+  "mode": "actual_source_characterization_with_fake_transport_not_live",
+  "test_top_level_passed": 2,
+  "subcases_passed": 12,
+  "initialization_scope": "subset_of_previously_reviewed_config_closure_no_new_dependencies",
+  "ordinary_go_test_c": "blocked_existing_vet_int_to_string_in_PrepareBDStoken_prepare_go_224",
+  "targeted_compile": "passed_explicit_vet_off_test_c",
+  "vet_passed": false,
+  "runtime_exit": 0,
+  "network": "seccomp_before_init_no_account_requests",
+  "filesystem": "same_Landlock_preinit_root_allowlist_dedicated_contract_binary_only",
+  "default_identity_gate_modified": false,
+  "adapter_implemented": false,
+  "live_fallback_enabled": false,
+  "real_credentials_used": false,
+  "actual_shares_created": 0,
+  "evidence_meaning": "Tests confirm source behavior including unsafe acceptance gaps; NOT authentication/share security success",
+  "source_observed_gaps": [
+    "UK missing errno accepted",
+    "UK zero and negative uk accepted",
+    "Share missing errno/shareid accepted with nonempty link",
+    "Share javascript fixture link accepted",
+    "Share Pwd copied from request not server verification"
+  ],
+  "authorization_plan": "docs/pcs-identity-share-plan.md; no real permission requested or used",
+  "channel_status": "existing_browser_denial_effective_no_account_probe",
+  "test_binary_sha256": "7a9ed25ec7c47bf34550708106197c8d3bae007d90d15cecb50a248a7a55e7a1",
+  "artifact_sha256": {
+    "patches/baidupcs-go-v4.0.2/contracts/restricted_contract_exec.py": "e81df8e3e9e9cac27d0ad3a332c8c3c2715382b692a4e0f364a24eb84d0b8382",
+    "patches/baidupcs-go-v4.0.2/contracts/identity_share_characterization_test.go": "e20ba00d405b5eff912275089c9b3f3938f09d401ab05dd6b548e36b84f4ce06"
+  },
+  "free_bytes_checkpoint": 169736904704
+}

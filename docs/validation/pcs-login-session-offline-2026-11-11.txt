@@ -1,0 +1,27 @@
+=== RUN   TestSuccessfulSessionHasNoPersistenceOrSecretOutput
+--- PASS: TestSuccessfulSessionHasNoPersistenceOrSecretOutput (0.00s)
+=== RUN   TestBootstrapFailuresNeverSubmitCredentials
+--- PASS: TestBootstrapFailuresNeverSubmitCredentials (0.00s)
+=== RUN   TestAuthenticationUnknownIsNeverRetried
+--- PASS: TestAuthenticationUnknownIsNeverRetried (0.00s)
+=== RUN   TestChallengesStopWithoutCodeSendOrResponseURL
+--- PASS: TestChallengesStopWithoutCodeSendOrResponseURL (0.00s)
+=== RUN   TestRedirectAndUnknownEnvelopesFailClosed
+--- PASS: TestRedirectAndUnknownEnvelopesFailClosed (0.00s)
+=== RUN   TestIdentityMismatchNotDeclaredMatch
+--- PASS: TestIdentityMismatchNotDeclaredMatch (0.00s)
+=== RUN   TestOnlyFixedHTTPSRoutes
+--- PASS: TestOnlyFixedHTTPSRoutes (0.00s)
+=== RUN   TestProductionTransportHasNoProxyTLSBypassOrReuse
+--- PASS: TestProductionTransportHasNoProxyTLSBypassOrReuse (0.00s)
+=== RUN   TestStrictJSONAndInputRejections
+--- PASS: TestStrictJSONAndInputRejections (0.00s)
+=== RUN   TestLongPasswordNeverReducedModuloKey
+--- PASS: TestLongPasswordNeverReducedModuloKey (0.00s)
+=== RUN   TestCookieBodyNotAcceptedAndMalformedIdentityStops
+--- PASS: TestCookieBodyNotAcceptedAndMalformedIdentityStops (0.00s)
+=== RUN   TestRemoteErrorCodeCannotReflectPassword
+--- PASS: TestRemoteErrorCodeCannotReflectPassword (0.00s)
+=== RUN   TestTraceBootstrapDoesNotReadLoginPageBody
+--- PASS: TestTraceBootstrapDoesNotReadLoginPageBody (0.00s)
+PASS

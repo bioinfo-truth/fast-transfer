@@ -1,0 +1,27 @@
+=== RUN   TestSDKLowLevelThreeStepContract
+--- PASS: TestSDKLowLevelThreeStepContract (0.00s)
+=== RUN   TestSDKLowLevelDoesNotReplayUnknownCommit
+--- PASS: TestSDKLowLevelDoesNotReplayUnknownCommit (0.00s)
+=== RUN   TestSDKPartIsBufferedBeforeTransport
+--- PASS: TestSDKPartIsBufferedBeforeTransport (0.00s)
+=== RUN   TestSDKChecksumValidationRemainsCallerResponsibility
+--- PASS: TestSDKChecksumValidationRemainsCallerResponsibility (0.00s)
+=== RUN   TestSDKReusesRecoveredUploadIDWithoutPrecreate
+--- PASS: TestSDKReusesRecoveredUploadIDWithoutPrecreate (0.00s)
+PASS
+ok  	github.com/bioinfo-truth/fast-transfer/integrations/baidu-sdk-go	0.003s
+?   	github.com/bioinfo-truth/fast-transfer/integrations/baidu-sdk-go/cmd/ft-sdk-codec	[no test files]
+=== RUN   TestControlRequestEncoding
+--- PASS: TestControlRequestEncoding (0.00s)
+=== RUN   TestPartUsesBoundedFDAndSDKMultipart
+--- PASS: TestPartUsesBoundedFDAndSDKMultipart (0.00s)
+=== RUN   TestInvalidHashCannotEncodePayload
+--- PASS: TestInvalidHashCannotEncodePayload (0.00s)
+=== RUN   TestInvalidSizeCannotReadBeyondPart
+--- PASS: TestInvalidSizeCannotReadBeyondPart (0.00s)
+=== RUN   TestTargetsHostsAndOperationsAreRestricted
+--- PASS: TestTargetsHostsAndOperationsAreRestricted (0.00s)
+=== RUN   TestCancelledContextProducesNoRequest
+--- PASS: TestCancelledContextProducesNoRequest (0.00s)
+PASS
+ok  	github.com/bioinfo-truth/fast-transfer/integrations/baidu-sdk-go/codec	0.003s

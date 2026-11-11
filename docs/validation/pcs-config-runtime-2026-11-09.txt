@@ -1,0 +1,5 @@
+=== RUN   TestFTIdentityEntrypointsDenyBeforeParsing
+--- PASS: TestFTIdentityEntrypointsDenyBeforeParsing (0.00s)
+=== RUN   TestFTAccountSaveDeniedBeforeFileCreation
+--- PASS: TestFTAccountSaveDeniedBeforeFileCreation (0.00s)
+PASS

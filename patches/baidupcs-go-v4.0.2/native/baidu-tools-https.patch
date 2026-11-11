@@ -1,0 +1,91 @@
+--- a/tieba/bar.go
++++ b/tieba/bar.go
+@@ -34,7 +34,7 @@
+ 		rawQuery := fmt.Sprintf("_client_version=6.9.2.1&page_no=%d&page_size=200&uid=%d", pageNo, uid)
+ 
+ 		//贴吧客户端签名
+-		body, err := requester.HTTPGet("http://c.tieba.baidu.com/c/f/forum/like?" + tiebautil.TiebaClientRawQuerySignature(rawQuery))
++		body, err := requester.HTTPGet("https://c.tieba.baidu.com/c/f/forum/like?" + tiebautil.TiebaClientRawQuerySignature(rawQuery))
+ 		if err != nil {
+ 			return nil, fmt.Errorf("获取贴吧列表网络错误, %s", err)
+ 		}
+@@ -70,7 +70,7 @@
+ 
+ // GetTiebaFid 获取贴吧fid值
+ func GetTiebaFid(tiebaName string) (fid string, err error) {
+-	resp, err := requester.DefaultClient.Req("GET", "http://tieba.baidu.com/f/commit/share/fnameShareApi?ie=utf-8&fname="+tiebaName, nil, nil)
++	resp, err := requester.DefaultClient.Req("GET", "https://tieba.baidu.com/f/commit/share/fnameShareApi?ie=utf-8&fname="+tiebaName, nil, nil)
+ 	if err != nil {
+ 		return "", fmt.Errorf("获取贴吧fid网络错误, %s", err)
+ 	}
+@@ -88,7 +88,7 @@
+ 
+ // IsTiebaExist 检测贴吧是否存在
+ func IsTiebaExist(tiebaName string) bool {
+-	b, err := requester.HTTPGet("http://c.tieba.baidu.com/mo/q/m?tn4=bdKSW&sub4=&word=" + tiebaName)
++	b, err := requester.HTTPGet("https://c.tieba.baidu.com/mo/q/m?tn4=bdKSW&sub4=&word=" + tiebaName)
+ 	if err != nil {
+ 		log.Println(err)
+ 	}
+--- a/tieba/tieba.go
++++ b/tieba/tieba.go
+@@ -12,7 +12,7 @@
+ 	Bars  []*Bar //要执行任务的贴吧列表
+ }
+ 
+-//Bar 贴吧详情
++// Bar 贴吧详情
+ type Bar struct {
+ 	FID   string // 贴吧fid
+ 	Name  string // 名字
+--- a/tieba/tieba_info.go
++++ b/tieba/tieba_info.go
+@@ -16,7 +16,7 @@
+ 	}
+ 
+ 	rawQuery := "has_plist=0&need_post_count=1&rn=1&uid=" + fmt.Sprint(b.UID)
+-	urlStr := "http://c.tieba.baidu.com/c/u/user/profile?" + tiebautil.TiebaClientRawQuerySignature(rawQuery)
++	urlStr := "https://c.tieba.baidu.com/c/u/user/profile?" + tiebautil.TiebaClientRawQuerySignature(rawQuery)
+ 	resp, err := requester.DefaultClient.Req("GET", urlStr, nil, nil)
+ 	if err != nil {
+ 		return nil, err
+@@ -59,7 +59,7 @@
+ 
+ // NewUserInfoByName 提供 name (百度用户名) 获取百度帐号个人详细信息
+ func NewUserInfoByName(name string) (t *Tieba, err error) {
+-	resp, err := requester.DefaultClient.Req("GET", "http://tieba.baidu.com/home/get/panel?un="+name, nil, nil)
++	resp, err := requester.DefaultClient.Req("GET", "https://tieba.baidu.com/home/get/panel?un="+name, nil, nil)
+ 	if err != nil {
+ 		return nil, err
+ 	}
+--- a/tieba/tieba_login.go
++++ b/tieba/tieba_login.go
+@@ -32,7 +32,7 @@
+ 		"Connection":   "Keep-Alive",
+ 	}
+ 
+-	resp, err := requester.DefaultClient.Req("POST", "http://tieba.baidu.com/c/s/login", post, header) // 获取百度ID的TBS，UID，BDUSS等
++	resp, err := requester.DefaultClient.Req("POST", "https://tieba.baidu.com/c/s/login", post, header) // 获取百度ID的TBS，UID，BDUSS等
+ 	if err != nil {
+ 		return nil, fmt.Errorf("检测BDUSS有效性网络错误, %s", err)
+ 	}
+@@ -88,7 +88,7 @@
+ 
+ // GetTbs 通过 百度BDUSS 获取贴吧TBS
+ func GetTbs(bduss string) (tbs string, err error) {
+-	resp, err := requester.DefaultClient.Req("GET", "http://tieba.baidu.com/dc/common/tbs", nil, map[string]string{
++	resp, err := requester.DefaultClient.Req("GET", "https://tieba.baidu.com/dc/common/tbs", nil, map[string]string{
+ 		"Cookie": "BDUSS=" + bduss,
+ 	})
+ 	if err != nil {
+--- a/tieba/tieba_sign.go
++++ b/tieba/tieba_sign.go
+@@ -40,7 +40,7 @@
+ 		"Connection":   "Keep-Alive",
+ 	}
+ 
+-	body, err := requester.DefaultClient.Fetch("POST", "http://c.tieba.baidu.com/c/c/forum/sign", post, header)
++	body, err := requester.DefaultClient.Fetch("POST", "https://c.tieba.baidu.com/c/c/forum/sign", post, header)
+ 	if err != nil {
+ 		return "", "", 0, fmt.Errorf("贴吧签到网络错误: %s", err)
+ 	}

@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-10",
+  "target_role": "known overseas business VPS from trusted project SSH target; strict existing host-key checking",
+  "private_identity_or_paths_published": false,
+  "machine": "x86_64",
+  "system": "Linux",
+  "python_version": "3.13.5",
+  "baidupcs": {
+    "on_login_path": true,
+    "regular_executable": true,
+    "elf_64bit_x86_64_header": true,
+    "client_executed": false,
+    "configuration_or_cookies_read": false,
+    "login_failure_reproduced": false
+  },
+  "isolated_default_python_fast_transfer_importable": false,
+  "absence_of_project_files_anywhere_established": false,
+  "verified_deployment_directory": null,
+  "nonpersistent_compatibility_preflight": {
+    "scope": "known business VPS non-secret compatibility preflight",
+    "python_version": "3.13.5",
+    "compiled_files": 30,
+    "syntax_failures": [],
+    "project_modules_executed": false,
+    "code_files_written": false,
+    "stdlib_ssl_termios_fcntl_select_available": true,
+    "system_trust_certificate_count": 148,
+    "context_certificate_required": true,
+    "context_hostname_check": true,
+    "keylog_disabled": true,
+    "official_network_requests": 0,
+    "credential_files_read": false
+  },
+  "original_authorization_lstat": {
+    "observed_at_utc": "2026-11-10T13:44:41.067294+00:00",
+    "source": "lstat of only the original designated business-VPS authorization location",
+    "exists": true,
+    "regular_file": true,
+    "symlink": false,
+    "root_owned": true,
+    "mode": "0600",
+    "file_modified_at_utc": "2026-11-06T17:50:20.400669+00:00",
+    "file_content_opened": false,
+    "token_obtained": false,
+    "mtime_is_not_issuance_or_expiry": true,
+    "actual_app_binding_scope_expiry_from_file": "unknown",
+    "official_live_validity": "not tested",
+    "share_permission": "never verified",
+    "authorization_changed": false
+  },
+  "historical_verified_sample": {
+    "source": "docs/mvp-live-sample.md and docs/validation/mvp-live-sample-2026-11-08.json",
+    "size": 1379902,
+    "md5": "c13d459b5caa702ff7e1f26fe44b8ad7",
+    "sha256": "a96d3cfa58c88d477013c768f90a11d2386d42a70d566abfb6d9013dcbd24255",
+    "upload_and_full_readback_passed": true,
+    "upload_repeated_this_followup": false,
+    "original_object_migrated": false
+  },
+  "egress_and_node_attribution": {
+    "business_public_egress_verified": false,
+    "transparent_routing_or_proxy_verified": false,
+    "two_user_auth_reports_host_known": false,
+    "dev_host_test_is_business_acceptance": false
+  },
+  "official_oauth_mcp_or_share_requests_this_followup": 0,
+  "real_secrets_read_or_transferred": false,
+  "vps_code_written_or_deployed": false,
+  "network_or_security_rules_changed": false,
+  "candidate_bundle_manifest": "business-vps-code-candidate-manifest-2026-11-10.json"
+}

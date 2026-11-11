@@ -1,0 +1,31 @@
+go: downloading github.com/urfave/cli v1.22.5
+go: downloading github.com/olekukonko/tablewriter v0.0.4
+go: downloading github.com/peterh/liner v1.2.2
+go: downloading golang.org/x/net v0.0.0-20190620200207-3b0461eec859
+go: downloading github.com/json-iterator/go v1.1.12
+go: downloading github.com/qjfoidnh/baidu-tools v1.2.0
+go: downloading github.com/fatih/color v1.18.0
+go: downloading github.com/qjfoidnh/Baidu-Login v1.4.1
+go: downloading github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0
+go: downloading github.com/mattn/go-runewidth v0.0.9
+go: downloading github.com/rs/dnscache v0.0.0-20230804202142-fc85eb664529
+go: downloading github.com/oleiade/lane v1.0.1
+go: downloading github.com/GeertJohan/go.incremental v1.0.0
+go: downloading github.com/golang/protobuf v1.5.4
+go: downloading github.com/tidwall/gjson v1.18.0
+main.go:16:2: module lookup disabled by GOPROXY=off
+main.go:17:2: module lookup disabled by GOPROXY=off
+baidupcs/jsontable.go:7:2: module lookup disabled by GOPROXY=off
+baidupcs/internal/panhome/sign.go:4:2: module lookup disabled by GOPROXY=off
+pcsutil/converter/converter.go:5:2: module lookup disabled by GOPROXY=off
+requester/dial.go:10:2: module lookup disabled by GOPROXY=off
+pcsutil/log_colorable_prefix.go:5:2: module lookup disabled by GOPROXY=off
+pcsutil/file.go:4:2: module lookup disabled by GOPROXY=off
+requester/downloader/instance_state.go:5:2: module lookup disabled by GOPROXY=off
+baidupcs/prepare.go:17:2: module lookup disabled by GOPROXY=off
+baidupcs/transfer.go:7:2: module lookup disabled by GOPROXY=off
+internal/pcscommand/login.go:6:2: module lookup disabled by GOPROXY=off
+pcsutil/taskframework/executor.go:4:2: module lookup disabled by GOPROXY=off
+pcsutil/taskframework/executor.go:5:2: module lookup disabled by GOPROXY=off
+internal/pcsfunctions/pcsdownload/utils.go:9:2: module lookup disabled by GOPROXY=off
+internal/pcsinit/pcsinit.go:6:2: module lookup disabled by GOPROXY=off

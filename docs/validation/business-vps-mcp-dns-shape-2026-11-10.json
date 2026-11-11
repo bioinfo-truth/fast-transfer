@@ -1,0 +1,6 @@
+{
+  "dns_succeeded": true,
+  "unique_public_ipv4": 2,
+  "unique_public_ipv6": 1,
+  "nonpublic_present": false
+}

@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-08",
+  "scope": "M2 backend-aware budget component and offline/simulated adapter validation only",
+  "source_evidence_preserved": "docs/validation/mvp-source-2026-11-08.json",
+  "implementation_sha256": {
+    "fast_transfer/space.py": "4b8871a627038ac3eff0638c36c9a2661750d54db4132b8a107093fe4c318989",
+    "fast_transfer/download.py": "99c403bebddaf4ddc450953f4bd46f6f5afcf232ba48be4be27da6dfb0364ec4"
+  },
+  "checks": {
+    "command": "python3 -m unittest discover -s tests -v",
+    "workspace_tests": 60,
+    "workspace_result": "passed",
+    "note": "Includes 4 pre-existing uncommitted OAuth experiment safety tests; those experiments are not part of PR #9. The committed-tree result is separately verified after commit."
+  },
+  "new_tests_this_round": {
+    "budget_model_and_paths": 21,
+    "download_cli_integration": 5
+  },
+  "budget_rules": {
+    "per_filesystem_reserve_bytes": 5368709120,
+    "per_filesystem_margin_bytes": 268435456,
+    "default_source_only_metadata_allowance_bytes": 1048576,
+    "openlist_cache": "one largest source file, conservatively retained through readback",
+    "direct_api_cache": "no full upload copy by backend contract; real adapter still requires verification",
+    "temporary_caps": "explicit source/upload/readback caps, including retained stage files; unknown is manual_review",
+    "grouping": "same st_dev merges simultaneous resources before phase peak; separate devices checked independently; system root always checked",
+    "allocation_credit": "registered physical blocks only, bounded per source/payload file; unrelated old files never credited",
+    "retained_batch": "all sources retained plus maximum one sequential backend payload",
+    "readback": "stream or explicit extra full-file copy"
+  },
+  "simulation_cases": [
+    "same device and exact threshold",
+    "separate source/backend/system filesystems",
+    "missing expected separate mount",
+    "source already downloaded",
+    "cache growth and sparse cache",
+    "block rounding and overpreallocation",
+    "temporary phase overlap/cap exhaustion",
+    "batch source retention and largest cache",
+    "free space drops before next simulated write",
+    "unknown backend/overhead or readback mode",
+    "missing/symlink/alias/device-change paths",
+    "source CLI unknown cost/insufficient space before network"
+  ],
+  "large_model_sizes_bytes": [
+    1000000000,
+    5000000000
+  ],
+  "large_payloads_created": false,
+  "new_data_transfers": false,
+  "cloud_operations": false,
+  "credentials_read_or_configured": false,
+  "outstanding_M2_acceptance": [
+    "M3 actual adapter overhead bounds and real file registration",
+    "M3 stage/write checkpoints wired into actual backend lifecycle",
+    "actual upload/readback process buffering, safe-stop latency and full-run reserve verification",
+    "real M3/M4 failure gates preventing invalid-file upload/delivery"
+  ],
+  "not_claimed": [
+    "whole M2 complete",
+    "kernel disk quota or hard reservation",
+    "multi-task/multi-process safety",
+    "actual upload-stage protection verified",
+    "cross-service part resume",
+    "new overseas VPS data regression"
+  ]
+}

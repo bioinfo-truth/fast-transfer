@@ -1,0 +1,14 @@
+{
+  "candidate_file": "GCF_000005845.2_ASM584v2_protein.faa.gz",
+  "size": 902395,
+  "head_status": 200,
+  "md5": "c9c1dcbe6e78af9e375396775c944a9f",
+  "checksum_snapshot_sha256": "433d33545422cffdb762278ecc30256c3c45e8bff9f7859f103ba33f57bc6337",
+  "checksum_fetch_status": "verified_current_official_text",
+  "new_cloud_requests": 0,
+  "observed_date": "2026-11-11",
+  "file_content_downloaded": false,
+  "new_upload_or_share_executed": false,
+  "operator_scope": "pending_new_task_runtime_and_explicit_real_account_scope",
+  "original_genomic_sample_untouched": true
+}

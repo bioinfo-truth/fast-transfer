@@ -1,0 +1,8 @@
+{
+  "job_id": "job-workflow",
+  "mapping_sha256": "REPLACE_WITH_MAPPING_SHA256_FROM_SHOW",
+  "link": "https://share.invalid/s/synthetic-only",
+  "expires_at": 0,
+  "authorization_ref": "synthetic-operator-declaration",
+  "scope": "simulation-only"
+}

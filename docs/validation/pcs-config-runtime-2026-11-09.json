@@ -1,0 +1,811 @@
+{
+  "date": "2026-11-09",
+  "baseline_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+  "patch_input_commit": "63150cb5ad33c5034a5f47f9804a179169e487dd",
+  "nonstdlib_package_count": 74,
+  "selected_source_manifest": [
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/baidupcs/expires",
+      "selected_go_files_sha256": {
+        "dataexpires.go": "0ed0824866e1aa9669a320b1df07bfbfd7b48df0ef89ca0c22eb3bd31bb3c4aa",
+        "expires.go": "a57bdc0a98b9b1e03f22ac12e3a21767e186b08052a686e1632e54e93a369159"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/baidupcs/expires/cachemap",
+      "selected_go_files_sha256": {
+        "cachemap.go": "34d2077a45a0f1ec6f30834e32432941b29939d8dbf47390a66ddf40b0fba33d",
+        "cacheunit.go": "84644c69d86b7133921ba2d846de9094d1b6e965709931271fdabbea9e25f2bb",
+        "utils.go": "29df0c163e10dd2491b02f115dd5e25e0f88e6fe0856212117215b8c1735dbb0"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/requester/rio",
+      "selected_go_files_sha256": {
+        "buf.go": "0a3530aa937cfca2c392f4324df676deea1417312082a87148aaeb5ca0a0457d",
+        "file.go": "16a860fe203b3ea0d1539f9749b43934dd4fdec19d643b517dca89bbc16ea2dd",
+        "multi.go": "2daa81a7f36a06a73d46a2fd36130249247f1d292cd96ffd1a0b05d39131e69b",
+        "rio.go": "f336d014fed33eb81995aa7a675b34b9f67169002f25853f24621102c2199c5e"
+      }
+    },
+    {
+      "package": "golang.org/x/sync/singleflight",
+      "selected_go_files_sha256": {
+        "singleflight.go": "a111053ac18cb8f7e75921803158cbf3dfbaab37e29775ea2ef46e6d82af1840"
+      }
+    },
+    {
+      "package": "github.com/rs/dnscache",
+      "selected_go_files_sha256": {
+        "dnscache.go": "d811ca2cfdeb9fde60dd59b606d1f659a2900e05dd3498af28a7423ed6889792"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/requester",
+      "selected_go_files_sha256": {
+        "dial.go": "df5af1670435b10fb84aa2d5ce908f7b22022c23feece3aad508117cf3dec166",
+        "fetch.go": "9b2c48f2db17fd713c4290e18f9ddaf97b14c741077aa03bf136736a01b2940a",
+        "http_client.go": "73e0d5e9370463e84358e421ccbc6e2e5406872a9ad6f0a3ce80904706c9aa24",
+        "requester.go": "f710add2cfdc800d8e417ac7e302c57f265b08b4a0f40d9340772b3eced3ed97",
+        "security_policy.go": "c62319e490e972397bcf0c31d04f8e58b6151ac3b1f2e662ca5111535c26f267",
+        "tcpaddr_cache.go": "55c6474402e18db2a68aca7886912f61eb84a68d52084ee88fef69e59f87fafd",
+        "util.go": "f1b06396f622dbcd0189f89330af8849c7287750da80836c6d0db6a0d9887f9b"
+      }
+    },
+    {
+      "package": "github.com/modern-go/concurrent",
+      "selected_go_files_sha256": {
+        "executor.go": "f2138eedcb845e3f7b69e381700afaec3616eb3d660ff66e133fdfee868120b3",
+        "go_above_19.go": "f2bfb9af9dc40d33c836dc66275165386da33a0d9137e2856b4190c15c14475e",
+        "log.go": "c31fc872878ae5d01007b83ac680e6a9045ac36f25b8f9aab459b5aafeb8a3b0",
+        "unbounded_executor.go": "f80af87f0064ab6427707612408f6adf1bcdce5141f78ce0513a0bcc0f02f49a"
+      }
+    },
+    {
+      "package": "github.com/modern-go/reflect2",
+      "selected_go_files_sha256": {
+        "go_above_118.go": "b41d841d561da73b0ab54f9f2830d7f9437561b831faad1fa22f738ea99ad805",
+        "go_above_19.go": "422e740515d8517cdc4d412e0fe0bf3d42f86909302ce3cf2df66a8800fd021f",
+        "reflect2.go": "23df966bbd3419c6ad2eddb10eec1c0d6ccbd337912625a823b00689cceb1c76",
+        "reflect2_kind.go": "7d5ac0c71ac5fba79d2b96ff1387e53ab4b1770501a9199c2a555bccfd2f1c8a",
+        "safe_field.go": "3295dc8e033a764f3797b65c97c5b9f6deaaba8adebafe7e8f067a383ccf34de",
+        "safe_map.go": "19e7c56513a6133a54c7314b1d2b272e289ea701e192f85d8dca3cf764a045ae",
+        "safe_slice.go": "5e7acc8d9c21ce3384c218b046bdd2a21422fa1681fc1912b4f4cdc5cfffc856",
+        "safe_struct.go": "2a06f38bf1093f94a3dc482432e03fa07ba0e85cdfbb8f2d1f0bddc68a5a74aa",
+        "safe_type.go": "35127e76daa5dcb89110560751f5c94c13add6f8b72f4f0af32354453fc77a12",
+        "type_map.go": "4fabf996f68479b1b4ab68741558fe85074c97ec4d576cd113c0383cf56286db",
+        "unsafe_array.go": "02014c8f507943e69abc22b219dbb8dd60b2d35fa2c787a5ca8a3a532de1690a",
+        "unsafe_eface.go": "e00a1d58505e0c7c2afc8bddb5cbb01070173d53df10441cc21f8db22c6b148f",
+        "unsafe_field.go": "a9147bb01f44f670c93e82e4d6c084735a36a09a293dc5eb14d85b0a9d4c0cfe",
+        "unsafe_iface.go": "d21952ed67758fc50df9164d5b9f44bb542a64bc960b0359951c3b53fc7e3cf7",
+        "unsafe_link.go": "f2ac5514fc2dc286e08f9c3655c32ec5821e262df610004161cb10dd27c08cde",
+        "unsafe_map.go": "e67735062461c806294fb78b20d6949cd6c1601d43f4f77150ccdbb6e689b32b",
+        "unsafe_ptr.go": "5dd7c5c463663d4ab8bd96954e4d9d561d886f44ff82e7b89e6cb006ef53bb36",
+        "unsafe_slice.go": "810e20cb269ebfb6cf98cdf729712e7941a3afe73db6c1450de84aa688c04aaf",
+        "unsafe_struct.go": "806e182f0cfa7c371f332c24b8f77f8edbce2d22fe15372463674d1eafb18823",
+        "unsafe_type.go": "aebd12151ce6dbc450bcf63a37d8ec8e9d3bb90dca521cd817779187705e4624"
+      }
+    },
+    {
+      "package": "github.com/json-iterator/go",
+      "selected_go_files_sha256": {
+        "adapter.go": "75a20bd29e1c29808faf70f6177029c3dc2c6a4bb0e9d90f6fd376381255d831",
+        "any.go": "93f24f0d43872ad04553c76dcac5cb427a9b22d8aecf45202b21e5f639f8f735",
+        "any_array.go": "c6fff02df2fa1b1ec69876f5cec96cb6e7f3f141175d4cbe6b2f4f7524d8c77e",
+        "any_bool.go": "3402b33e61448a1b3b87e58a7fb6f946da3ba8802d5fba9e10dc493123d7b177",
+        "any_float.go": "cede63aee74abaaf01d6b501f8c6b9ca8b9321e8aa1ee6f0c50eaefd0640d874",
+        "any_int32.go": "999956c618597c3ca22bda563d5619ab4210644b2cdf91c0cf5959d929a467a7",
+        "any_int64.go": "c20ccb71034487c6d18fc467a5e75fc682114b7d02be43fec2a3068cd58f48f1",
+        "any_invalid.go": "2d2a4a5051360792dd002e8add8757ac79894a355696657deda2aa9df691bbdb",
+        "any_nil.go": "4382dd69a62de138003490fc2692ef27b9680cf321c8edb8133bf4eb1bffbd49",
+        "any_number.go": "5afbcaf848250fd667393d3e2ee592ca34a8b9f516c05ff22a01502b42061d30",
+        "any_object.go": "14c30fcf74e6fdf1a3e17b9853cbe844fde7a4a2c0d9313e3e6e33bae06778a5",
+        "any_str.go": "1a601d47c1281e2f82c29f5bf89a5e7e7fd062915414e9391af5272d61e291fe",
+        "any_uint32.go": "1fc49a5e19db8dd6b27f6f771f2d263493c52886d59909c551ba703112b965e4",
+        "any_uint64.go": "7d8e0cc5a5716163812c1bde2d4d139714fb780f3d05ddce84b7bde654a2b092",
+        "config.go": "b59c96f7659243becd93af0bb5ff38f4318de48a8eaf6ca15c6c543372400c2e",
+        "iter.go": "ca27dcd29ae2199819132dacc984b83ab665a1410bb93ab9ef3ce2db635dd847",
+        "iter_array.go": "9af873ccb72e3b1b5501bab9e0acca3809a2e602a68b90c9d226e15567b57ba3",
+        "iter_float.go": "d3ff6110c8ab21259f0455f712e87ee7d01e63c44463ab1b4a99c2c0d35e7d64",
+        "iter_int.go": "d437b24789ae04a982bcc94e2fad46cb84c38624925836d8f2723afde8a8c307",
+        "iter_object.go": "b99bf2d40870b05bb097a06dac8301991720632ab023fde46a4fc6ee8b08cc8a",
+        "iter_skip.go": "7da7c930e118b778e78aac941b3096509c866baf3911cacb9921828382936c4f",
+        "iter_skip_strict.go": "7fe6cc108c61fd63b72fee503b5e2d66c7433e719965f81a614de5bb42bdfe06",
+        "iter_str.go": "a8d28cae65f2d67dad95c1372a3e8139a1d66e7d2f1e054bf9c72e1ab0d50bd4",
+        "jsoniter.go": "baa03bf5ff4b4bba2aa74a3ea04d7c8a04dcd1fcc029ec0dea4d1c6cb7846b7a",
+        "pool.go": "bef672cc3e654924102c42bc6ad7407df0ee319d1ad531d4cf17025f180a6d1f",
+        "reflect.go": "933104f64ced1063099f6211ed1307a5d5e61f4610802be1554b22055f77a05c",
+        "reflect_array.go": "9933b1afb1a1b041bb1991c91d511c9c04ae3ad9581fe6e3cf6111ef7220a05d",
+        "reflect_dynamic.go": "6b899ff6b7b342be33ce7af174e234088baa04883a8aa8eb28a0f1798cb601cc",
+        "reflect_extension.go": "fd2e2a03c8bb6b2c1e697a99622d56a1e93f15bda3ef53a37f37f1e0a843b58f",
+        "reflect_json_number.go": "ee61f2457beaaa2c470edb19dbdeefc067ce72a3e4f03bd9411ea305416de61d",
+        "reflect_json_raw_message.go": "1bad78bc3f751369b881b8322ef5dd387aca776f6fd4b5802e72b9f60c0d28a4",
+        "reflect_map.go": "32e893168a97122e3e6142bf90a130d9cba60bc87467ba30c9bc978ad0d4d03c",
+        "reflect_marshaler.go": "947aebaf7e3dab4476fb636d6346f6a9972ee42a65512ca3669c03f4ed17c2ec",
+        "reflect_native.go": "5582937d7f23aeb62fc37cd62f86f70f7e0a69fb36101bdb97f069ee7e168409",
+        "reflect_optional.go": "9d71b74e6374999df15fe8434a127472d8062c6108e00c534584d5e3387d9d0f",
+        "reflect_slice.go": "d830a6c189c3f7c70c90f7d30f48395dd65a0d66d463405e16a47e8d707f24a9",
+        "reflect_struct_decoder.go": "70c69fa6799e1851f50966419f16d1dfcc9ad34b141c863b4ffed7d0bd447e18",
+        "reflect_struct_encoder.go": "a2dbb0520df74ca028d5bc41f147ac72ec4a35a3f8fa206fcc66d9ec2df8f046",
+        "stream.go": "845a6c1126d5b9a10b90338d4da3acd669c8f1fa343a8e7ec4c4aca7ab36c500",
+        "stream_float.go": "4f6c8fc7ffafeebf6357ab201307d8c0671ad9dabe45d87682afdf433118ab3c",
+        "stream_int.go": "3466d961c2ea97156bc3eb2aa536919bda1962730c0b1e8017f4752ad7f13139",
+        "stream_str.go": "e82c45f2dfe34885cac3add71d3f56550c07f76fd8f808097b5528d34c2e9319"
+      }
+    },
+    {
+      "package": "github.com/mattn/go-runewidth",
+      "selected_go_files_sha256": {
+        "runewidth.go": "cfd0cbf6be1872f0732ea27e333db2d28d738e7a01113e705c9d5e0de33c404f",
+        "runewidth_posix.go": "16b54b46bc8745894edc896b2cd238c0e3d51dab964f960c60f900d00890afcf",
+        "runewidth_table.go": "f8f5e2b96474af88a38703a256da70cf13656c4c835c8798669622a0c5eb53b8"
+      }
+    },
+    {
+      "package": "github.com/olekukonko/tablewriter",
+      "selected_go_files_sha256": {
+        "csv.go": "94f334f6b7fb3003b95802176344ca92d99e22658412d9727c9ba30f618cfe56",
+        "table.go": "1b794b6cac10c2284c9f51f4b17c167b1e07d298183bfce94e3a648c99522752",
+        "table_with_color.go": "c8bc5231443ce3ac7065b218529f94b3e3a5c118b91c3841d9c9498232e2def9",
+        "util.go": "3318bd077c0480642bc32e7d468e8daffb4ac80c2f3681a2ebfbdb900aee6a65",
+        "wrap.go": "7ace2c110d37011b4257e915028b755582784a1e0a9b2c14ce4d26e5102379da"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/Baidu-Login/bdcrypto/ecb",
+      "selected_go_files_sha256": {
+        "ecb.go": "e324c1639ce6d13659245d21551d4127b82f6f0bf63311f08f7f0b9c9a600476"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/Baidu-Login/bdcrypto",
+      "selected_go_files_sha256": {
+        "3des.go": "ecf64c1d163ecf51bfa4998da535f21480b4aff4504e352b7f93fa41361e9d4d",
+        "aes.go": "0664d2667cb8e7ea1d6a7ab52501160a601d7ae5c6c10e900b3894415bcaa44f",
+        "archive.go": "6bf2dce9affbe8e99db9d8a5aef743bb7682d4c5f6a8291937724a31b5022b70",
+        "base64.go": "475b35432c4ff9dd5f343d40ca6367c3d52f3e65bc4cecaa9d045b8ec2124665",
+        "bdcrypto.go": "080750dd9323d277f62b53aa93a34db95f720da7a6d27eefc949a2fb91a1c2b7",
+        "hmac.go": "043874da4541d4a63801d7167ab3063eb300da6398bf642b97f2e3a1b6b425f6",
+        "reverse.go": "011e5a6db4a8c873b29707d40b4800b977aa97ecc89aaf94036eafd973a97c3f",
+        "rsa.go": "f70c8b8aefe9c0abe5dac57ed92560c17d851ba735e30da73757c4effc0faa00"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/pcsutil/converter",
+      "selected_go_files_sha256": {
+        "converter.go": "bee7301db7152354cb07d7befb8e47625f1eaf8ce6150f1d44c89d4fe6e05182",
+        "size.go": "73aa10e2d3959c48d57ed7fcfe890cb6e6b2b5048675d1c0d005b1dfbc203441"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/pcsutil/cachepool",
+      "selected_go_files_sha256": {
+        "cachepool.go": "8555cd458b01f3b7c119bc46331bc9a8733fd4a4a39ad4db3a2853301ef9885e",
+        "idcachepool.go": "252b828d4fc8969f36712e32ab80f82d80fd18da6e85398fcbf7e9469cbfd222",
+        "malloc.go": "be6dd4dbc9cfb340556337e15f39844d0bdeede10c708113a0bb77ff5ea56959",
+        "syncpool.go": "156fca0ef1c50dea8e49d12b6a81562ae58f63298192f22c3976a79dc03ee9b1"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/baidupcs/netdisksign",
+      "selected_go_files_sha256": {
+        "devuid.go": "8dd33d18cab99a9a4ce8a8b416210795c54f9d3356f48d37d376b6b379869edb",
+        "locatedownloadsign.go": "e0ea1b4ed59195c80a7c7b8e562f085407a81bcd7c7d8545bc943162f098f4a0",
+        "share_sign.go": "558405805f0e1e8c7c48b0d735833aa4ca0277137e376a49dda40e3636e66d48",
+        "sign2.go": "5c7cd524db0ac713eb2d83c088ba8b16bf28a908e23134c143e139fa3a972792"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/baidupcs/internal/panhome",
+      "selected_go_files_sha256": {
+        "cache.go": "143c970f3b8303b3887c97ab8af052e784500d86cf494d1fd87095f04a9755b3",
+        "panhome.go": "1b38182eaae7c45d3274d20767d6c637d610b192589195285deb041073de6a03",
+        "parse.go": "4efb6809ab255192c7842bab95425c15ee62d1d550ae7b69e248836888f9e721",
+        "sign.go": "3aea4b6b7bc1d408a6318f1a87da153319982c12fdf9ce7301ff17675da334e1"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/pcsutil/jsonhelper",
+      "selected_go_files_sha256": {
+        "jsonhelper.go": "074db1f8703997619506fae12d993dc6e7133f340577826200de1f1a9f7e12c1"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/baidupcs/pcserror",
+      "selected_go_files_sha256": {
+        "dlinkerrinfo.go": "5f8b973dba7dc1c4761db1124466fb10e6695cc2d99c8e501c9e093f879334b1",
+        "panerrorinfo.go": "e70594dc876036b62e5eea4ee28fc64c1ae5dd20833fbeb3d01d13b9c5000743",
+        "pcserror.go": "dc0608253ae4467bb546c15700930b5b415cf4a6c8f51c1d08ea11a7ab63597e",
+        "pcserrorinfo.go": "73bb7ce737b1a6b88c237e019a095ddadbcb61d55894043c9cc342fea61410fd",
+        "xpanerrorinfo.go": "30cfada4e58f1d5e320ab1ea38f11e6998d8636d278d200dc23a7bf07fb6a85e"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/pcstable",
+      "selected_go_files_sha256": {
+        "pcstable.go": "f88ad539d05ebe04a3eb1964585d2c250d6480a0cf74e84b200718511087850e"
+      }
+    },
+    {
+      "package": "golang.org/x/sys/unix",
+      "selected_go_files_sha256": {
+        "affinity_linux.go": "fec0be0ae3217f48c812af387e8763f915ed129745f9d12711a95eeba505e1be",
+        "aliases.go": "53e7eeba0503ad62ec18cdf2ca51a1785249a8646354439c854148dc57c06fb5",
+        "bluetooth_linux.go": "72ce84a68d3647cd34f04e9040861333ac9e9f9ac5b00008d41514c79da664d8",
+        "constants.go": "f3405abc7484992964143eac589b951132d8e3a90f8359fc1a6e9ddcc201aa8a",
+        "dev_linux.go": "eec381cf025f58965728544dae5df9394d6bebc7e68572e429814c87ee6dd284",
+        "dirent.go": "03e3b15a8428e2f1520386291052fd30e5d74ecb4d78c724bae7953d71425be1",
+        "endian_little.go": "bc06276262c57cf21e35c13ff2f5fdc96c18feb32a055c6201edfa76e95c967f",
+        "env_unix.go": "bcb73ccfc5a8dae1f59e4debba69e0f600155b947f358c939bc753443a7a8007",
+        "fcntl.go": "e8d84df0c6ed38a56014cc73d431aa973f1d298169735eaf9f7d42cbb26f7768",
+        "fdset.go": "730a0d9937b101605965406f3671cbf2b812210f5681b829ef80ba04e85675cb",
+        "ifreq_linux.go": "732132edefa39962b6329286afcf187b8c25cfcd8140691079776922804320dc",
+        "ioctl_linux.go": "92077ae06dab77329e5d7d6ed876e745497cce67554ad5e86145d7471eaa9a9b",
+        "ioctl_unsigned.go": "ff4db0e00a889cab526a1fd70694f8063d72f885b0a8ae3b3ff5483a63ae8df8",
+        "mremap.go": "c4f762c0f38d6a9f08c9b754b207a1ba64dd29d03692245171f8a344aac6935a",
+        "pagesize_unix.go": "5fea300c32898efe55341abb39489aeac76f81ea9df513f68d1b2556be7b48a3",
+        "race0.go": "8a78192af2b20cd177f78e3761e10d66567373cef3b7671aa3c7912d65de4c90",
+        "readdirent_getdents.go": "50e29bed47a256b79cb3754f43d0f8c1a5ea762e400bf809d0eb44d16ddd4714",
+        "sockcmsg_linux.go": "51d948aa226aa043c2760288aa883f9dbd53b9d65cf8bc20215146fc016dde6f",
+        "sockcmsg_unix.go": "7863093bfa7ec9e564c36992fbf2b7c97244c84d406e5fdc60b72c56a23af396",
+        "sockcmsg_unix_other.go": "73f23d4f0c002e24160530515a45f46bb6fbe8728cc79b135a8c6956d5c8458c",
+        "syscall.go": "41abaa37d079eee890fb7803dde876a19ba3acdbadf41f269ae8ed0d73ca0e37",
+        "syscall_linux.go": "1bbecbfb5567fc16d3dcc7f105185622698f734ac06e9a41a9d56f257e1f1e96",
+        "syscall_linux_alarm.go": "eede15c54c7c4dfc0691ae0e646fd31aca15bfd72f53783081e829cd150b19e0",
+        "syscall_linux_amd64.go": "726898c3fc94154dfb2e0d1f96ff112821fe748bff1c3ed5b55f58aefc404729",
+        "syscall_linux_amd64_gc.go": "6c5b86f3c4aa3dcf8619c5d444491414f72e014767e57fd9ad62f57653f4d837",
+        "syscall_linux_gc.go": "41a54001d221205e9f1538066105b46c08cd329e85d4529426063961daa86235",
+        "syscall_unix.go": "39c487b278162bf06ec57715e0859a9853902acbbc884c02f5a0cb70846955ad",
+        "syscall_unix_gc.go": "8b7592bca0fff629f9bb6f2c78c4ec8810f989e04b29d76ebd1ff81efd34db5b",
+        "sysvshm_linux.go": "8f932aac3521059ca3b4156c78b1ec45f1976972d1f70dee14375a1b7a507e44",
+        "sysvshm_unix.go": "e9e5031e048cf7c58692650ea14887158c3bedaaba506be63cbd8190cea2c066",
+        "timestruct.go": "d0d07c2481ce2692f4e5728d65ccab1d105ecf64f52ac6b9a923ef106088a249",
+        "zerrors_linux.go": "e3e5af2a28467b3ff89ba3577859cb8bb41f0b85c60ab13f75e135a97b2d30c8",
+        "zerrors_linux_amd64.go": "7285408a99f48ae102bb950ac884fcfb12625c7b9eb1e765cd7502b3e61804f8",
+        "zptrace_x86_linux.go": "dc4b1c692caaaab1e50e386776a08ce44e3a4d2def73513bb4fa8d04332ac631",
+        "zsyscall_linux.go": "ff2ccc5af7f8abaf7974daa1c3553bfa09ba15b28b92a6e493983f4bf8f87533",
+        "zsyscall_linux_amd64.go": "eb26e476e74bffd32e69b33f8c2bb9e692820a073f92570085af78916f33b30a",
+        "zsysnum_linux_amd64.go": "c85b2ef9a1b67744830a137a46e7897d163b20afd63f838304878b80824f7c05",
+        "ztypes_linux.go": "344b658be71a47faa38c03bf71f45fa4850b52d16043b9288e8d630cf4b637ad",
+        "ztypes_linux_amd64.go": "5c6bff56e2f9a687032fb6d7d343a8dbcc416de05226a5ed25889cfa4599504c"
+      }
+    },
+    {
+      "package": "github.com/mattn/go-isatty",
+      "selected_go_files_sha256": {
+        "doc.go": "06182cb1a7113cae6fdef9be492893298610bfc63cf565a23f86203c3074a861",
+        "isatty_tcgets.go": "7175e851e6fa993e24c2c2ace329e57df2856c5a37c060a7d91793f17feb9e5e"
+      }
+    },
+    {
+      "package": "github.com/mattn/go-colorable",
+      "selected_go_files_sha256": {
+        "colorable_others.go": "d182ac732fe610499587cc188ced44806745a11424da2326d3b11a7f2fa6b91d",
+        "noncolorable.go": "23b80cf82c8156ea4c6f46f4fcdf50d5ccf7feb80ceaea93ffc97e1da27a5a9d"
+      }
+    },
+    {
+      "package": "github.com/fatih/color",
+      "selected_go_files_sha256": {
+        "color.go": "c11939c96762a64f4687ccd010daad71287542c74214af94f5c7fa8ac0c46d30",
+        "doc.go": "41bad19e3e9f753e0a35ff80e9b59455eeef15c3dd0478c157f5a0bd4c15f7eb"
+      }
+    },
+    {
+      "package": "github.com/kardianos/osext",
+      "selected_go_files_sha256": {
+        "osext.go": "e52b986addf6bd235191aef8b6668fdf40383d0e33aaa755053db13ca76a9df0",
+        "osext_go18.go": "8fdb14fcb7821a0a7e3d3d2b1deefe063988152379c98e37b2dc2e9c1999cde0"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/pcsutil/pcstime",
+      "selected_go_files_sha256": {
+        "time.go": "35f4596952c67905238cbb00b1ac8b6734c6caede4ac1f341ff9962b60848776"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/pcsverbose",
+      "selected_go_files_sha256": {
+        "pcsverbose.go": "2d02e0eef70f2ad615f03da3f65ee1b5111645633b686f9fb970992c5d9da549",
+        "utils.go": "2e23ed213eda96f551593763e04edd15b50867b513ce5cc8d0af8a6582319484"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/pcsutil",
+      "selected_go_files_sha256": {
+        "addr.go": "4a58bf1eec3286d92adf591eeccbc23fc804bd25087f1156e5ce31796643a44d",
+        "crypto.go": "48236b5447d5d1b6d22ce3eadbafbdeb81bf10c6ffd1797c48d5e730b9240df1",
+        "error.go": "29185129c8432f0ee532ee5162d0070dee983bce71c4f23a7bf2da4fa2bee4c0",
+        "file.go": "f65eb7f622666d11968c631371a0c46ec91711fd3f6de93ce1fbb37d4d96f5a0",
+        "log_colorable_prefix.go": "02e7f650076f4276280769055b955b8c66d648ee23e1908478c67b86d9a87816",
+        "pcsutil.go": "ddcf6998ca4feb41d458219d58af8c06d76547f1fda2662a2fc3fea982c14ae0",
+        "regexp_pre.go": "bc29b2586fe0d16b84df19c0676d0f064bb52b53aa1a8cd3056b03a202f94f4e"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/pcsutil/escaper",
+      "selected_go_files_sha256": {
+        "escaper.go": "44bba37712681435da36d89786167fff4b3505dc0d1a0408e43c86a58f28bb22"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/detrand",
+      "selected_go_files_sha256": {
+        "rand.go": "c01386e38186772e042196f4b03ce25eed8993ea8ffb8c012f43a2286b7752a5"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/errors",
+      "selected_go_files_sha256": {
+        "errors.go": "4a096a248dca8bfa90792a02d60b4daf8da42be074e3befd88180bcc2d694a4b",
+        "is_go113.go": "a672ed94249df1391f11f045bf7439d5fa82814eae45b19bc49221b0c2fd3839"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/encoding/protowire",
+      "selected_go_files_sha256": {
+        "wire.go": "d4c18ec2326fa3fae44e88d1769073419ac790619d0d479e6ac9977dcab2d8d1"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/pragma",
+      "selected_go_files_sha256": {
+        "pragma.go": "d3babf1e4b0b32f721a0dd3e6c3e31fc573d550fd9a1d51e543f40482b0fc6f5"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/reflect/protoreflect",
+      "selected_go_files_sha256": {
+        "methods.go": "6742f8cf8d9b015f0792299902b6c36f4cce52bf8d3e6dd7d2f99914fbc443b6",
+        "proto.go": "5299d941d87c617a5b00e2c02196d573eb212c7bb90e59e16643ffb39364ed97",
+        "source.go": "645962b399787a757fea01ad489c353d11cbe796df1231a89b9dd6fe53c79830",
+        "source_gen.go": "6bfdcb9d7260155ad5b234ecf22acf0176b882caa37d64969842751ecf58687d",
+        "type.go": "50cc54614b3c88b0d7a53317be780288c1f1098b0122d0aa8a5616790bb40166",
+        "value.go": "5b4964d82bc7a5dc751fa6e37e7bd87e212ecd03721e143e30525a5a9bb9c75d",
+        "value_equal.go": "a5b85845963e9968ecca24ffc5d0b8550bce6967587aaab44a4c797c0845ee55",
+        "value_union.go": "60aff91e5d13a6070e052afc480c9af132db52ddca1a9d79b46a6d4e2246d401",
+        "value_unsafe_go121.go": "cd8ab3ee95eaae5fa99295cb998fbb7e7b41078bc0e4739581a9a2f16452d8b9"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/encoding/messageset",
+      "selected_go_files_sha256": {
+        "messageset.go": "4a54d8cd4c4c0236d9ceb8200580c9e5d13e5157162d0e2654b8de83707b64bb"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/flags",
+      "selected_go_files_sha256": {
+        "flags.go": "4921e802d873d589e4970b0924c1a78a3fd6f9ddda980789537e7b9cd666b56d",
+        "proto_legacy_disable.go": "c083481c9b7266f6b7c78dd1be24147428f6e5677b58c479d742586bd9f2eebc"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/strs",
+      "selected_go_files_sha256": {
+        "strings.go": "97aaee23976801265248c5462662e5061a2af09956c4d6b12990e16b5acf0c8d",
+        "strings_unsafe_go121.go": "37185f16c2e565070dfd2661265694f951b1927ae56636239616983716846361"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/encoding/text",
+      "selected_go_files_sha256": {
+        "decode.go": "c5427b12e63a536d05b18fb52f7aa6fbcee5f764950b26664c8772ecc202acf0",
+        "decode_number.go": "1bb6f72d94ed0866666810bb23664286ba28916092e11df9679bdb0c32ad98cd",
+        "decode_string.go": "5974107818845d7d94c39cd275985dfbcd55b9eba4d731e182715f985370e7ba",
+        "decode_token.go": "b51ba5d349f6c36f99544020733af26dbcb476bd73548cd943c14286fae2c475",
+        "doc.go": "1ca496689a8d7d06862f6b9dab7982d1e751da4c6e97ae59b747890b7a5c541d",
+        "encode.go": "1a906e4182f13d2120f3af53aa2277cc131449937f545b5bd5e7e340c7bcf606"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/genid",
+      "selected_go_files_sha256": {
+        "any_gen.go": "e52abb175ed291da379fe73582a640b13d08ae426b51f6e40a82fc07ef4494f2",
+        "api_gen.go": "110c84dd0ceffab873b9612e87932b577d5e840e80bc7c8cc4f829e6399f1695",
+        "descriptor_gen.go": "cda8d88f63f4ce0823e243e07139192a19307645d39d1c49884767f4a79d0638",
+        "doc.go": "4491a99a2b0ee5ccf8dbd9bdccc1cb3ed84e38abbbafb72f3567b1438bca663f",
+        "duration_gen.go": "223477c7c21d3aba70b6afaad202499d35dd28d97bb3096649d398ec09ffbd20",
+        "empty_gen.go": "1bb2b55b36ca99633efc148681988dbd738bfc6d09b88c92bed6392a4a16e80c",
+        "field_mask_gen.go": "97ac7e90145a527f1b53e26868cb2257af5ca000103dcf20ff6374693512d5de",
+        "go_features_gen.go": "7819a4ef3788083c0681c5e58fa8542dbbe5c9c2b51b3fbdbeddfc29960a8aa8",
+        "goname.go": "26d956b899ec5eb6c8a5ecfa9f6a004d15f3175c851ad23676c29fb005b5b4e6",
+        "map_entry.go": "2af7de53dc0177c7a8b3491dae6472e2fe0bcebf4cf0f9d57a5ba67039da33bd",
+        "source_context_gen.go": "e0aac89c39dea4892ba50ea5316728a8c582ba9a1434406c5aa047c0e90bcdd0",
+        "struct_gen.go": "df9f6562b19e5c60ac1e6006365a7ddd0c7fcca2101dd1da909413c0cd0ef6dc",
+        "timestamp_gen.go": "5652b719e792955d360f4b5c8f8889923976b55f86e13dd233edf366fdd71e2a",
+        "type_gen.go": "13bda96c10ef3bdbfcd81a1e895fdf3bb9d071714eade6a86ef4a1d09b1505bf",
+        "wrappers.go": "a028064c8e6ef7b3ed36da09f6f8b2334f866fff8e9f002655cb18789f0ce45c",
+        "wrappers_gen.go": "eaa8ad201d3ef370a565fea90ae9f5bef6efec40c7fa58a53e7efe635731e887"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/order",
+      "selected_go_files_sha256": {
+        "order.go": "07529bca11498b579b4d02849560f7fb52ee6cc8cbfcfb82ede169728d8ee4a1",
+        "range.go": "922d9d800a7f61d9d2e24e52edcdb50a3694be30923ef6318421367de682ec2e"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/set",
+      "selected_go_files_sha256": {
+        "ints.go": "5876c26b3c816d4f662b737731e89d3a44317c798c6c5400526c32387292e16d"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/reflect/protoregistry",
+      "selected_go_files_sha256": {
+        "registry.go": "7fa3e751dbdbeaee73e85ca2fd871beb29a43e0033dbf0d4bd60271a98ae8b11"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/runtime/protoiface",
+      "selected_go_files_sha256": {
+        "legacy.go": "9d79e425272f9fa102c269f4cb7f8cbe405d0f2a9af075e150235df30b3bd617",
+        "methods.go": "8ecb52093f8c519ebcb77de41c7daabbbd93d48ac69e8c9cd6cdc753611ff331"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/proto",
+      "selected_go_files_sha256": {
+        "checkinit.go": "f95547595ee464a0d2f2bfae729afb61c91c5ed3bc64f089949b4b1555a71b9b",
+        "decode.go": "2a87da1a134057db3bdcf34acc54e5c6d952e3175f99cb1a79b50618354d534b",
+        "decode_gen.go": "d8581139cb95720ebe63a1a5654dd1d5927543c2b1ad1ef37ed37ac41e7f8056",
+        "doc.go": "3df50c4bae0b7ba05913716e06bff9b1c90f17b2543c6e20a20702d2d62add5d",
+        "encode.go": "1a569d1ef81226e8a5d9c87ce4d206792f3184bf45edc1ff45249a83ff22d466",
+        "encode_gen.go": "8a5d8bc917c21a19c1c5ef4b58f747880cfe1321de1294662d0ee2c903c7dc9e",
+        "equal.go": "046d4e9ae4e3da4f3716de1045cf4cf8e412b8f17c836bd6e75fad0000e9c0dc",
+        "extension.go": "e1af0f42f2c2a5f1d246377a69d9544ca267741cded199e6de83c09c07c398bd",
+        "merge.go": "81327d2e966d5cc2db3fecc8ab5792f873b02c526dcc965d7edb1bc1934ef456",
+        "messageset.go": "1e2945d71dda18e5bf0278d9cda661c02807fb036610249b06293b8162029a50",
+        "proto.go": "8a87120799a6f0ed42a9096cd997d93baeaf143db660daa5b9b8c6e0665d95ec",
+        "proto_methods.go": "4a5be7ac829abca1043c568c33af31cfac723c2fe688dbff34a605954e5ce141",
+        "reset.go": "45097aa639f3c64a5533572cb1968d3870c985b3e0b021ce5c0c3b4934768604",
+        "size.go": "fda6b06a211a6c66c7e17d1c7f19095ee6c1308bb0601f786afd26d42a5fdc03",
+        "size_gen.go": "e8def0182318c353c022c973eec36615c121078ac405b059c7f02fad71c86b8d",
+        "wrappers.go": "7068ed0c35932f990aa75bf00d30f6a2d2a3c2c89ebd14ac07aec523013fafb4"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/encoding/prototext",
+      "selected_go_files_sha256": {
+        "decode.go": "3bcd499ab469d3c1478c225170065cb097d9b35e03f86c6fe9d5cd32a3962f1b",
+        "doc.go": "48657fec4cff435f30956a1dc6c1b639550ed5fffe1633f1c976645c67d199e7",
+        "encode.go": "3c5f1a71343a726849f73e9af9988ea4a9ba2fa2e2b27fb33c781935364fa209"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/editiondefaults",
+      "selected_go_files_sha256": {
+        "defaults.go": "d7314e9ee082d2e56e608ace22c4d3866b9e4e5ed23849996e610dca15e8173f"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/encoding/defval",
+      "selected_go_files_sha256": {
+        "default.go": "77f51515320585c92346f76e6849d94035e21f08b6dd60d186f509ae852cfa01"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/descfmt",
+      "selected_go_files_sha256": {
+        "stringer.go": "82b8d5f39cb87b2b905b3d3e4649f58bb25e5ae2cfd2d52bfe663759ec272e1b"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/descopts",
+      "selected_go_files_sha256": {
+        "options.go": "2651135e9b29304bc99186fd689774f7fffb2fa808a350b81e719d8e82fa6e0f"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/filedesc",
+      "selected_go_files_sha256": {
+        "build.go": "52bef727d5e493d495dc5ceca4eb21801e006bcf46db23367296b64058e12037",
+        "desc.go": "15442ee996b6cdc8d8ff31592420b35a1e5da0b354b6949eb905a7d59532850b",
+        "desc_init.go": "9d31f36eab8144eb6b6fce69dcdf65a02cb71bbede04e890bacb72fb1316b231",
+        "desc_lazy.go": "75fb155cab76d74c0c8405f12965eb9b4196f26b567da724bb85b125857a99f3",
+        "desc_list.go": "78598da1e3c79f00189bba62c274d0d6febd4a2c972b269bbc0451c1218d5310",
+        "desc_list_gen.go": "907df022c69af273ee71e6d9f23d9c26dae62cc59fef48038a23325507c2ff1b",
+        "editions.go": "d0ecb8d4e944514cf3a85131b6a69c29042eec26b6abd4bcf1e909d54229407f",
+        "placeholder.go": "49bd56a46505d1c221252e1faccf06fe04fc8b4f6f06d257d6b61856edd37fae"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/encoding/tag",
+      "selected_go_files_sha256": {
+        "tag.go": "67ea4e05782c4e665f39cdcc9e1d4ee77c274d28d9b9d7dea5ec567e12673e20"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/impl",
+      "selected_go_files_sha256": {
+        "api_export.go": "eedd49cf330f24fae8096df8df84fdd839cb30e4a8deeb8e58f0f3d634a15124",
+        "checkinit.go": "a05c90cdc7102db88ca2b91ef34243d6384db7ed9d0de60323a44f6f5790e676",
+        "codec_extension.go": "55d42322f7e4849cea6fabd7daa191c17386b183734d28ed837d02ccc1aca923",
+        "codec_field.go": "9f4a84ba7111bf9d5e49e7daeb664bf59e00ce7cd4222816d721c5c7daab7165",
+        "codec_gen.go": "4eed98966d930db1855cadf0972d255cd89733e29815ef4d3904e3fe0e473a25",
+        "codec_map.go": "6213b7b17e071c5a2116acfc0d863f07f401cc3a5b8786f57035205578196203",
+        "codec_map_go112.go": "f723311691c08ae07a7de581675903e769e37fa780e8be69aeffcaafd8470aca",
+        "codec_message.go": "f7aed44f700c97c03be91f52444c2438b070f9a6dd413e8e21ccd08d47618f18",
+        "codec_messageset.go": "5ce78c2ad6ccc697fa6b67fb610c9f54d68b9d678dec20a2a96eaf05253b9926",
+        "codec_tables.go": "8d4cdbd1367e0c089ecada4431bdb0b2f3198aa3907c25887131650adf78d29b",
+        "codec_unsafe.go": "3a2bd5e1e63b92ea3d658c9ac244d6fbb15b3c101c0f8476e140ba12453f6f8c",
+        "convert.go": "ad41a1db75567faf53bab92cd80e2a7c26faf067f1cdb197b01586390af0fe7b",
+        "convert_list.go": "7e54119981120596845af767bec8e4a143f98ca85a1c22d718b539b81efd5a9c",
+        "convert_map.go": "a651029d80f8f01713297c64e8e82e0876e5e20449a5bfe33a8270bb50058719",
+        "decode.go": "2c962749eb9327042e2d315e37692fc46f30c5e2d1a32a224618a611dbafb4ea",
+        "encode.go": "6d69f5ea0132e5656be196f2d6c94a5b8fe657ab0ced19ee5ed0bdd1181bca75",
+        "enum.go": "0501ee078196bb8916290dcf2eb4d02f1e3f9354f7ef034e4be0695a4e13c9b5",
+        "extension.go": "9805a961f58d1c86061b825dbb631a13e9d9f854b087e5eb7b7390c409d94d18",
+        "legacy_enum.go": "1147841e3e4b938fb21e59a779ac286a921c1c3ffc03fd41245cb35f43bd2e9e",
+        "legacy_export.go": "e338223a953cb22d87c0621d7e6c373d4a39853c98db4999711ea412b2d94d3f",
+        "legacy_extension.go": "99c64728a62a31afca71821347ac3ba6ab62486975a4be17bbe2ece43fab3cd5",
+        "legacy_file.go": "907e47c605566c44c46476adfc3ddd33aae23bb1c81b19091f0f96dcda0d0471",
+        "legacy_message.go": "22f01e2b38cc0b803841f2e68b0d5b20004ef3b1ff7058439b9d35803506d614",
+        "merge.go": "995e41d89787293778b3c7f708cbd2368141b3f61d97c3af641c8540af7aadc5",
+        "merge_gen.go": "8eddd46272d1cf5e7de3e55f1c92646ad0fc1e2be9d5929633aa5b0813b5780e",
+        "message.go": "0d25eae85e73b15a88c2ed7491607068da78cacd312edf33f10dfd32831c19b9",
+        "message_reflect.go": "2f690bca04d8955a4ff2b6052343c12fd5dd93d3617b36a416a1a805e925c51c",
+        "message_reflect_field.go": "470811bbdbfae2c72c7a7c2730c18654c5175b5fab6fef9072f13d91dd57acb6",
+        "message_reflect_gen.go": "bc5a44b88a0e99d73ab973562309ec6070ac1e8cf704eaf8819bbe10fa608d02",
+        "pointer_unsafe.go": "db2953b7f4bcc8d84460dd3ded7aae996a8fb14a2b0229eb3bdc1799faac6d55",
+        "validate.go": "b327ab7be708faa834702718cbf026f5faeb3ae3641aaff12441753bd79e9e92",
+        "weak.go": "a6202c4de26450c00461dde9fe401e18384cdb2b21bee2958bf5becf92c64a3e"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/filetype",
+      "selected_go_files_sha256": {
+        "build.go": "44efa7cdec853481e5f37e15ca4efd24f1ce6dd477b95c0b0af7f441c9df0afe"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/internal/version",
+      "selected_go_files_sha256": {
+        "version.go": "f90bba7f60d33038219fc1fb474f37940c4d7a15afa14627d05c6e064a8fca22"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/runtime/protoimpl",
+      "selected_go_files_sha256": {
+        "impl.go": "5b70e0a626c02c8b783df9b03ddb813cbda5ee46e20de1f24019941366270d68",
+        "version.go": "d447c5756d628bc1b411a46df732be052b6ad7ee4582aa357ab7776db759df4a"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/types/descriptorpb",
+      "selected_go_files_sha256": {
+        "descriptor.pb.go": "884c0ca337ec952d94fc4bce05cb2fc0328da59836c6038087cb7486c6d0d14a"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/types/gofeaturespb",
+      "selected_go_files_sha256": {
+        "go_features.pb.go": "b7237e1a4ae99559d7cdbef06d82b630c5e346592d24444b51fa6714ef39e7d2"
+      }
+    },
+    {
+      "package": "google.golang.org/protobuf/reflect/protodesc",
+      "selected_go_files_sha256": {
+        "desc.go": "ef5d8e819fe98179f5a9c77d6e974182ef8c256c2aa8d726b5a633e680bfd877",
+        "desc_init.go": "93dc9db2f740f2399b05957287decb16a34535c759b8b89b102b6edc92c133e7",
+        "desc_resolve.go": "841949b9f535076eeb709aa42e1cce982f3e6362d44799d1a8e96e98b83f15fc",
+        "desc_validate.go": "7b07d64463a3c093a04c82037d89af7013075462405adf05f0cbb1a4359f2f7a",
+        "editions.go": "9803fa1dd238128f3cefd4dc1c59164cddc155c4db76b64a859936c8eb4f9cd3",
+        "proto.go": "5eefd3bc8754252f744af9adcee0868864656db80f560fc1c966db3b61c64e29"
+      }
+    },
+    {
+      "package": "github.com/golang/protobuf/proto",
+      "selected_go_files_sha256": {
+        "buffer.go": "5f6340e812b1bca5ac6f24fd5032452e46f2c25836dc56cee8f42aadebf9aa23",
+        "defaults.go": "251521ac58026d24363e9dece3e4d49462e4fd9b28dbcd5884db569ad0f010bf",
+        "deprecated.go": "bb03db1eb256939fd1053904d67e3e66d582e04c1fb01d0ec19d501f97209cda",
+        "discard.go": "9b6a5c7a3dc614c20e9d7d1447327d5339ddbf8b4ebeccca86b4e9e02fe5dbce",
+        "extensions.go": "a01ebf831d94b2adfe24fd8110bc3737d96125aafa64d61553fec7dc7a4587dc",
+        "properties.go": "53bb7d73904452555dbb612b0e9d23df349716962bcc7c99715ca950cc455029",
+        "proto.go": "214e3d31330c72178866b3cec863ec98409024dd167951dd83eadcfa32796e59",
+        "registry.go": "0920167cb236f592f42d9582ce8905621b7d8c468559e223970437cb32094fd3",
+        "text_decode.go": "d9828602dedfad903f012d12355e410203b4ae7ce756dfb975edf1f90b3cde61",
+        "text_encode.go": "5bb2d39e94cc6bfa40db9903d4890e8d7ec0c09264189887dd4c84844779401d",
+        "wire.go": "84e9dff5c3cf0eddf5f5050c61c94d863cea3f7b2ae81270d0790959f0ca2581",
+        "wrappers.go": "a4800c509be41c80a54ec37bb186102294be6a2821dfe8415c5cf197e1463cae"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/pcsutil/waitgroup",
+      "selected_go_files_sha256": {
+        "wait_group.go": "a809c346650760bb46c311b2ab23b43ec6c858122b476084aef3f3cd6ed4aff1"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/requester/rio/speeds",
+      "selected_go_files_sha256": {
+        "ratelimit.go": "52ac44111b12207f3e9561d0719d2682541d17d3d2f2d4b6149973ca4e4a66ef",
+        "speeds.go": "face212e973d6369d96fa53ff84e4a40006e2682fdfa09e6c7e262d1edaea37f"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/requester/transfer",
+      "selected_go_files_sha256": {
+        "download_instanceinfo.go": "024cf8f2881756d5c3fa72dc51309ebf2bc847b6742012d68036f46a01df96c0",
+        "download_status.go": "05ca991e2c371a6ce3c29a8dff1cca628c672a13726a77cf093c4ca8da44f36e",
+        "rangelist.go": "209d24b7737982f073849cf9f700850726b0002f9de0b7de0cc0296bd22e8792",
+        "transfer.pb.go": "e54534f30a0fdc1a1f079d4c6c1786ad62b35d3a249356b9bd15c46a0a593a40"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/requester/downloader",
+      "selected_go_files_sha256": {
+        "config.go": "3040e68378651efc700a9c0fadf41ef8e5329b65f9fbf7e4182c69f04bf9a339",
+        "download_firstinfo.go": "3d5eee0a104cec9f0f26cb657b44bc53477680e5dbe09473475808c3a7e8147a",
+        "downloader.go": "82382075f088a0e3dcbdc1a5f5e0ebf6addc623e7397d05a4996e90f26bde120",
+        "example.go": "4d5ebab688a3ce740742da5059f15e2af0d365e330e314240721e28ce81e91e8",
+        "instance_state.go": "7c32bfaa89f73c34d17a108f589212bcfdb518e69395343c18cfe97593fa6d14",
+        "loadbalance.go": "32a3d7173e47ac952125548e07e5d36cd0b55bf155233f3fad222c6d4e4bd792",
+        "monitor.go": "c07f0f476c72e1c9fcb60488d2681a62581effae3fcbd4a3edd1247500f4ec1e",
+        "resetcontroler.go": "e9c9a31ab0ee656bb2b0d80bc148e526cd8c08293112efc6f1b21d2dcdcafc45",
+        "sort.go": "ed877eff68b8aa7915055eca4d0f20f91049ba40b6ccadce4b6b18bf750237c0",
+        "status.go": "2e0cf9e2c746544b16e7d1fa4aa160a4b6490c3cac2eefe6c1ec5ff36a6e34e8",
+        "utils.go": "157786be6c1e6d9c084f99537c829384eb9a18340e5495cf4db111953fd3fc4c",
+        "worker.go": "04080fcdf36dd04200a1aafe3d14a336cb6851e70bc7eb976534d5f443ec265d",
+        "writer.go": "86e81bbed07a6347809723adadb73b0ad5618676b627b616a4667531caa1c751"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/requester/multipartreader",
+      "selected_go_files_sha256": {
+        "multipartreader.go": "1c12a97db39f3f05f4513c0849cb8889a3b8cdc84e88fdef2fa34c7c8e4420ab"
+      }
+    },
+    {
+      "package": "github.com/bitly/go-simplejson",
+      "selected_go_files_sha256": {
+        "simplejson.go": "b99c7ec87934ec698d00328a32a88eeb37dbf0b020866635a4740e00523f33bd",
+        "simplejson_go11.go": "f506eafa0ba5b8f579325ca7c16c2523267bf4cc49beb0b26f69e3079da4601e"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/baidu-tools",
+      "selected_go_files_sha256": {
+        "baidu.go": "879d8e46ba47afbc744918208fbb46de835a3d14305d7ff53322e7ffb72e47ff",
+        "version.go": "dc2378c391bbda6a5f9eb8fa2ea36edea56858b94ba811ea9765316e5fb28f56"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/baidu-tools/randominfo",
+      "selected_go_files_sha256": {
+        "phone.go": "3619130ccdfbdfb6a397876c6104eb9e3d2b2e35c4047aebdf70fb26730fab70",
+        "phone_table.go": "36cdde2c5a00e4e5144bcf9158d2dc3a26cea9e39b5c8b38cfc2a5b439224cdf",
+        "randominfo.go": "f0689782cba19e86132992b30b4c8ed0a70e622aa58fcd3f76b445ebbe6a4cbf"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/baidu-tools/tieba/tiebautil",
+      "selected_go_files_sha256": {
+        "client_signature.go": "17c7bfe278605ab4a03d7adffff76182f71a0fb2d22f74a68750ab2cacd65b63"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/baidu-tools/tieba",
+      "selected_go_files_sha256": {
+        "bar.go": "8f3e6103875dd6a5b128b99d8ef7e2452a3460c17a9686b67007879b305b8a92",
+        "tieba.go": "baffb1a89fcd65b389558b6136e47341ecc9837a6a749d8d0b634c82c7db2bb7",
+        "tieba_info.go": "17262056f4618c1ce903a561df409e9f076ad83491b09787488c804eece82685",
+        "tieba_login.go": "4dd9b875d7f4dbf6c56a8284ce58d43010178bd7e99996d0ff20102d17055d13",
+        "tieba_sign.go": "d20402a9a7577af937ba9f963840af1fb6a8b9c726eb47e42227ab1530820278"
+      }
+    },
+    {
+      "package": "github.com/tidwall/match",
+      "selected_go_files_sha256": {
+        "match.go": "3e3006ae4a50368befa0be55d6c738815c65de7bd96a480f10409e8575dec9e1"
+      }
+    },
+    {
+      "package": "github.com/tidwall/pretty",
+      "selected_go_files_sha256": {
+        "pretty.go": "63a7d9e04f6cc2b5e220eaf280b5943ddddd331bb669c5aba130efca57a0a3fb"
+      }
+    },
+    {
+      "package": "github.com/tidwall/gjson",
+      "selected_go_files_sha256": {
+        "gjson.go": "0ad4166ea9bd10a16f02bc7f73419cdf6b07d4fb47112d3f05615dd361a17d2a"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/baidupcs",
+      "selected_go_files_sha256": {
+        "baidupcs.go": "ba1912b6a228d02191f431e2543bc49e398173bae3bd1a7d4136cb2c39dca431",
+        "cache.go": "8b5be834e332f51916dfbab7abfb96f7cb4f4486f16085dcf8cf289f88c06c71",
+        "cloud_dl.go": "28b6b91397362767bfdffe9c1a28dcc4dabfe26d831f77ab30923468f275b874",
+        "cp_mv_rename.go": "821a1d1843090f0345092a8b6d5785abd0b4365c2fc678621569d36a2ae6e96a",
+        "download.go": "73157fe60fbdc9c3390c82997bac1fc03f7fd86853c61d1c810e083e30403fed",
+        "extends.go": "60527c40007f64246a7e2a6aaa0333f0cdb6c830aab40911314b9b966685f320",
+        "file_directory.go": "da25d72581d84d54c63e5f3d50b88e08de9167d65457c6c924cdcaf0da5eef31",
+        "jsontable.go": "1c59ad1361ab245835970a46981b4ea7a71288e14b65a3cbb13880b8d7a88d9d",
+        "prepare.go": "38790402b9d31f292ae67c283930728becd21ff039cf57e19c9d09b8cfa005f4",
+        "publicsuffix.go": "aa472e4fe7ae1fbbced4d79157a48824cf30a8e855788ba19855c719ebf21e5a",
+        "quota.go": "8cec248121a4d204cd4f56098847046a2db63c9d1ae79ef7b973c815afbce609",
+        "recycle.go": "5b067bcdd705aa8c76ddd8fe6e5ba721d05618c35bcf728d4da5ee0d2b4b9daa",
+        "rm_mkdir.go": "a82bd446a26933688adc173e4eee4f2520c5f6d91f0a59019dde9101bd32f585",
+        "share.go": "084ee34998b79cc641d393eca1c875f815a65e8b7204a07e85de16e79d172ac0",
+        "transfer.go": "43f19b6b13f7b95ee5702aa1c0c2a3b6d5da7fa8adebc8654f567edd7b74cc08",
+        "upload.go": "cd5882720f2a844ccd6812cd9da578494e70ae6f3cbd5266ee7fea4d6d852d37",
+        "util.go": "71c1093ace43edcb4091f0255784bf8116284024fd2b92a05d7f9943f88e41a5"
+      }
+    },
+    {
+      "package": "github.com/qjfoidnh/BaiduPCS-Go/internal/pcsconfig",
+      "selected_go_files_sha256": {
+        "baidu.go": "67002deec3dfcb8f5c472e5c90cffb2e6d69779ef4da3cb80b4e68551da76b44",
+        "errors.go": "afe39627be68d4ba9330a1e966797fa0024f57f4229d748dbaa697639741ca76",
+        "export.go": "821755d2ca1d04fcac887f2422b3b4c6b38971fd9018b1d346a76f23e17fe6aa",
+        "identity_gate.go": "be800513a8a7110242f5d40b492cc0a97e3fbf4f3596f083d595b058da05ceab",
+        "maniper.go": "effbebc5d7d362ba3b310011d62fd2dcde0389f1a75c597ea581d3819840733c",
+        "pcsconfig.go": "83ae2c766f19db3521c0bea9627812650e471ca2f05fca5fb4a723e01317f326",
+        "util.go": "4b554e399e1d0abcdd39ee815dff74a9971ff08af927272b56559dca27d0b65a"
+      }
+    }
+  ],
+  "audit_method": "Go AST package-scope vars with call expressions and receiver-free func init, then explicit review of invoked constructors and IO/environment branches; function-valued callbacks distinguished from invoked code",
+  "package_init_inventory_sha256": "917745c11ff81e2212ef8b229594e2f0523c741f1c7f67cb27ea764c4056397e",
+  "automatic_init_functions_listed": 15,
+  "candidate_var_initializers_listed": 195,
+  "specific_findings": {
+    "pcsconfig_GetConfigDir": "absolute BAIDUPCS_GO_CONFIG_DIR returns before legacy stat/HOME fallback; supplied isolated absolute path",
+    "pcsconfig_NewConfig": "in-memory struct only; Config.configFile nil and user list empty after initialization",
+    "pcsconfig_init_method": "has receiver; NOT automatic package init; Init/Reload not called",
+    "protobuf_detrand_binaryHash": "reads current test executable samples only; executable is inside Landlock read allowlist",
+    "osext_executableClean": "selected osext_go18.go delegates os.Executable, path metadata only",
+    "color_width_verbose": "reads explicit empty target environment and stdout/stderr descriptors only; no inherited secrets; verbose off",
+    "concurrent_NewUnboundedExecutor": "constructs context/map/mutex without starting workers",
+    "protobuf_JSON_reflection": "fixed embedded descriptor/registration/cache data; errors may panic/log static data, no account input"
+  },
+  "toolchain": "go1.27.3 linux/amd64",
+  "config_package_compile": "passed_go_test_c",
+  "runtime_tests_passed": 2,
+  "runtime_test_names": [
+    "TestFTIdentityEntrypointsDenyBeforeParsing",
+    "TestFTAccountSaveDeniedBeforeFileCreation"
+  ],
+  "filter": "^TestFT(IdentityEntrypointsDenyBeforeParsing|AccountSaveDeniedBeforeFileCreation)$",
+  "dedicated_target": "config-regression-reviewed.test",
+  "runtime_exit_code": 0,
+  "landlock_abi": 8,
+  "landlock_before_target_initialization": true,
+  "seccomp_before_target_initialization": true,
+  "runtime_empty_HOME_still_empty": true,
+  "outside_synthetic_file_and_symlink": "EACCES before exec and inside both Go tests",
+  "socket_probe": "EPERM before exec and inside both Go tests",
+  "launcher": "explicit_PATH_only_python_-I_-S_close_fds_stdin_devnull",
+  "client_main_executed": false,
+  "go_test_harness_and_reviewed_dependency_initialization_executed": true,
+  "real_credentials_used": false,
+  "existing_user_config_read": false,
+  "account_requests": 0,
+  "cloud_operations": 0,
+  "new_dependencies_or_versions": false,
+  "system_security_configuration_changed": false,
+  "prior_requester_tests_repeated": false,
+  "limitations": [
+    "Not a comprehensive vulnerability audit or general sandbox proof",
+    "Real identity verification, supported Cookie protocol, account object access and sharing remain unverified",
+    "Config Init/Reload and successful persistence intentionally not exercised",
+    "Landlock does not hide all metadata or revoke all preopened FD authority; extra FDs closed and stdin null"
+  ],
+  "test_binary_sha256": "50b0dc3378f6872dca9a3f15ca897dd954003cb15ec24a60644a1ef0ded371a5",
+  "artifact_sha256": {
+    "patches/baidupcs-go-v4.0.2/regression/README.md": "b17b395f420c1960aa68f8a0cba940a1dc7516ea0f5f76125ecb3c4719eeccb3",
+    "patches/baidupcs-go-v4.0.2/regression/restricted_config_test_exec.py": "edaa85d17c9394763a39737ab09ec76b0e7b27bb970c95554dee4e96031c9acb",
+    "patches/baidupcs-go-v4.0.2/regression/init_scan.go": "b08c11efe05fb1acd38c1595eee0b798a06e2851d972759869668926ca1f7fcf",
+    "patches/baidupcs-go-v4.0.2/regression/requester_regression_test.go": "e06189c2fab5073881b3eb009abf0fb5c02863b9a4b2c509438ddb3edc4482ff",
+    "patches/baidupcs-go-v4.0.2/regression/config_regression_test.go": "035bc94ca9fabc538649844cf878d29d8bd29c3c897e82f93e86e10430252d14",
+    "patches/baidupcs-go-v4.0.2/regression/restricted_test_exec.py": "2db13235665ca299ab8078339d76ca6bf385ad9f42ed1de9d6ceb2aa9a898bf0"
+  },
+  "free_bytes_final_checkpoint": 169770033152,
+  "mvp_backend_decision": "refusal_and_persistence_guards_verified_real_login_still_default_denied"
+}

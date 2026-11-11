@@ -1,0 +1,10 @@
+{
+  "ipv4": {
+    "table_inventory_readable": true,
+    "any_legacy_tables": false
+  },
+  "ipv6": {
+    "inventory_file_present": false,
+    "any_legacy_tables": null
+  }
+}

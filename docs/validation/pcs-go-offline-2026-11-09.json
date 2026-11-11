@@ -1,0 +1,51 @@
+{
+  "version": "go1.27.3",
+  "metadata_source": "https://go.dev/dl/?mode=json",
+  "download_source": "https://go.dev/dl/go1.27.3.linux-amd64.tar.gz",
+  "effective_source": "https://dl.google.com/go/go1.27.3.linux-amd64.tar.gz",
+  "archive": {
+    "filename": "go1.27.3.linux-amd64.tar.gz",
+    "os": "linux",
+    "arch": "amd64",
+    "version": "go1.27.3",
+    "sha256": "65efbc80fdc1fa2cd2631cad5b481777a68e8725f34e89f50fc6ac714e379b40",
+    "size": 70588678,
+    "kind": "archive"
+  },
+  "free_bytes_after_extract": 170457743360,
+  "install_relative_path": "scratch/pcs-go-offline-20261109/go",
+  "date": "2026-11-09",
+  "host_os_arch": "Linux x86_64",
+  "free_bytes_before_install": 170824728576,
+  "free_bytes_after_build_checkpoint": 170334216192,
+  "network_namespace": "unavailable_uid_map_denied_no_retry",
+  "network_isolation": "child_inherited_seccomp_socket_syscalls_EPERM",
+  "socket_guard_checked_each_exec": true,
+  "configuration_isolation": "empty_inherited_environment_explicit_HOME_config_cache_tmp",
+  "go_env": {
+    "GOTOOLCHAIN": "local",
+    "GOPROXY": "off",
+    "GOSUMDB": "off",
+    "GOWORK": "off",
+    "GOENV": "off",
+    "GO111MODULE": "off",
+    "CGO_ENABLED": "0",
+    "GOTELEMETRY": "off"
+  },
+  "gofmt": "passed_two_files",
+  "compile": "passed_two_standard_library_files_only",
+  "go_tests_passed": 6,
+  "full_client_build": "not_run",
+  "upstream_dependencies_downloaded": false,
+  "actual_credentials_used": false,
+  "account_requests": 0,
+  "cloud_operations": 0,
+  "system_configuration_changed": false,
+  "mvp_decision": "candidate_not_ready_unchanged",
+  "compiled_input_sha256": {
+    "security_policy.go": "c62319e490e972397bcf0c31d04f8e58b6151ac3b1f2e662ca5111535c26f267",
+    "security_policy_test.go": "f9bded5e4106854306d3293239be2cc0c3c001137d26d47a85b08c381d223b3b"
+  },
+  "test_binary_sha256": "fc9a5923c03df65f8e37265c19718b996d93a3a3bff38e35e3c2b22f6e75dae1",
+  "offline_wrapper_sha256": "411e798ef3a0dd8f90bb091c309f1e08af3c1623da694d6a48bb815802612406"
+}

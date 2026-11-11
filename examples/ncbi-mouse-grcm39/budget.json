@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-11",
+  "status": "first-plan-verified-shared-recipient-confirmed",
+  "plans": [
+    {
+      "manifest": "manifest-genome-and-report.json",
+      "files": 2,
+      "total_source_bytes": 834269945,
+      "largest_file_bytes": 834262758,
+      "max_file_bytes": 1073741824,
+      "part_bytes": 8388608,
+      "parts": [
+        100,
+        1
+      ],
+      "conservative_planning_disk_bytes": 6606673638,
+      "sdk_memory_admission_including_margin_bytes": 402653184,
+      "approx_payload_network_bytes_download_upload_readback": 2502809835
+    },
+    {
+      "manifest": "manifest-genbank.json",
+      "files": 1,
+      "total_source_bytes": 1133653005,
+      "largest_file_bytes": 1133653005,
+      "max_file_bytes": 2147483648,
+      "part_bytes": 8388608,
+      "parts": [
+        136
+      ],
+      "conservative_planning_disk_bytes": 6906063885,
+      "sdk_memory_admission_including_margin_bytes": 402653184,
+      "approx_payload_network_bytes_download_upload_readback": 3400959015
+    }
+  ],
+  "genbank_rejected_by_default_1gib_limit": true,
+  "vps_observed_available_disk_bytes": 24289931264,
+  "vps_observed_available_memory_bytes": 1760395264,
+  "real_account_probe_performed": true,
+  "payload_downloaded": true,
+  "baidu_object_created": true,
+  "baidu_directory_created": true,
+  "baidu_final_file_committed": true,
+  "second_plan_executed": false,
+  "confirmed_part_count": 101,
+  "unknown_part": null,
+  "local_worker_terminal": true,
+  "cleanup_performed": false,
+  "specific_first_plan_scope_confirmed": true,
+  "confirmed_genome_parts": 100,
+  "confirmed_report_parts": 1,
+  "part48_retried_once": true,
+  "original_unknown_snapshot_retained": true,
+  "full_readback_verified": true,
+  "share_created_once": true,
+  "recipient_status": "confirmed",
+  "delivered": true
+}

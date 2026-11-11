@@ -1,0 +1,137 @@
+{
+  "date": "2026-11-11",
+  "source_failure": {
+    "date": "2026-11-11",
+    "cases": [
+      {
+        "mode": "partial",
+        "actual_public_https": true,
+        "response_bytes_not_fabricated": true,
+        "actual_sigkill": true,
+        "worker_reaped": true,
+        "retained_bytes_after_kill": 1024,
+        "source_bytes_after_recovery": 7187,
+        "md5": "1fd6ffdf5da458e9d4f4e5b82d482601",
+        "sha256": "e3fb259bf1d1ee3b646c1f697a39c8394a6342d790fca9c1b36a8c873063ae26",
+        "recovery_network_repeated": true,
+        "cloud_operations": 0,
+        "source_evidence_retained": true
+      },
+      {
+        "mode": "complete",
+        "actual_public_https": true,
+        "response_bytes_not_fabricated": true,
+        "actual_sigkill": true,
+        "worker_reaped": true,
+        "retained_bytes_after_kill": 7187,
+        "source_bytes_after_recovery": 7187,
+        "md5": "1fd6ffdf5da458e9d4f4e5b82d482601",
+        "sha256": "e3fb259bf1d1ee3b646c1f697a39c8394a6342d790fca9c1b36a8c873063ae26",
+        "recovery_network_repeated": false,
+        "cloud_operations": 0,
+        "source_evidence_retained": true
+      }
+    ],
+    "original_delivered_task_database_unchanged": true,
+    "credentials_read": false,
+    "cloud_requests": false,
+    "new_cloud_objects": false,
+    "runtime_revision": "4c8ea433f666963c4e29ab8dff5f95274f2e326e"
+  },
+  "token_rejection": {
+    "date": "2026-11-11",
+    "real_service_requests": true,
+    "cases": [
+      {
+        "case": "synthetic-invalid-token",
+        "rejected": true,
+        "safe_reason": "protocol_api_error",
+        "account_matched": false,
+        "calls": [
+          {
+            "method": "GET",
+            "operation": "uinfo",
+            "http_status": 200
+          }
+        ],
+        "diagnostics": [
+          {
+            "operation": "uinfo",
+            "errno": 20017,
+            "error_code": null
+          }
+        ],
+        "actual_credential_reads": 0,
+        "client_stopped": true,
+        "credential_released": true
+      },
+      {
+        "case": "existing-valid-token",
+        "rejected": false,
+        "safe_reason": null,
+        "account_matched": true,
+        "calls": [
+          {
+            "method": "GET",
+            "operation": "uinfo",
+            "http_status": 200
+          },
+          {
+            "method": "GET",
+            "operation": "quota",
+            "http_status": 200
+          }
+        ],
+        "diagnostics": [
+          {
+            "operation": "uinfo",
+            "errno": 0,
+            "error_code": null
+          },
+          {
+            "operation": "quota",
+            "errno": 0,
+            "error_code": null
+          }
+        ],
+        "actual_credential_reads": 1,
+        "client_stopped": true,
+        "credential_released": true
+      }
+    ],
+    "existing_credential_file_unchanged": true,
+    "writes_performed": false,
+    "token_refreshed_or_revoked": false,
+    "natural_token_expiry_simulated": false,
+    "test_token_stored_in_credential_file": false
+  },
+  "source_fixture": "NCBI GRCm39 assembly_report.txt, 7187 bytes",
+  "source_checkpoint_method": "real HTTPS response read limited to 1024-byte calls solely for deterministic SIGKILL checkpoint; bytes not fabricated",
+  "source_harness_sha256": "6ab92167b1c45d4a29de407c249138dc888361e863bebb43d1bac8152c530161",
+  "token_harness_sha256": "fcd2cd8b6dd441b5d7fc312ac122ab0f5eedc4afff650d79bd0c9840cb01d0b9",
+  "limitations": [
+    "SIGKILL is a controlled client interruption, not a natural upstream server outage",
+    "Invalid synthetic token rejection is not actual natural expiry or refresh validation",
+    "No cloud writes or real unknown commit injected; low-capacity real filesystem tested preflight admission without filling disk to force ENOSPC"
+  ],
+  "mvp_complete": false,
+  "real_budget_admission": {
+    "date": "2026-11-11",
+    "real_filesystem_available_bytes": 1034870784,
+    "reserve_bytes": 5368709120,
+    "source_bytes_requested": 7187,
+    "task_creation_rejected": true,
+    "download_admission_rejected": true,
+    "reasons": {
+      "task-create": "space_workspace_reserve",
+      "download-admission": "disk_budget_exceeded"
+    },
+    "network_calls": 0,
+    "task_or_payload_created": false,
+    "cloud_operations": 0,
+    "credentials_read": false,
+    "filesystem_filled_to_force_failure": false,
+    "free_space_value_mocked": false,
+    "private_evidence_retained": true
+  }
+}

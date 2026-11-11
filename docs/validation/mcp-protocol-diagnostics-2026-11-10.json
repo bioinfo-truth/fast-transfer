@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-10",
+  "source_of_runtime_observation": "user-provided redacted terminal report; not independently replayed or verified",
+  "user_report_summary": {
+    "device_reason": "device_authorized_in_memory",
+    "scope": "basic netdisk",
+    "token_remaining_seconds_at_report": 2591999,
+    "device_poll_requests": 1,
+    "authorization_outcome_unknown": false,
+    "token_stored": false,
+    "mcp_reason": "mcp_sse_protocol_rejected",
+    "mcp_status": "stopped",
+    "mcp_close_confirmed": true,
+    "mcp_request_counts": {
+      "sse_open": 1,
+      "initialize": 1,
+      "notifications/initialized": 1,
+      "tools/list": 1
+    },
+    "account_verified": false,
+    "object_verified": false,
+    "share_attempted": false
+  },
+  "inferred_from_existing_code_sequence": "initialization checks passed before tools/list dispatch; precise rule and historical HTTP statuses unavailable",
+  "historical_failure_root_cause_confirmed": false,
+  "possible_local_causes": [
+    "SSE frame/line/byte limits",
+    "unreviewed SSE fields or notifications",
+    "RPC ID/envelope shape",
+    "pagination",
+    "tools result fields including previously rejected standard _meta"
+  ],
+  "static_standard_compatibility_fix": "accept ListToolsResult._meta only if null or dictionary, without outputting its contents; no other limits or permissions relaxed",
+  "standard_source": "https://github.com/modelcontextprotocol/python-sdk/blob/v1.6.0/src/mcp/types.py",
+  "cached_standard_source_sha256": "fbb3f8492cbfaaf95b39c5f8b86978d1e6c824beb3ed3347cde170d8fba21fa5",
+  "new_diagnostic_tests": 13,
+  "related_sse_tests": 17,
+  "related_terminal_tests": 23,
+  "related_device_tests": 25,
+  "offline_passed": 78,
+  "real_local_tls_passed": 21,
+  "failures": 0,
+  "skipped": 0,
+  "official_device_or_mcp_requests_this_followup": 0,
+  "real_secrets_read": false,
+  "old_token_recovery_attempted": false,
+  "oauth_restart_or_refresh": false,
+  "runtime_process_or_terminal_inspected": false,
+  "real_share_attempted": false,
+  "files_sha256": {
+    "fast_transfer/mcp_sse.py": "5c0c8988145a60428b96dd1c09f9f1538221183778a9ff53ca64ab06c062b0f5",
+    "fast_transfer/mcp_terminal.py": "6896ace69d1a903c51520cf1aa33eff6a43a3b0f5d4106dfc9328b61ae8a0e52",
+    "fast_transfer/device_terminal.py": "10b294f5d1a986a93544ed4fff7794047e6f94d5a7076df9f973523175cc9cd9",
+    "tests/test_mcp_diagnostics.py": "e9e9a15c56fbced51ddc43353520954312359a2f212ac19da78f9da1950ace02",
+    "tests/test_mcp_sse.py": "48547ea4753576d501f888ce0b69240a58b9789a347fa9d9d0641c0835fc349b",
+    "tests/test_mcp_terminal.py": "8cf9ab06d19472e48005b279b741bd778be839a550e13360f30704d58f676573",
+    "tests/test_device_oauth.py": "c9b9f2d275cd8f745e66bcd6d5848b77520bf8f617849632daffa9d49d29eb91",
+    "tests/support/run_workflow_isolated.py": "35c6c7f51266a1030a8c308c31aaed0c34aa83e9918921094607f1b68a35d0da"
+  },
+  "logs_sha256": {
+    "mcp-protocol-diagnostics-offline-2026-11-10.txt": "ff708647167abb2f793c008f1997d91d9ad86e60d06c016eaa45c9a9fb8ca6f7",
+    "mcp-protocol-diagnostics-local-2026-11-10.txt": "edd66baa870aa50a3f7404dafbd3130d19a3e3671db9ab5168eae8f401e686d0"
+  }
+}

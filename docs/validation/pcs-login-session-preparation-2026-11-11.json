@@ -1,0 +1,94 @@
+{
+  "checked_at_utc": "2026-11-10T17:17:18.412817+00:00",
+  "installation": {
+    "baseline_repository": "qjfoidnh/BaiduPCS-Go",
+    "baseline_tag": "v4.0.2",
+    "baseline_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+    "build_type": "project_patched_safety_candidate_not_official_release_binary",
+    "binary_sha256": "41b3182106fe0de3591be0e03d59063268db78886a3fe94c54ca24e0f0963186",
+    "binary_bytes": 20870517,
+    "go_toolchain": "go1.27.3",
+    "architecture": "linux/amd64",
+    "credential_support": "not_enabled",
+    "network_runtime": "kernel_denied",
+    "commands": [
+      "--version",
+      "--help",
+      "login --help",
+      "help login",
+      "login --session-only --help",
+      "login --session-only (explicit owner TTY confirmation)"
+    ],
+    "launcher_sha256": "b8ab609ebbd5444e96799be5f49ee045c5073c8f64a00dba71eeb3c93a0af38b",
+    "login_session_sha256": "573b993af4201845fd37beb8b854a47e6f3fcf5d5c89e7c20d3936c051ca5417",
+    "login_session_frontend_sha256": "287f0a17d0fc742a33750c3b8b52703d3549d4d6e5d5eb74f150a38f36e07d4f",
+    "login_session_support": "prepared_single_attempt_no_persistence_real_compatibility_unverified"
+  },
+  "go_memory_tests_passed": 13,
+  "go_local_tls_tests_passed": 4,
+  "frontend_generated_pty_tests_passed": 6,
+  "installation_noncredential_checks": [
+    {
+      "case": "--version",
+      "exit": 0,
+      "expected": 0,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "login --help",
+      "exit": 0,
+      "expected": 0,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "login --session-only --help",
+      "exit": 0,
+      "expected": 0,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "login --session-only",
+      "exit": 1,
+      "expected": 1,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "login",
+      "exit": 2,
+      "expected": 2,
+      "no_synthetic_secret_echo": true
+    },
+    {
+      "case": "session_password_argument_rejected",
+      "exit": 2,
+      "expected": 2,
+      "no_synthetic_secret_echo": true
+    }
+  ],
+  "real_authentication_requests": 0,
+  "real_credentials_received": false,
+  "credentials_saved": false,
+  "baidu_session_created": false,
+  "share_requests": 0,
+  "live_compatibility_verified": false,
+  "known_limits": [
+    "legacy upstream WAP protocol",
+    "captcha_or_phone_email_challenge_stops_without_followup",
+    "login_and_identity_only_no_file_or_share_actions",
+    "server_session_may_outlive_process_if_future_user_authenticates",
+    "memory_erasure_not_guaranteed"
+  ],
+  "new_source_sha256": {
+    "scripts/baidupcs-go-offline-launcher.py": "b8ab609ebbd5444e96799be5f49ee045c5073c8f64a00dba71eeb3c93a0af38b",
+    "scripts/baidupcs-go-login-session.py": "287f0a17d0fc742a33750c3b8b52703d3549d4d6e5d5eb74f150a38f36e07d4f",
+    "patches/baidupcs-go-v4.0.2/login-session/local_tls_test.go": "464179abc4e73a9aaa91cede3b8664bad534331f77485dfe550013af5750bf2d",
+    "patches/baidupcs-go-v4.0.2/login-session/main.go": "9ed766f027fce944e8d23c136197c4619e842d6f1ba2e727966553971cae2874",
+    "patches/baidupcs-go-v4.0.2/login-session/main_test.go": "fe0242fa67f69feb7c2fab9eaa14e75fb9b807415dd9cc14910b0f46e7fa7163",
+    "patches/baidupcs-go-v4.0.2/login-session/profile.go": "2b715ef1c7ba11221f6943e1db6875c538c5da2e8266a167a0077f45b02a2db9",
+    "tests/test_pcs_login_frontend.py": "caa9f36cbce334751d616038ef1cec131bc57db75696b0221e4433ff5f06dfba"
+  },
+  "go_vet": "passed_offline_new_companion_only",
+  "test_binary_sha256": "ae77cbb69635e1f679d36cf5f3718ef7eb5dc4b9d3bdc7b4fc038e86434ee08a",
+  "trace_bootstrap_body": "not_read_headers_only",
+  "installed_helper_invalid_input_stops_before_network": true
+}

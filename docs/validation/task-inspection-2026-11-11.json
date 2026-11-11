@@ -1,0 +1,11 @@
+{
+  "tests": 106,
+  "new_inspection_tests": 7,
+  "passed": true,
+  "network": "inherited seccomp deny",
+  "cloud_responses": "synthetic",
+  "encoder": "actual pinned SDK",
+  "real_account_actions": false,
+  "coverage": "one unknown commit only; metadata and full readback",
+  "command": "python3 -I -S -B tests/support/run_workflow_isolated.py test_task_inspect test_task_delivery test_delivery test_task_handoff test_task_cleanup test_task_upload test_task test_baidu_protocol test_sdk_codec"
+}

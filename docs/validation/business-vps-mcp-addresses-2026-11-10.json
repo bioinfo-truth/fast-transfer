@@ -1,0 +1,35 @@
+{
+  "credentials_read": false,
+  "credentials_submitted": false,
+  "http_requests": 0,
+  "results": [
+    {
+      "dns_candidate_index": 0,
+      "family": "ipv4",
+      "tcp_connected": false,
+      "tls_verified": false,
+      "closed": true,
+      "outcome": "timeout",
+      "elapsed_ms": 7007.709
+    },
+    {
+      "dns_candidate_index": 1,
+      "family": "ipv4",
+      "tcp_connected": false,
+      "tls_verified": false,
+      "closed": true,
+      "outcome": "timeout",
+      "elapsed_ms": 7005.731
+    },
+    {
+      "dns_candidate_index": 2,
+      "family": "ipv6",
+      "tcp_connected": false,
+      "tls_verified": false,
+      "closed": true,
+      "outcome": "network_os_error",
+      "elapsed_ms": 0.539
+    }
+  ],
+  "checked_at_utc": "2026-11-10T15:30:19.070300+00:00"
+}

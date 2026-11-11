@@ -1,0 +1,5 @@
+['--version'] -> 0
+['login', '--session-only', '--help'] -> 0
+['share', '--session-only', '--help'] -> 0
+['login'] -> 2
+['share', '--session-only', '--expectations', '/NONEXISTENT_SYNTHETIC_ONLY', '--period', '7'] -> 1

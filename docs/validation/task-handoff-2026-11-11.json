@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-11",
+  "tests": 40,
+  "new_handoff_tests": 6,
+  "passed": true,
+  "network": "inherited seccomp deny",
+  "records": "synthetic",
+  "real_account_actions": false,
+  "command": "python3 -I -S -B tests/support/run_workflow_isolated.py test_task_handoff test_task_upload test_task"
+}

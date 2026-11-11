@@ -1,0 +1,19 @@
+{
+  "revision": "2d83444a65fa35a23c9d789d9e799eb5c9914a48",
+  "archive_sha256": "aa692d6028b4f9280757cfbef63850f48d9e15b89a8ee8ecf07b832c37fb2743",
+  "archive_files": 49,
+  "verified_payload_files": 48,
+  "vps_installed": true,
+  "service_activated": false,
+  "cli_help_commands": 7,
+  "sdk_part_bytes": 4194304,
+  "encoding_elapsed_seconds": 0.3588,
+  "parent_peak_rss_kib": 48512,
+  "helper_peak_rss_kib": 29244,
+  "credentials_read": false,
+  "baidu_requests": 0,
+  "source_downloaded": false,
+  "candidate_phase": "pending",
+  "full_task_resource_acceptance": false,
+  "new_object_authorization": "pending"
+}

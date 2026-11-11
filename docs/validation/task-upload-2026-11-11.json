@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-11",
+  "tests": 211,
+  "passed": true,
+  "network": "inherited seccomp deny",
+  "sdk_encoder": "actual pinned helper",
+  "responses": "synthetic",
+  "real_account_actions": false,
+  "vps_deployed": false,
+  "upload_sigkill_acceptance": false,
+  "complete_mvp": false,
+  "command": "python3 -I -S -B tests/support/run_workflow_isolated.py test_task_upload test_task test_sdk_codec test_baidu_protocol test_upload_stage test_stop_boundaries test_approved_sample test_isolated_candidate test_original_sample test_intake test_safe_download test_space test_workflow test_workflow_process"
+}

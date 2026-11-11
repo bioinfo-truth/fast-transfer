@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-09",
+  "mode": "offline_fixture_only",
+  "implementation_sha256": {
+    "fast_transfer/pcs_auth_simulation.py": "22e0532e647af4ade784328a94cab6b9db0bf6bb09686458b6e13a791c5d2af5",
+    "tests/test_pcs_auth_simulation.py": "4308b4f4fd5588f4b5bd61338b96c54ede8e148f780410f7019f4d41520b42c7"
+  },
+  "tests": {
+    "targeted_passed": 12,
+    "workspace_passed": 148,
+    "clean_archive_expected": 144,
+    "clean_archive_passed": 144
+  },
+  "real_credentials_used": false,
+  "account_requests_sent": false,
+  "client_installed_or_executed": false,
+  "production_client_patched": false,
+  "live_authenticated": false,
+  "share_eligible": false,
+  "browser_denial_still_effective": true,
+  "limitations": [
+    "Invented endpoint labels; trusted identity source only simulated",
+    "TLS policy and exceptions tested, no handshake",
+    "Local reference release is not secure memory erasure",
+    "No real credential compatibility or service entitlement verified"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-11",
+  "state": "external_session_evidence_needed",
+  "same_blocker_present_across_last_three_goal_turns": true,
+  "authorization_resolved": true,
+  "credentials_missing": false,
+  "readonly_recheck": {
+    "workers_terminal": true,
+    "source_bytes": 834262758,
+    "confirmed_parts": 48,
+    "unknown_part": 48,
+    "commit_attempted": false
+  },
+  "independent_mitigation_completed": {
+    "boundary_pause_implemented_and_tested": true,
+    "pause_runtime_installed": true
+  },
+  "public_research": {
+    "existing_session_readonly_contract_established": false,
+    "unknown_retry_idempotency_contract_established": false,
+    "search_result_sha256": [
+      "67a05f52ee663b45a6ccbb11a31dfe64b07bbd09b3c92dbce224a6106bdec971",
+      "1d2f718364b34dac5ca8ad5b967ed661026d668211ee04403293ecb3e5dc1c9c"
+    ]
+  },
+  "external_change_needed": "Authoritative existing-session state query contract or service-side evidence for the unknown part",
+  "support_question_draft": "docs/baidu-existing-session-support-question.md",
+  "support_request_sent": false,
+  "mvp_complete": false,
+  "large_file_readback_and_delivery_complete": false,
+  "different_manifest_and_real_failure_acceptance_complete": false
+}

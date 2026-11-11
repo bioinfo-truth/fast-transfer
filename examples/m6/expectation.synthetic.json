@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "receipt_expectation",
+  "job_id": "job-acceptance-demo",
+  "manifest_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "mapping_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+  "source_version_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+  "file": {
+    "name": "fixture.fna",
+    "bytes": 512,
+    "md5": "258ec6bd18439b9fd51c4fc83ef61942",
+    "sha256": "24191b1133fb23e1912560250839730c6f4cbc0c6dcc3a8d38cf152ca67b0152"
+  },
+  "origin": "simulation",
+  "upstream": {
+    "source": {
+      "kind": "missing",
+      "record_sha256": null,
+      "completed_at": null,
+      "outcome": "missing"
+    },
+    "upload_readback": {
+      "kind": "missing",
+      "record_sha256": null,
+      "completed_at": null,
+      "outcome": "missing"
+    },
+    "share": {
+      "kind": "missing",
+      "record_sha256": null,
+      "completed_at": null,
+      "outcome": "missing"
+    }
+  },
+  "share_expires_at": null
+}

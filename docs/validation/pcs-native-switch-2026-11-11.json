@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-11",
+  "baseline_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+  "mode": "native_with_local_transport_and_hidden_cookie_prompt_patches",
+  "binary_sha256": "56eb441d32faeed3876b57198a1dea9b267e179cd9ef6c6b444e9e477366de78",
+  "wrapper_sha256": "354c8c753e680ca6e89a5b10b33aa49025fbf4831f0ad73470332bf87cd0fd4a",
+  "checks": [
+    {
+      "args": [
+        "--version"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "login",
+        "--help"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "share",
+        "--help"
+      ],
+      "exit": 0
+    }
+  ],
+  "local_tls_and_redirect_tests": 2,
+  "real_login": false,
+  "real_share": false,
+  "existing_credentials_read": false,
+  "historical_companion_retained_but_not_default": true,
+  "separate_bduss_stoken_prompt_installed": true,
+  "separate_prompt_synthetic_pty": {
+    "prompt_order": "BDUSS then STOKEN",
+    "both_echo_disabled": true,
+    "synthetic_bduss_not_echoed": true,
+    "empty_stoken_returns_before_SetupUserByBDUSS": true,
+    "network": "kernel_denied"
+  }
+}

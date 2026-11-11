@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-08",
+  "base_commit": "955ba564368bb5584de1eb7d56ff6090ae291873",
+  "scope": "M6 local preparation only; no actual domestic receipt",
+  "implementation_sha256": {
+    "fast_transfer/acceptance.py": "ef4ee4e8b5bab55a12317b720002ab727e2523ae36bc38bd8e410f2827e5cf09",
+    "tests/test_acceptance.py": "81d87625720bcb9e565b1541e8909b102d7e2fb4c7e4f6d17ca53462300ec7de",
+    "examples/m6/expectation.synthetic.json": "b418f940b6211713c560f6af04908f79fdc3628ee3fafec96c0ecb0d330471ba",
+    "examples/m6/observation.template.json": "3636ad0a50e8b88ca812b2130b29f0efaa96f4bf79b97a4ecfbd4eb8e03da170"
+  },
+  "tests": {
+    "new_acceptance_tests": 8,
+    "workspace_total": 127,
+    "clean_tree_expected": 123,
+    "synthetic_payload_bytes": 512,
+    "new_tests_disable_socket": true,
+    "real_account_calls": 0,
+    "real_data_transfers": 0,
+    "real_share_created_or_opened": false,
+    "repeated_old_benchmarks": false
+  },
+  "completed": [
+    "receipt expectation/observation/local hash record contract with task/mapping/version and dual hashes",
+    "read-only selected file hashing, bounded IO, file identity checks and no paths in result",
+    "untrusted record audit for duplicate attempts, time order, missing/unknown history and false real claims",
+    "actual acceptance procedure and minimum future input/scope checklist"
+  ],
+  "not_proven": [
+    "real mainland device/operator and location",
+    "M3 real cloud upload/readback and M4 share eligibility/content",
+    "actual data receipt, transfer metrics and human actions",
+    "authorization provenance and evidence authenticity",
+    "end-to-end MVP delivery"
+  ],
+  "boundaries": {
+    "network_or_live_mode": false,
+    "credentials_read": false,
+    "upstream_gates_changed": false,
+    "workflow_state_updated": false,
+    "json_true_grants_authority": false,
+    "cloud_verified": false,
+    "share_verified": false,
+    "location_verified": false,
+    "delivery_eligible": false,
+    "delivered": false
+  },
+  "actual_m6_state": "pending_not_attempted",
+  "denial_event": false
+}

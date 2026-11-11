@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-08",
+  "base_commit": "e050e886acbf04c65186e624155fe9fc975551e5",
+  "scope": "M4 manual unverified share draft and M5 offline single-job orchestration only",
+  "official_source": {
+    "url": "https://pan.baidu.com/netdisk/help",
+    "title": "百度网盘帮助中心",
+    "retrieved_public_text_sha256": "9153cde50d21d331ea905671d5377d09754bdd3ac2f24e0f4cf46e73d9759c6c",
+    "note": "Jina public page text hash, not official signature; no body copied; password/expiry/cancellation statements only; account/app permissions unknown"
+  },
+  "implementation_sha256": {
+    "fast_transfer/workflow.py": "271cfa620ac3b8f5fca38c67373bef640418a3d8cfd3701e6f0ad24f8f74cf31",
+    "tests/test_workflow.py": "cf5c656fb91e59931eb27749ca19289897577916378c5036ee29d1fd1b26805a",
+    "examples/workflow/share-form.template.json": "590aada16c5ff03ab52e08eaa426d339169cbcd82da12073e61f0bc5ea32ee28"
+  },
+  "tests": {
+    "new_workflow_tests": 8,
+    "workspace_total": 119,
+    "clean_tree_expected": 115,
+    "new_payload_bytes": 1024,
+    "new_tests_disable_socket": true,
+    "repeated_biological_download": false,
+    "repeated_old_benchmarks": false
+  },
+  "boundaries": {
+    "credentials_read": false,
+    "real_account_calls": 0,
+    "actual_share_created_or_opened": false,
+    "messages_sent": 0,
+    "real_network_mode_available": false,
+    "live_write_gate_changed": false,
+    "json_true_grants_authority": false,
+    "delivery_eligible": false
+  },
+  "completed": [
+    "single selected manifest entry, source receipt revalidation and MemoryCloud M3 orchestration",
+    "private bounded atomic job state, per-job lock, duplicate startup rejection, view and manual checklist",
+    "unverified manual share record bound to file mapping; expiry/scope checks; link and authorization fingerprints only",
+    "interrupted intent/unknown outcome never automatically retries writes; retains files"
+  ],
+  "remaining": [
+    "real M3 evidence/integration and account permissions",
+    "real share creation, content and authorization verification",
+    "explicitly authorized private handoff and recipient evidence",
+    "full resume/scheduler/global quotas",
+    "M6 domestic retrieval and hash acceptance"
+  ]
+}

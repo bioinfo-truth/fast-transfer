@@ -1,0 +1,50 @@
+go build -mod=readonly -o <isolated>/pcs-never-execute .
+exit=0
+stdout/stderr: empty
+Target binary was NOT executed.
+
+<isolated>/pcs-never-execute: go1.27.3
+	path	github.com/qjfoidnh/BaiduPCS-Go
+	mod	github.com/qjfoidnh/BaiduPCS-Go	(devel)
+	dep	github.com/GeertJohan/go.incremental	v1.0.0	h1:7AH+pY1XUgQE4Y1HcXYaMqAI0m9yrFqo/jt0CW30vsg=
+	dep	github.com/GeertJohan/go.rice	v1.0.2	h1:PtRw+Tg3oa3HYwiDBZyvOJ8LdIyf6lAovJJtr7YOAYk=
+	dep	github.com/astaxie/beego	v1.12.3	h1:SAQkdD2ePye+v8Gn1r4X6IKZM1wd28EyUOVQ3PDSOOQ=
+	dep	github.com/bitly/go-simplejson	v0.5.0	h1:6IH+V8/tVMab511d5bn4M7EwGXZf9Hj6i2xSwkNEM+Y=
+	dep	github.com/cpuguy83/go-md2man/v2	v2.0.0-20190314233015-f79a8a8ca69d	h1:U+s90UTSYgptZMwQh2aRr3LuazLJIa+Pg3Kc1ylSYVY=
+	dep	github.com/daaku/go.zipexe	v1.0.2	h1:Zg55YLYTr7M9wjKn8SY/WcpuuEi+kR2u4E8RhvpyXmk=
+	dep	github.com/fatih/color	v1.18.0	h1:S8gINlzdQ840/4pfAwic/ZE0djQEH3wM94VfqLTZcOM=
+	dep	github.com/golang/protobuf	v1.5.4	h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek=
+	dep	github.com/json-iterator/go	v1.1.12	h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
+	dep	github.com/kardianos/osext	v0.0.0-20190222173326-2bc1f35cddc0	h1:iQTw/8FWTuc7uiaSepXwyf3o52HaUYcV+Tu66S3F5GA=
+	dep	github.com/mattn/go-colorable	v0.1.13	h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=
+	dep	github.com/mattn/go-isatty	v0.0.20	h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
+	dep	github.com/mattn/go-runewidth	v0.0.9	h1:Lm995f3rfxdpd6TSmuVCHVb/QhupuXlYr8sCI/QdE+0=
+	dep	github.com/modern-go/concurrent	v0.0.0-20180306012644-bacd9c7ef1dd	h1:TRLaZ9cD/w8PVh93nsPXa1VrQ6jlwL5oN8l14QlcNfg=
+	dep	github.com/modern-go/reflect2	v1.0.2	h1:xBagoLtFs94CBntxluKeaWgTMpvLxC4ur3nMaC9Gz0M=
+	dep	github.com/oleiade/lane	v1.0.1	h1:hXofkn7GEOubzTwNpeL9MaNy8WxolCYb9cInAIeqShU=
+	dep	github.com/olekukonko/tablewriter	v0.0.4	h1:vHD/YYe1Wolo78koG299f7V/VAS08c6IpCLn+Ejf/w8=
+	dep	github.com/peterh/liner	v1.2.2	h1:aJ4AOodmL+JxOZZEL2u9iJf8omNRpqHc/EbrK+3mAXw=
+	dep	github.com/qjfoidnh/Baidu-Login	v1.4.1	h1:o9GzvdGx1Z90IbgrgfNTgeTJAaOXOD/GpppdNe4d6Cs=
+	dep	github.com/qjfoidnh/baidu-tools	v1.2.0	h1:VoXJCN16xzL0xh1BOI2l2p80X5HwKB0PE4SgtX8wn30=
+	dep	github.com/rs/dnscache	v0.0.0-20230804202142-fc85eb664529	h1:18kd+8ZUlt/ARXhljq+14TwAoKa61q6dX8jtwOf6DH8=
+	dep	github.com/russross/blackfriday/v2	v2.0.1	h1:lPqVAte+HuHNfhJ/0LC98ESWRz8afy9tM/0RK8m9o+Q=
+	dep	github.com/shurcooL/sanitized_anchor_name	v1.0.0	h1:PdmoCO6wvbs+7yrJyMORt4/BmY5IYyJwS/kOiWx8mHo=
+	dep	github.com/tidwall/gjson	v1.18.0	h1:FIDeeyB800efLX89e5a8Y0BNH+LOngJyGrIWxG2FKQY=
+	dep	github.com/tidwall/match	v1.1.1	h1:+Ho715JplO36QYgwN9PGYNhgZvoUSc9X2c80KVTi+GA=
+	dep	github.com/tidwall/pretty	v1.2.0	h1:RWIZEg2iJ8/g6fDDYzMpobmaoGh5OLl4AXtGUGPcqCs=
+	dep	github.com/urfave/cli	v1.22.5	h1:lNq9sAHXK2qfdI8W+GRItjCEkI+2oR4d+MEHy1CKXoU=
+	dep	golang.org/x/net	v0.0.0-20190620200207-3b0461eec859	h1:R/3boaszxrf1GEUWTVDzSKVwLmSJpwZ1yqXm8j0v2QI=
+	dep	golang.org/x/sync	v0.0.0-20190911185100-cd5d95a43a6e	h1:vcxGaoTs7kV8m5Np9uUNQin4BrLOthgV7252N8V+FwY=
+	dep	golang.org/x/sys	v0.25.0	h1:r+8e+loiHxRqhXVl6ML1nO3l1+oFoWbnlu2Ehimmi34=
+	dep	google.golang.org/protobuf	v1.33.0	h1:uNO2rsAINq/JlFpSdYEKIZ0uKD/R9cpdv0T+yoGwGmI=
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	DefaultGODEBUG=containermaxprocs=0,cryptocustomrand=1,decoratemappings=0,gotestjsonbuildtext=1,httpcookiemaxnum=0,httpservecontentmaxranges=1,multipathtcp=0,randseednop=0,rsa1024min=0,tlsmlkem=0,tlssecpmlkem=0,tlssha1=1,tracebacklabels=0,updatemaxprocs=0,urlmaxqueryparams=0,urlstrictcolons=0,x509rsacrt=0,x509sha256skid=0,x509sslcertoverrideplatform=0,x509usepolicies=0
+	build	CGO_ENABLED=0
+	build	GOARCH=amd64
+	build	GOOS=linux
+	build	GOAMD64=v1
+	build	vcs=git
+	build	vcs.revision=ff45cd67b99e83ce064980a5a7b03fc8c36c0ecb
+	build	vcs.time=2026-11-09T05:37:32Z
+	build	vcs.modified=true

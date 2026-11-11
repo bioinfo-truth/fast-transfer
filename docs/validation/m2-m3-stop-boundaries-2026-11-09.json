@@ -1,0 +1,862 @@
+{
+  "date": "2026-11-09",
+  "base_commit": "b8f744ce7d29aa62ad6c87f9fe4f2a66c48ef132",
+  "scope": "M2/M3 synthetic cooperative cancellation, low space and HTTP in-flight stop contracts",
+  "implementation_sha256": {
+    "fast_transfer/upload_stage.py": "791ab44704eab83a3987d5dc51f33670cbcae3fd7cb935181ee722e503a321ea",
+    "fast_transfer/baidu_http.py": "20c9b29ef7558c689df7f4c619c5101af083663c1e5ec9ab36e9ffe819a243d8",
+    "tests/test_stop_boundaries.py": "a07b62f330e5cc9e7cd985363c1087b05b30fc583bbfa14c49700593b9389c5e",
+    "tests/support/run_workflow_isolated.py": "35c6c7f51266a1030a8c308c31aaed0c34aa83e9918921094607f1b68a35d0da"
+  },
+  "command": "env -i PATH=/usr/bin:/bin /usr/bin/python3 -I -S -B tests/support/run_workflow_isolated.py test_stop_boundaries test_baidu_protocol test_upload_stage test_space test_workflow test_workflow_process test_approved_sample test_isolated_candidate",
+  "result": {
+    "new_tests": 20,
+    "synthetic_scenarios": 23,
+    "clean_necessary_regressions_total": 122,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "elapsed_seconds": 7.967,
+    "historical_untracked_four_tests_included": false,
+    "log_sha256": "66441ddce1b74c3ee8aba5e938e5a499639aa982c2e7843ae8063c7f2b2fd2f7"
+  },
+  "history": [
+    {
+      "tests": 61,
+      "failures": 25,
+      "errors": 1,
+      "cause": "new control keyword mistakenly passed to SpaceGuard; fixed; strengthened stop assertions"
+    },
+    {
+      "tests": 61,
+      "passed": true
+    },
+    {
+      "tests": 63,
+      "passed": true
+    },
+    {
+      "tests": 120,
+      "passed": true
+    },
+    {
+      "tests": 122,
+      "passed": true,
+      "note": "final repeat after correcting time measurement naming and max-part assertion"
+    }
+  ],
+  "isolation": {
+    "kernel_seccomp_inherited": true,
+    "worker_network_probe": "socket EPERM",
+    "new_source_bytes": 16,
+    "part_and_readback_bytes": 4,
+    "clean_HOME_and_environment": true,
+    "filesystem_sandbox": false,
+    "dependencies_downloaded": 0,
+    "account_or_network_calls": 0,
+    "network_services_started": 0,
+    "credentials_read": false,
+    "only_test_owned_children_terminated": true
+  },
+  "bounds": {
+    "cooperative_only": true,
+    "hard_realtime_stop_proven": false,
+    "remote_background_writes_bounded": false,
+    "remote_exactly_once_proven": false,
+    "whole_process_RSS_bounded": false,
+    "real_space_stop_joint_acceptance": false,
+    "live_gate_changed": false,
+    "reserve_5GiB_unchanged": true,
+    "M4_closed": true,
+    "atomic_cancel_vs_completion": false,
+    "HTTP_stop_implies_consumer_thread_joined": false
+  },
+  "scenarios": [
+    {
+      "kind": "upload",
+      "mode": "cancel_after_commit",
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "transfer_cancelled",
+        "verification_complete": false,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "upload",
+        "confirmed_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "requested_payload_bytes": 16,
+        "stop_confirmed": true,
+        "state_persisted": true,
+        "job_id": "job-stop",
+        "target": "/apps/Xtransfer/mvp-validation/job-stop/fixture.fna",
+        "source": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "required_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false
+      },
+      "operations": [
+        "reserve",
+        "begin",
+        "part:0",
+        "part:1",
+        "part:2",
+        "part:3",
+        "commit",
+        "stop"
+      ],
+      "accepted_payload_bytes": 16,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 4,
+      "late_file_bytes": 0
+    },
+    {
+      "kind": "upload",
+      "mode": "cancel_before_commit",
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "transfer_cancelled",
+        "verification_complete": false,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "upload",
+        "confirmed_parts": [
+          0,
+          1,
+          2
+        ],
+        "requested_payload_bytes": 16,
+        "stop_confirmed": true,
+        "state_persisted": true,
+        "job_id": "job-stop",
+        "target": "/apps/Xtransfer/mvp-validation/job-stop/fixture.fna",
+        "source": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "required_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false
+      },
+      "operations": [
+        "reserve",
+        "begin",
+        "part:0",
+        "part:1",
+        "part:2",
+        "part:3",
+        "stop"
+      ],
+      "accepted_payload_bytes": 16,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 4,
+      "late_file_bytes": 0
+    },
+    {
+      "kind": "upload",
+      "mode": "already_cancelled",
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "transfer_cancelled",
+        "verification_complete": false,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "input",
+        "confirmed_parts": [],
+        "requested_payload_bytes": 0,
+        "stop_confirmed": null,
+        "state_persisted": false,
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false
+      },
+      "operations": [],
+      "accepted_payload_bytes": 0,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 0,
+      "late_file_bytes": 0
+    },
+    {
+      "kind": "upload",
+      "mode": "expired",
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "transfer_deadline",
+        "verification_complete": false,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "input",
+        "confirmed_parts": [],
+        "requested_payload_bytes": 0,
+        "stop_confirmed": null,
+        "state_persisted": false,
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false
+      },
+      "operations": [],
+      "accepted_payload_bytes": 0,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 0,
+      "late_file_bytes": 0
+    },
+    {
+      "kind": "upload",
+      "mode": "uncooperative_put",
+      "blocked_after_signal": true,
+      "observation_seconds": 0.03010989399626851,
+      "bytes_before_release": 0,
+      "signal_to_return_seconds": 0.030728413024917245,
+      "release_to_return_seconds": 0.0006168989930301905,
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "transfer_cancelled",
+        "verification_complete": false,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "upload",
+        "confirmed_parts": [],
+        "requested_payload_bytes": 4,
+        "stop_confirmed": true,
+        "state_persisted": true,
+        "job_id": "job-stop",
+        "target": "/apps/Xtransfer/mvp-validation/job-stop/fixture.fna",
+        "source": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "required_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false
+      },
+      "operations": [
+        "reserve",
+        "begin",
+        "part:0",
+        "stop"
+      ],
+      "accepted_payload_bytes": 4,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 4,
+      "late_file_bytes": 4
+    },
+    {
+      "kind": "upload",
+      "mode": "cooperative_put",
+      "blocked_after_signal": true,
+      "observation_seconds": 0.03019201196730137,
+      "bytes_before_release": 0,
+      "signal_to_return_seconds": 0.030766088981181383,
+      "release_to_return_seconds": 0.0005687989760190248,
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "transfer_cancelled",
+        "verification_complete": false,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "upload",
+        "confirmed_parts": [],
+        "requested_payload_bytes": 4,
+        "stop_confirmed": true,
+        "state_persisted": true,
+        "job_id": "job-stop",
+        "target": "/apps/Xtransfer/mvp-validation/job-stop/fixture.fna",
+        "source": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "required_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false
+      },
+      "operations": [
+        "reserve",
+        "begin",
+        "stop"
+      ],
+      "accepted_payload_bytes": 0,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 0,
+      "late_file_bytes": 0
+    },
+    {
+      "kind": "upload",
+      "mode": "cancel_readback",
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "transfer_cancelled",
+        "verification_complete": false,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "readback",
+        "confirmed_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "requested_payload_bytes": 16,
+        "stop_confirmed": true,
+        "state_persisted": true,
+        "job_id": "job-stop",
+        "target": "/apps/Xtransfer/mvp-validation/job-stop/fixture.fna",
+        "source": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "required_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false
+      },
+      "operations": [
+        "reserve",
+        "begin",
+        "part:0",
+        "part:1",
+        "part:2",
+        "part:3",
+        "commit",
+        "metadata",
+        "readback",
+        "stop"
+      ],
+      "accepted_payload_bytes": 16,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 4,
+      "late_file_bytes": 0
+    },
+    {
+      "kind": "upload",
+      "mode": "cancel_during_stop",
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "transfer_cancelled",
+        "verification_complete": false,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "verified",
+        "confirmed_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "requested_payload_bytes": 16,
+        "stop_confirmed": true,
+        "state_persisted": true,
+        "job_id": "job-stop",
+        "target": "/apps/Xtransfer/mvp-validation/job-stop/fixture.fna",
+        "source": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "required_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "readback": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false
+      },
+      "operations": [
+        "reserve",
+        "begin",
+        "part:0",
+        "part:1",
+        "part:2",
+        "part:3",
+        "commit",
+        "metadata",
+        "readback",
+        "stop"
+      ],
+      "accepted_payload_bytes": 16,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 4,
+      "late_file_bytes": 0
+    },
+    {
+      "kind": "upload",
+      "mode": "stalled_readback",
+      "blocked_after_signal": true,
+      "observation_seconds": 0.030311424052342772,
+      "bytes_before_release": 16,
+      "signal_to_return_seconds": 0.031997946090996265,
+      "release_to_return_seconds": 0.001678102882578969,
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "transfer_cancelled",
+        "verification_complete": false,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "readback",
+        "confirmed_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "requested_payload_bytes": 16,
+        "stop_confirmed": true,
+        "state_persisted": true,
+        "job_id": "job-stop",
+        "target": "/apps/Xtransfer/mvp-validation/job-stop/fixture.fna",
+        "source": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "required_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false
+      },
+      "operations": [
+        "reserve",
+        "begin",
+        "part:0",
+        "part:1",
+        "part:2",
+        "part:3",
+        "commit",
+        "metadata",
+        "readback",
+        "stop"
+      ],
+      "accepted_payload_bytes": 16,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 4,
+      "late_file_bytes": 0
+    },
+    {
+      "kind": "http",
+      "mode": "close",
+      "second_stop_confirmed": false,
+      "first_still_blocked": true,
+      "first_stop_result": [
+        true
+      ],
+      "final_stop_confirmed": true
+    },
+    {
+      "kind": "http",
+      "mode": "cooperative_headers",
+      "first_stop_confirmed": false,
+      "first_stop_call_seconds": 1.2513017281889915e-05,
+      "blocked_after_stop": false,
+      "outcome": [
+        "http_stopped"
+      ],
+      "calls": [
+        "request",
+        "headers"
+      ],
+      "final_stop_confirmed": true,
+      "elapsed_seconds": 0.03033301397226751,
+      "read_timeouts": [],
+      "requested_read_sizes": []
+    },
+    {
+      "kind": "http",
+      "mode": "cooperative_read",
+      "first_stop_confirmed": false,
+      "first_stop_call_seconds": 1.4296034350991249e-05,
+      "blocked_after_stop": false,
+      "outcome": [
+        "http_stopped"
+      ],
+      "calls": [
+        "request",
+        "headers"
+      ],
+      "final_stop_confirmed": true,
+      "elapsed_seconds": 0.03039986314252019,
+      "read_timeouts": [
+        30
+      ],
+      "requested_read_sizes": [
+        4
+      ]
+    },
+    {
+      "kind": "http",
+      "mode": "deadline",
+      "first_stop_confirmed": null,
+      "first_stop_call_seconds": null,
+      "blocked_after_stop": true,
+      "outcome": [
+        "http_deadline"
+      ],
+      "calls": [
+        "request"
+      ],
+      "final_stop_confirmed": true,
+      "elapsed_seconds": 0.061368671944364905,
+      "read_timeouts": [],
+      "requested_read_sizes": []
+    },
+    {
+      "kind": "http",
+      "mode": "headers",
+      "first_stop_confirmed": false,
+      "first_stop_call_seconds": 5.800975486636162e-06,
+      "blocked_after_stop": true,
+      "outcome": [
+        "http_stopped"
+      ],
+      "calls": [
+        "request",
+        "headers"
+      ],
+      "final_stop_confirmed": true,
+      "elapsed_seconds": 0.03097930201329291,
+      "read_timeouts": [],
+      "requested_read_sizes": []
+    },
+    {
+      "kind": "http",
+      "mode": "read",
+      "first_stop_confirmed": false,
+      "first_stop_call_seconds": 7.608206942677498e-06,
+      "blocked_after_stop": true,
+      "outcome": [
+        "http_stopped"
+      ],
+      "calls": [
+        "request",
+        "headers"
+      ],
+      "final_stop_confirmed": true,
+      "elapsed_seconds": 0.03096593008376658,
+      "read_timeouts": [
+        30
+      ],
+      "requested_read_sizes": [
+        4
+      ]
+    },
+    {
+      "kind": "http",
+      "mode": "request",
+      "first_stop_confirmed": false,
+      "first_stop_call_seconds": 6.346032023429871e-06,
+      "blocked_after_stop": true,
+      "outcome": [
+        "http_stopped"
+      ],
+      "calls": [
+        "request"
+      ],
+      "final_stop_confirmed": true,
+      "elapsed_seconds": 0.03072149003855884,
+      "read_timeouts": [],
+      "requested_read_sizes": []
+    },
+    {
+      "kind": "upload",
+      "mode": "low_space_after_part",
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "disk_budget_exceeded",
+        "verification_complete": false,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "upload",
+        "confirmed_parts": [],
+        "requested_payload_bytes": 4,
+        "stop_confirmed": true,
+        "state_persisted": false,
+        "job_id": "job-stop",
+        "target": "/apps/Xtransfer/mvp-validation/job-stop/fixture.fna",
+        "source": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "required_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false,
+        "state_error": "job_state_not_persisted"
+      },
+      "operations": [
+        "reserve",
+        "begin",
+        "part:0",
+        "stop"
+      ],
+      "accepted_payload_bytes": 4,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 4,
+      "late_file_bytes": 0
+    },
+    {
+      "kind": "upload",
+      "mode": "low_space_stalled_put",
+      "blocked_after_signal": true,
+      "observation_seconds": 0.030335574876517057,
+      "bytes_before_release": 0,
+      "signal_to_return_seconds": 0.03256788197904825,
+      "release_to_return_seconds": 0.0022196429781615734,
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "disk_budget_exceeded",
+        "verification_complete": false,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "upload",
+        "confirmed_parts": [],
+        "requested_payload_bytes": 4,
+        "stop_confirmed": true,
+        "state_persisted": false,
+        "job_id": "job-stop",
+        "target": "/apps/Xtransfer/mvp-validation/job-stop/fixture.fna",
+        "source": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "required_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false,
+        "state_error": "job_state_not_persisted"
+      },
+      "operations": [
+        "reserve",
+        "begin",
+        "stop"
+      ],
+      "accepted_payload_bytes": 0,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 0,
+      "late_file_bytes": 0
+    },
+    {
+      "kind": "upload",
+      "mode": "never_returns",
+      "blocked_after_signal": true,
+      "observation_seconds": 0.03030702704563737,
+      "bytes_before_release": 0,
+      "result_available": false,
+      "duplicate_reason": "duplicate_job",
+      "bytes_after_result_unavailable": 0
+    },
+    {
+      "kind": "upload",
+      "mode": "never_stop",
+      "blocked_after_signal": true,
+      "observation_seconds": 0.030216496903449297,
+      "bytes_before_release": 16,
+      "result_available": false,
+      "duplicate_reason": "duplicate_job",
+      "bytes_after_result_unavailable": 16
+    },
+    {
+      "kind": "http",
+      "mode": "headers_stop",
+      "stop_results": [
+        false
+      ],
+      "outcome": [
+        "http_stopped"
+      ],
+      "final_stop_confirmed": true,
+      "reply_released": true
+    },
+    {
+      "kind": "upload",
+      "mode": "stop_false",
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "adapter_stop_unconfirmed",
+        "verification_complete": true,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "verified",
+        "confirmed_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "requested_payload_bytes": 16,
+        "stop_confirmed": false,
+        "state_persisted": true,
+        "job_id": "job-stop",
+        "target": "/apps/Xtransfer/mvp-validation/job-stop/fixture.fna",
+        "source": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "required_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "readback": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false
+      },
+      "operations": [
+        "reserve",
+        "begin",
+        "part:0",
+        "part:1",
+        "part:2",
+        "part:3",
+        "commit",
+        "metadata",
+        "readback",
+        "stop"
+      ],
+      "accepted_payload_bytes": 16,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 4,
+      "late_file_bytes": 0
+    },
+    {
+      "kind": "upload",
+      "mode": "stop_raises",
+      "result": {
+        "mode": "simulation",
+        "status": "manual_review",
+        "reason": "adapter_stop_unconfirmed",
+        "verification_complete": true,
+        "simulated_delivery_eligible": false,
+        "delivery_eligible": false,
+        "cloud_verified": false,
+        "phase": "verified",
+        "confirmed_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "requested_payload_bytes": 16,
+        "stop_confirmed": false,
+        "state_persisted": true,
+        "job_id": "job-stop",
+        "target": "/apps/Xtransfer/mvp-validation/job-stop/fixture.fna",
+        "source": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "required_parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "readback": {
+          "bytes": 16,
+          "md5": "56b74a652b3ed2f610263b8bb423167c",
+          "sha256": "cf573e65038d08ff910a3345642ffd1e8329844633c2dcb15964b324ebdba4d0"
+        },
+        "mutation_outcome_unknown": false,
+        "commit_attempted": false
+      },
+      "operations": [
+        "reserve",
+        "begin",
+        "part:0",
+        "part:1",
+        "part:2",
+        "part:3",
+        "commit",
+        "metadata",
+        "readback",
+        "stop"
+      ],
+      "accepted_payload_bytes": 16,
+      "bytes_written_after_result": 0,
+      "max_part_bytes": 4,
+      "late_file_bytes": 0
+    }
+  ]
+}

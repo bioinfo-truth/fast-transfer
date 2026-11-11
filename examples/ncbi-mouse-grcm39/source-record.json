@@ -1,0 +1,28 @@
+{
+  "base": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/",
+  "files": [
+    {
+      "name": "GCF_000001635.27_GRCm39_genomic.fna.gz",
+      "status": 200,
+      "size": 834262758,
+      "last_modified": "Thu, 08 Feb 2024 13:26:25 GMT",
+      "md5": "c0b0c4c3f54d2b480efe68a18bf7e42b"
+    },
+    {
+      "name": "GCF_000001635.27_GRCm39_genomic.gbff.gz",
+      "status": 200,
+      "size": 1133653005,
+      "last_modified": "Thu, 08 Feb 2024 13:26:30 GMT",
+      "md5": "07c0e87ecb706e32b422e2d7a36ce8b1"
+    },
+    {
+      "name": "GCF_000001635.27_GRCm39_assembly_report.txt",
+      "status": 200,
+      "size": 7187,
+      "last_modified": "Thu, 08 Feb 2024 13:26:21 GMT",
+      "md5": "1fd6ffdf5da458e9d4f4e5b82d482601"
+    }
+  ],
+  "checksum_snapshot_sha256": "534d1e4cf16eabf69fc62041c5244d73dbc86460ae85a45a5e7bb006d33171fe",
+  "payload_downloaded": false
+}

@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-11",
+  "new_tests": 18,
+  "related_regression_tests": 96,
+  "total_tests": 114,
+  "result": "pass",
+  "skipped": 0,
+  "network": "child-inherited seccomp denied",
+  "real_credentials_read": false,
+  "new_remote_uploads": false,
+  "vps_deployed": false,
+  "generic_cloud_backend_connected": false,
+  "process_cases": [
+    "SIGKILL after complete source write; reopen verifies without network",
+    "fresh process cannot replay consumed unknown commit"
+  ],
+  "source_sha256": {
+    "fast_transfer/task.py": "6bde13eb4b74c16bdd8e4de150de03c9da87a79ed0f658a3863b36fc54147117",
+    "tests/test_task.py": "e3a636fd41332598867385e07eaab3cfb9e1e819b7c3b8cb3f3027f1b8a15998"
+  }
+}

@@ -1,0 +1,13 @@
+=== RUN   TestRejectBeforeTransport
+--- PASS: TestRejectBeforeTransport (0.00s)
+=== RUN   TestRedirectIsNotFollowed
+--- PASS: TestRedirectIsNotFollowed (0.00s)
+=== RUN   TestRejectInsecureConcreteTransport
+--- PASS: TestRejectInsecureConcreteTransport (0.00s)
+=== RUN   TestConstructionErrorsAreRedacted
+--- PASS: TestConstructionErrorsAreRedacted (0.00s)
+=== RUN   TestReadFailureDropsPartialDataAndError
+--- PASS: TestReadFailureDropsPartialDataAndError (0.00s)
+=== RUN   TestTransportErrorRedacted
+--- PASS: TestTransportErrorRedacted (0.00s)
+PASS

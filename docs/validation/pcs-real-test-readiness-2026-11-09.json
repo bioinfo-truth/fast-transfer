@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-09",
+  "input_commit": "b7422a750b4e101991540ee3df142d38f901099e",
+  "decision": "not_ready_for_real_login",
+  "strict_validation_layer": "implemented_15_tests_previously_passed",
+  "production_binding": "unimplemented_default_closed",
+  "denial_evidence": "trusted_coordinator_rechecked_nonsecret_tool_result_metadata",
+  "original_control_provider_name": "Browser Use site safety gate",
+  "denial_policy_id_and_scope": "unknown",
+  "needed_clarification_from": "original_navigation_access_control_provider_or_administrator_and_proposed_channel_control",
+  "proposed_account_requests": "not_attempted_pending_channel_scope_and_phase_permission",
+  "new_tests_or_models": false,
+  "new_credentials_or_dependencies": false,
+  "account_probes": 0,
+  "clearable_by_generic_user_consent": false,
+  "first_next_step": "obtain_nonsecret_original_control_scope_and_allowed_review_path_no_cookie",
+  "evidence_tiers": [
+    "official_OAuth_and_paid_share_contract",
+    "third_party_fixed_cookie_source_only",
+    "actual_cookie_identity_object_share_mapping_unverified"
+  ],
+  "single_phase_budget": {
+    "read_only": 2,
+    "create_and_verify": 4,
+    "optional_cancel": 1
+  },
+  "scope_note": "budgets are candidate maxima and not authorization or service availability proof",
+  "metadata_update_input_commit": "651b7b20bda23e393e9206552e50af1a15f50b29",
+  "specific_control_maintainer": "unknown_not_provided",
+  "denied_tool": "cua.createBrowserTab",
+  "denied_resource": "https://pan.baidu.com/",
+  "tool_result_isError": true,
+  "page_observation_granted": false,
+  "user_authorization_or_auto_review_entered": false,
+  "formal_review_path": "unknown_not_provided",
+  "explicit_no_bypass_scope": "same_denied_purpose_via_other_browsers_indirect_execution_CDP_etc",
+  "all_baidu_apis_denied_proven": false,
+  "baidu_business_api_denial_proven": false,
+  "metadata_is_new_permission": false
+}

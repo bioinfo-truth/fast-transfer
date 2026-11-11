@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "name": "GCF_000005845.2_ASM584v2_genomic.fna.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_genomic.fna.gz",
+      "size": 1379902,
+      "md5": "c13d459b5caa702ff7e1f26fe44b8ad7",
+      "source": {
+        "access": "public",
+        "record_url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000005845.2/",
+        "version": "GCF_000005845.2 / ASM584v2; assembly date 2013-11-03",
+        "checksum_url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/md5checksums.txt",
+        "redistribution": {
+          "status": "reviewed",
+          "basis_url": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "note": "Public non-human bacterial reference sequence. NCBI Molecular Database Use Policy places no NCBI restrictions on use or distribution, with third-party IP caveats. Preserve NCBI attribution and policy notice. Reviewed for this limited test; not a blanket commercial rights guarantee."
+        }
+      }
+    }
+  ]
+}

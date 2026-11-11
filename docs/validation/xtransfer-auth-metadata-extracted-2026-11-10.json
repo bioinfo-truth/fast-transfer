@@ -1,0 +1,57 @@
+{
+  "status": "metadata_extracted",
+  "checked_at_utc": "2026-11-10T14:07:35.907143+00:00",
+  "historical_expected_application": "Xtransfer",
+  "application_binding_verified": false,
+  "official_live_validity_verified": false,
+  "share_permission_verified": false,
+  "mixed_credential_json_parsed_in_vps_memory": true,
+  "secret_values_returned": false,
+  "credentials_submitted": false,
+  "authorization_changed": false,
+  "application_name": {
+    "status": "missing"
+  },
+  "application_id": {
+    "status": "missing",
+    "all_numeric_format": false
+  },
+  "scope": {
+    "status": "recorded",
+    "value": "basic netdisk",
+    "source_fields": [
+      "scope"
+    ]
+  },
+  "issuance": {
+    "status": "missing"
+  },
+  "expiry": {
+    "status": "missing"
+  },
+  "other_recorded_times": {
+    "status": "recorded",
+    "utc": "2026-11-06T17:49:56+00:00",
+    "source_fields": [
+      "created_at"
+    ],
+    "conversion": [
+      "unix_seconds"
+    ]
+  },
+  "expires_in": {
+    "status": "recorded",
+    "seconds": 2592000
+  },
+  "expiry_calculation_basis": "none_no_sufficient_metadata",
+  "local_expiry_assessment": "unknown",
+  "extractor_source_sha256": "31268a5f775267c046eec0cec1c9dc50b70d03877ab1240d8c47f7a71179f4f1",
+  "date": "2026-11-10",
+  "execution_role": "known business VPS; one explicitly designated original authorization file",
+  "source_execution": "reviewed extractor executed via stdin in VPS memory; no persistent deployment",
+  "credentials_copied_to_development_host": false,
+  "credential_file_content_or_opaque_app_ids_published": false,
+  "oauth_refresh_reauthorization_or_business_requests": 0,
+  "current_server_acceptance": "not verified",
+  "created_at_semantics": "record creation metadata; not verified token issuance"
+}

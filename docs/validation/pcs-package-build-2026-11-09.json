@@ -1,0 +1,407 @@
+{
+  "date": "2026-11-09",
+  "baseline_commit": "225bdd3b6cb298601c4d5ef7104c3e08cd1d692d",
+  "go_version": "go1.27.3 linux/amd64",
+  "go_mod_sha256": "ee3b6022af4ca139f2ba67e7affba524962ff2d448e230a6691edfb80fe91405",
+  "go_sum_sha256": "f79b1754f0a3d7255642a43e7526e49319ab10ed45cb75c68fad7bd6784abd8f",
+  "go_mod_declared_modules": [
+    {
+      "module": "github.com/GeertJohan/go.incremental",
+      "version": "v1.0.0",
+      "indirect": false,
+      "source": "https://github.com/GeertJohan/go.incremental",
+      "go_sum_h1": "h1:7AH+pY1XUgQE4Y1HcXYaMqAI0m9yrFqo/jt0CW30vsg=",
+      "go_mod_h1": "h1:6fAjUhbVuX1KcMD3c8TEgVUqmo4seqhv0i0kdATSkM0=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/dgrijalva/jwt-go",
+      "version": "v3.2.0+incompatible",
+      "indirect": false,
+      "source": "https://github.com/dgrijalva/jwt-go",
+      "go_sum_h1": "h1:7qlOGliEKZXTDg6OTjfoBKDXWrumCAMpl/TFQ4/5kLM=",
+      "go_mod_h1": "h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/fatih/color",
+      "version": "v1.18.0",
+      "indirect": false,
+      "source": "https://github.com/fatih/color",
+      "go_sum_h1": "h1:S8gINlzdQ840/4pfAwic/ZE0djQEH3wM94VfqLTZcOM=",
+      "go_mod_h1": "h1:4FelSpRwEGDpQ12mAdzqdOukCy4u8WUtOY6lkT/6HfU=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/golang/protobuf",
+      "version": "v1.5.4",
+      "indirect": false,
+      "source": "https://github.com/golang/protobuf",
+      "go_sum_h1": "h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek=",
+      "go_mod_h1": "h1:lnTiLA8Wa4RWRcIUkrtSVa5nRhsEGBg48fD6rSs7xps=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/json-iterator/go",
+      "version": "v1.1.12",
+      "indirect": false,
+      "source": "https://github.com/json-iterator/go",
+      "go_sum_h1": "h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=",
+      "go_mod_h1": "h1:e30LSqwooZae/UwlEbR2852Gd8hjQvJoHmT4TnhNGBo=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/kardianos/osext",
+      "version": "v0.0.0-20190222173326-2bc1f35cddc0",
+      "indirect": false,
+      "source": "https://github.com/kardianos/osext",
+      "go_sum_h1": "h1:iQTw/8FWTuc7uiaSepXwyf3o52HaUYcV+Tu66S3F5GA=",
+      "go_mod_h1": "h1:1NbS8ALrpOvjt0rHPNLyCIeMtbizbir8U//inJ+zuB8=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/mattn/go-runewidth",
+      "version": "v0.0.9",
+      "indirect": false,
+      "source": "https://github.com/mattn/go-runewidth",
+      "go_sum_h1": "h1:Lm995f3rfxdpd6TSmuVCHVb/QhupuXlYr8sCI/QdE+0=",
+      "go_mod_h1": "h1:H031xJmbD/WCDINGzjvQ9THkh0rPKHF+m2gUSrubnMI=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/oleiade/lane",
+      "version": "v1.0.1",
+      "indirect": false,
+      "source": "https://github.com/oleiade/lane",
+      "go_sum_h1": "h1:hXofkn7GEOubzTwNpeL9MaNy8WxolCYb9cInAIeqShU=",
+      "go_mod_h1": "h1:IyTkraa4maLfjq/GmHR+Dxb4kCMtEGeb+qmhlrQ5Mk4=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/olekukonko/tablewriter",
+      "version": "v0.0.4",
+      "indirect": false,
+      "source": "https://github.com/olekukonko/tablewriter",
+      "go_sum_h1": "h1:vHD/YYe1Wolo78koG299f7V/VAS08c6IpCLn+Ejf/w8=",
+      "go_mod_h1": "h1:zq6QwlOf5SlnkVbMSr5EoBv3636FWnp+qbPhuoO21uA=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/peterh/liner",
+      "version": "v1.2.2",
+      "indirect": false,
+      "source": "https://github.com/peterh/liner",
+      "go_sum_h1": "h1:aJ4AOodmL+JxOZZEL2u9iJf8omNRpqHc/EbrK+3mAXw=",
+      "go_mod_h1": "h1:xFwJyiKIXJZUKItq5dGHZSTBRAuG/CpeNpWLyiNRNwI=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/qjfoidnh/Baidu-Login",
+      "version": "v1.4.1",
+      "indirect": false,
+      "source": "https://github.com/qjfoidnh/Baidu-Login",
+      "go_sum_h1": "h1:o9GzvdGx1Z90IbgrgfNTgeTJAaOXOD/GpppdNe4d6Cs=",
+      "go_mod_h1": "h1:oRFCmVYQka0KYwvbf2zS6UeMupgv0w1CSq4Jovhz6qg=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/qjfoidnh/baidu-tools",
+      "version": "v1.2.0",
+      "indirect": false,
+      "source": "https://github.com/qjfoidnh/baidu-tools",
+      "go_sum_h1": "h1:VoXJCN16xzL0xh1BOI2l2p80X5HwKB0PE4SgtX8wn30=",
+      "go_mod_h1": "h1:TzIKHinLPcQbWxAROpqoSvYxM/kDeswfXJaQ2E1p4zs=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/tidwall/gjson",
+      "version": "v1.18.0",
+      "indirect": false,
+      "source": "https://github.com/tidwall/gjson",
+      "go_sum_h1": "h1:FIDeeyB800efLX89e5a8Y0BNH+LOngJyGrIWxG2FKQY=",
+      "go_mod_h1": "h1:/wbyibRr2FHMks5tjHJ5F8dMZh3AcwJEMf5vlfC0lxk=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/urfave/cli",
+      "version": "v1.22.5",
+      "indirect": false,
+      "source": "https://github.com/urfave/cli",
+      "go_sum_h1": "h1:lNq9sAHXK2qfdI8W+GRItjCEkI+2oR4d+MEHy1CKXoU=",
+      "go_mod_h1": "h1:Gos4lmkARVdJ6EkW0WaNv/tZAAMe9V7XWyB60NtXRu0=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "golang.org/x/crypto",
+      "version": "v0.0.0-20191011191535-87dc89f01550",
+      "indirect": false,
+      "source": "https://golang.org/x/crypto",
+      "go_sum_h1": "h1:ObdrDkeb4kJdCP557AjRjq69pTHfNouLtWZG7j9rPN8=",
+      "go_mod_h1": "h1:yigFU9vqHzYiE8UmvKecakEJjdnWj3jj499lnFckfCI=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "golang.org/x/sys",
+      "version": "v0.25.0",
+      "indirect": false,
+      "source": "https://golang.org/x/sys",
+      "go_sum_h1": "h1:r+8e+loiHxRqhXVl6ML1nO3l1+oFoWbnlu2Ehimmi34=",
+      "go_mod_h1": "h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/rs/dnscache",
+      "version": "v0.0.0-20230804202142-fc85eb664529",
+      "indirect": false,
+      "source": "https://github.com/rs/dnscache",
+      "go_sum_h1": "h1:18kd+8ZUlt/ARXhljq+14TwAoKa61q6dX8jtwOf6DH8=",
+      "go_mod_h1": "h1:qe5TWALJ8/a1Lqznoc5BDHpYX/8HU60Hm2AwRmqzxqA=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "golang.org/x/net",
+      "version": "v0.0.0-20190620200207-3b0461eec859",
+      "indirect": false,
+      "source": "https://golang.org/x/net",
+      "go_sum_h1": "h1:R/3boaszxrf1GEUWTVDzSKVwLmSJpwZ1yqXm8j0v2QI=",
+      "go_mod_h1": "h1:z5CRVTTTmAJ677TzLLGU+0bjPO0LkuOLi4/5GtJWs/s=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/GeertJohan/go.rice",
+      "version": "v1.0.2",
+      "indirect": true,
+      "source": "https://github.com/GeertJohan/go.rice",
+      "go_sum_h1": "h1:PtRw+Tg3oa3HYwiDBZyvOJ8LdIyf6lAovJJtr7YOAYk=",
+      "go_mod_h1": "h1:af5vUNlDNkCjOZeSGFgIJxDje9qdjsO6hshx0gTmZt4=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/astaxie/beego",
+      "version": "v1.12.3",
+      "indirect": true,
+      "source": "https://github.com/astaxie/beego",
+      "go_sum_h1": "h1:SAQkdD2ePye+v8Gn1r4X6IKZM1wd28EyUOVQ3PDSOOQ=",
+      "go_mod_h1": "h1:p3qIm0Ryx7zeBHLljmd7omloyca1s4yu1a8kM1FkpIA=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/bitly/go-simplejson",
+      "version": "v0.5.0",
+      "indirect": true,
+      "source": "https://github.com/bitly/go-simplejson",
+      "go_sum_h1": "h1:6IH+V8/tVMab511d5bn4M7EwGXZf9Hj6i2xSwkNEM+Y=",
+      "go_mod_h1": "h1:cXHtHw4XUPsvGaxgjIAn8PhEWG9NfngEKAMDJEczWVA=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/bmizerany/assert",
+      "version": "v0.0.0-20160611221934-b7ed37b82869",
+      "indirect": true,
+      "source": "https://github.com/bmizerany/assert",
+      "go_sum_h1": "h1:DDGfHa7BWjL4YnC6+E63dPcxHo2sUxDIu8g3QgEJdRY=",
+      "go_mod_h1": "h1:Ekp36dRnpXw/yCqJaO+ZrUyxD+3VXMFFr56k5XYrpB4=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/cpuguy83/go-md2man/v2",
+      "version": "v2.0.0-20190314233015-f79a8a8ca69d",
+      "indirect": true,
+      "source": "https://github.com/cpuguy83/go-md2man/v2",
+      "go_sum_h1": "h1:U+s90UTSYgptZMwQh2aRr3LuazLJIa+Pg3Kc1ylSYVY=",
+      "go_mod_h1": "h1:maD7wRr/U5Z6m/iR4s+kqSMx2CaBsrgA7czyZG/E6dU=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/daaku/go.zipexe",
+      "version": "v1.0.2",
+      "indirect": true,
+      "source": "https://github.com/daaku/go.zipexe",
+      "go_sum_h1": "h1:Zg55YLYTr7M9wjKn8SY/WcpuuEi+kR2u4E8RhvpyXmk=",
+      "go_mod_h1": "h1:5xWogtqlYnfBXkSB1o9xysukNP9GTvaNkqzUZbt3Bw8=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/mattn/go-colorable",
+      "version": "v0.1.13",
+      "indirect": true,
+      "source": "https://github.com/mattn/go-colorable",
+      "go_sum_h1": "h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=",
+      "go_mod_h1": "h1:7S9/ev0klgBDR4GtXTXX8a3vIGJpMovkB8vQcUbaXHg=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/mattn/go-isatty",
+      "version": "v0.0.20",
+      "indirect": true,
+      "source": "https://github.com/mattn/go-isatty",
+      "go_sum_h1": "h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=",
+      "go_mod_h1": "h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/modern-go/concurrent",
+      "version": "v0.0.0-20180306012644-bacd9c7ef1dd",
+      "indirect": true,
+      "source": "https://github.com/modern-go/concurrent",
+      "go_sum_h1": "h1:TRLaZ9cD/w8PVh93nsPXa1VrQ6jlwL5oN8l14QlcNfg=",
+      "go_mod_h1": "h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/modern-go/reflect2",
+      "version": "v1.0.2",
+      "indirect": true,
+      "source": "https://github.com/modern-go/reflect2",
+      "go_sum_h1": "h1:xBagoLtFs94CBntxluKeaWgTMpvLxC4ur3nMaC9Gz0M=",
+      "go_mod_h1": "h1:yWuevngMOJpCy52FWWMvUC8ws7m/LJsjYzDa0/r8luk=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/russross/blackfriday/v2",
+      "version": "v2.0.1",
+      "indirect": true,
+      "source": "https://github.com/russross/blackfriday/v2",
+      "go_sum_h1": "h1:lPqVAte+HuHNfhJ/0LC98ESWRz8afy9tM/0RK8m9o+Q=",
+      "go_mod_h1": "h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/shurcooL/sanitized_anchor_name",
+      "version": "v1.0.0",
+      "indirect": true,
+      "source": "https://github.com/shurcooL/sanitized_anchor_name",
+      "go_sum_h1": "h1:PdmoCO6wvbs+7yrJyMORt4/BmY5IYyJwS/kOiWx8mHo=",
+      "go_mod_h1": "h1:1NzhyTcUVG4SuEtjjoZeVRXNmyL/1OwPU0+IJeTBvfc=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/tidwall/match",
+      "version": "v1.1.1",
+      "indirect": true,
+      "source": "https://github.com/tidwall/match",
+      "go_sum_h1": "h1:+Ho715JplO36QYgwN9PGYNhgZvoUSc9X2c80KVTi+GA=",
+      "go_mod_h1": "h1:eRSPERbgtNPcGhD8UCthc6PmLEQXEWd3PRB5JTxsfmM=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "github.com/tidwall/pretty",
+      "version": "v1.2.0",
+      "indirect": true,
+      "source": "https://github.com/tidwall/pretty",
+      "go_sum_h1": "h1:RWIZEg2iJ8/g6fDDYzMpobmaoGh5OLl4AXtGUGPcqCs=",
+      "go_mod_h1": "h1:ITEVvHYasfjBbM0u2Pg8T2nJnzm8xPwvNhhsoaGGjNU=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "golang.org/x/sync",
+      "version": "v0.0.0-20190911185100-cd5d95a43a6e",
+      "indirect": true,
+      "source": "https://golang.org/x/sync",
+      "go_sum_h1": "h1:vcxGaoTs7kV8m5Np9uUNQin4BrLOthgV7252N8V+FwY=",
+      "go_mod_h1": "h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=",
+      "available_in_isolated_module_cache": false
+    },
+    {
+      "module": "google.golang.org/protobuf",
+      "version": "v1.33.0",
+      "indirect": true,
+      "source": "https://google.golang.org/protobuf",
+      "go_sum_h1": "h1:uNO2rsAINq/JlFpSdYEKIZ0uKD/R9cpdv0T+yoGwGmI=",
+      "go_mod_h1": "h1:c6P6GXX6sHbq/GpV6MGZEdwhWPcYBgnhAHhKbcUYpos=",
+      "available_in_isolated_module_cache": false
+    }
+  ],
+  "declared_module_count": 34,
+  "missing_modules_reported_by_first_build": [
+    {
+      "module": "github.com/GeertJohan/go.incremental",
+      "version": "v1.0.0"
+    },
+    {
+      "module": "github.com/fatih/color",
+      "version": "v1.18.0"
+    },
+    {
+      "module": "github.com/golang/protobuf",
+      "version": "v1.5.4"
+    },
+    {
+      "module": "github.com/json-iterator/go",
+      "version": "v1.1.12"
+    },
+    {
+      "module": "github.com/kardianos/osext",
+      "version": "v0.0.0-20190222173326-2bc1f35cddc0"
+    },
+    {
+      "module": "github.com/mattn/go-runewidth",
+      "version": "v0.0.9"
+    },
+    {
+      "module": "github.com/oleiade/lane",
+      "version": "v1.0.1"
+    },
+    {
+      "module": "github.com/olekukonko/tablewriter",
+      "version": "v0.0.4"
+    },
+    {
+      "module": "github.com/peterh/liner",
+      "version": "v1.2.2"
+    },
+    {
+      "module": "github.com/qjfoidnh/Baidu-Login",
+      "version": "v1.4.1"
+    },
+    {
+      "module": "github.com/qjfoidnh/baidu-tools",
+      "version": "v1.2.0"
+    },
+    {
+      "module": "github.com/rs/dnscache",
+      "version": "v0.0.0-20230804202142-fc85eb664529"
+    },
+    {
+      "module": "github.com/tidwall/gjson",
+      "version": "v1.18.0"
+    },
+    {
+      "module": "github.com/urfave/cli",
+      "version": "v1.22.5"
+    },
+    {
+      "module": "golang.org/x/net",
+      "version": "v0.0.0-20190620200207-3b0461eec859"
+    }
+  ],
+  "all_patched_files_gofmt_parsed": 10,
+  "gofmt_check_after_write": "empty_output_exit_0",
+  "command": [
+    "go",
+    "build",
+    "-mod=readonly",
+    "-o",
+    "<isolated>/pcs-never-execute",
+    "."
+  ],
+  "GO111MODULE": "on",
+  "GOPROXY": "off",
+  "GOSUMDB": "off",
+  "GOWORK": "off",
+  "GOTOOLCHAIN": "local",
+  "network_guard": "same_child_seccomp_socket_denial",
+  "build_exit_code": 1,
+  "build_failure": "module lookup disabled by GOPROXY=off; missing isolated module cache",
+  "client_binary_created": false,
+  "client_or_package_init_executed": false,
+  "dependencies_downloaded": false,
+  "existing_six_test_inputs_unchanged": true,
+  "six_tests_repeated": false,
+  "account_requests": 0,
+  "real_credentials_used": false,
+  "module_wrapper_sha256": "b9fbce4106483f341a0dbda21a57fbf97107aed7c0cd84c352f0d8c9b3ac4166",
+  "next_action": "Seek specific authorization to acquire and verify fixed public dependency archives into isolated cache, then repeat pure offline build; do not fetch now.",
+  "historical_attempt_before_dependency_acquisition": true,
+  "followup_success_evidence": "pcs-full-build-2026-11-09.json"
+}

@@ -1,0 +1,26 @@
+{
+  "identity_request_attempted": true,
+  "metadata_request_attempted": true,
+  "native_identity_matched": true,
+  "native_object_matches": false,
+  "share_attempted": false,
+  "authorization_changed": false,
+  "status": "object_mismatch",
+  "response_codes": [
+    {
+      "has_errno": true,
+      "has_error_code": false,
+      "errno": 0,
+      "error_code": null
+    },
+    {
+      "has_errno": true,
+      "has_error_code": false,
+      "errno": 0,
+      "error_code": null
+    }
+  ],
+  "closed": true,
+  "task_mapping_derived_in_vps": true,
+  "checked_at_utc": "2026-11-10T15:24:52.052265+00:00"
+}

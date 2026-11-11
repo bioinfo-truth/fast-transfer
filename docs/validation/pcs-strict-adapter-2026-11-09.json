@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-09",
+  "input_commit": "5bb0d72b304f79724abbaa729c9b24dc8930f1d6",
+  "implementation": "standalone_wire_validator_and_fixture_only_intent_ledger_not_a_live_transport",
+  "go_toolchain": "go1.27.3 linux/amd64",
+  "format_compile_vet": "passed_adapter_files_only",
+  "runtime_tests_passed": 15,
+  "runtime_exit": 0,
+  "prior_suites_repeated": false,
+  "new_dependencies": false,
+  "network": "preinit_seccomp_socket_denial",
+  "filesystem": "preinit_Landlock_allowlist_dedicated_adapter_binary_only",
+  "launcher": "empty_inherited_environment_python_-I_-S_extra_fds_closed_stdin_devnull",
+  "production_gate_modified": false,
+  "live_connection": "always_closed",
+  "live_eligibility": "always_false",
+  "server_authentication_verified": false,
+  "actual_object_access": false,
+  "actual_shares_created": 0,
+  "real_credentials_used": false,
+  "persisted_credentials": false,
+  "unknown_creation_replay": "rejected_single_inmemory_intent",
+  "mapping_conflict": "terminal_quarantine_fixture",
+  "known_limits": [
+    "No network/provider or authentic response provenance",
+    "Mapping is an unverified future adapter attestation format, not an asserted server API",
+    "Ledger is in-memory, not crash/restart idempotency",
+    "Strict schema may not be accepted by real undocumented service; no live compatibility evidence"
+  ],
+  "test_binary_sha256": "1fa8312099077a15a81e954eae8555418597b37f0a4d008b633d69b9f077b532",
+  "artifact_sha256": {
+    "patches/baidupcs-go-v4.0.2/adapter/README.md": "95dd9414ce2366c8bacfd3188e770447a8c23f868f5511e6b6fa29f8ca07c7cd",
+    "patches/baidupcs-go-v4.0.2/adapter/contract.go": "a26185f0af0d294f6c17b276c21cd3f4db74accc400b0039eb3bf3988e7d06db",
+    "patches/baidupcs-go-v4.0.2/adapter/contract_test.go": "3e04805975bf456bc731ac71b985e04de45b177fe65691fd03501f3d26b67c24",
+    "patches/baidupcs-go-v4.0.2/adapter/restricted_adapter_exec.py": "aa934c78ef7b41a51285b914ccc9f93463779a6ae8758b0dd102d8cbde899cab"
+  },
+  "free_bytes_checkpoint": 169712758784
+}

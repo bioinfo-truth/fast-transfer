@@ -1,0 +1,93 @@
+{
+  "date": "2026-11-11",
+  "status": "core-workflow-and-recovery-verified-comparison-audit-still-open",
+  "runtime": {
+    "revision": "e23d4e60ace8f439e571abc24ded505296a69d99",
+    "archive_sha256": "bfadf063b3fdc9d3fbee68b48deae4f1da6154bb338e2da1a61cd28f8062949c",
+    "verified_payload_files": 51,
+    "old_versions_retained": true,
+    "service_activated": false
+  },
+  "runtime_smoke": {
+    "runtime_revision": "e23d4e60ace8f439e571abc24ded505296a69d99",
+    "kernel_network_denied": true,
+    "cli_help_passed": 7,
+    "readback_only_option_present": true,
+    "uncommitted_task_rejected_before_credentials": true,
+    "readback_only_reason": "task_readback_commit_required",
+    "cross_task_flock_exclusion_verified": true,
+    "source_task_phase_unchanged": true,
+    "cloud_requests": false,
+    "credentials_read": false
+  },
+  "real_commit_sqlite_audit": {
+    "operation_counts": [
+      {
+        "operation": "commit",
+        "outcome": "confirmed",
+        "count": 1
+      },
+      {
+        "operation": "directory",
+        "outcome": "confirmed",
+        "count": 1
+      },
+      {
+        "operation": "part",
+        "outcome": "confirmed",
+        "count": 1
+      },
+      {
+        "operation": "precreate",
+        "outcome": "confirmed",
+        "count": 1
+      }
+    ],
+    "verification_count": 1,
+    "phase": "cloud_verified",
+    "original_unknown_retained": true,
+    "same_commit_intent": true
+  },
+  "pilot_register": {
+    "order_count": 2,
+    "all_confirmed": true,
+    "retrospective": true,
+    "all_pending_and_confirmed_retained": true,
+    "price_and_labor_unknown_not_fabricated": true,
+    "private_register_sha256": "75ea87dcf5715a091e8d48cd9fecdcd634d73512512b9aa3f38b383436493bc6",
+    "credentials_or_share_secrets_in_register": false,
+    "cloud_requests": false,
+    "original_tasks_not_modified": true
+  },
+  "regression": {
+    "passed": 210,
+    "network": "inherited kernel seccomp denial",
+    "synthetic_cloud": true,
+    "actual_sdk_encoder": true,
+    "modules": [
+      "test_intake",
+      "test_safe_download",
+      "test_space",
+      "test_stop_boundaries",
+      "test_baidu_md5",
+      "test_resources",
+      "test_task_upload_process",
+      "test_task_retry",
+      "test_task_inspect",
+      "test_task_delivery",
+      "test_delivery",
+      "test_task_handoff",
+      "test_task_cleanup",
+      "test_task_upload",
+      "test_task",
+      "test_baidu_protocol",
+      "test_sdk_codec"
+    ],
+    "log_sha256": "4ce34d75fb7486b90b99f8255a87e0374600231320ef37770307c251c3973009"
+  },
+  "remaining_goal_evidence": [
+    "Issue 2 US/Europe source and cross-period comparison not fully demonstrated by the NCBI-only task results",
+    "Traffic/cost and complete manual time-and-motion observations remain unknown; not backfilled as measurements"
+  ],
+  "goal_complete": false
+}

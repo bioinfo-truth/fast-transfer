@@ -1,0 +1,12 @@
+{
+  "tests": 112,
+  "new_resource_tests": 4,
+  "passed": true,
+  "network": "inherited seccomp deny",
+  "child_allocation_bytes": 25165824,
+  "measurement": "periodic RSS sum, not exact peak or hard limit",
+  "real_account_actions": false,
+  "new_candidate_authorization": "pending",
+  "installed_revision_contains_sampler": false,
+  "command": "python3 -I -S -B tests/support/run_workflow_isolated.py test_resources test_task_upload_process test_task_inspect test_task_delivery test_delivery test_task_handoff test_task_cleanup test_task_upload test_task test_baidu_protocol test_sdk_codec"
+}

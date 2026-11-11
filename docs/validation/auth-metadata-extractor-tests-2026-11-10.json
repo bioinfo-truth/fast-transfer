@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-10",
+  "new_tests": 10,
+  "passed": 10,
+  "failures": 0,
+  "skipped": 0,
+  "test_scope": "isolated synthetic credential JSON only, seccomp network denied",
+  "real_metadata_operation_separate": "xtransfer-auth-metadata-extracted-2026-11-10.json",
+  "source_sha256": "31268a5f775267c046eec0cec1c9dc50b70d03877ab1240d8c47f7a71179f4f1",
+  "test_sha256": "f8ad0529b8fec7377299fa625d6ca756a7af236e2e8e533a9891482d21ddaecd",
+  "log_sha256": "5f7052678b7b1a2e93100b4a107c4b6c873b79d66c57d802c9f48095745b8a33"
+}

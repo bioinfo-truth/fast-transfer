@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-10",
+  "new_profile_tests": 9,
+  "affected_driver_tests": 13,
+  "affected_binding_tests": 17,
+  "affected_sse_tests": 17,
+  "offline_passed": 56,
+  "real_loopback_tls_passed": 21,
+  "failures": 0,
+  "skipped": 0,
+  "official_live_observation_separate": "mcp-official-discovery-live-2026-11-10.json",
+  "executed_source_hashes": {
+    "fast_transfer/mcp_http.py": "ce6a9bd74c1c2b8a95a6fa96261cb9d6c31884aa0dbdfe034a43903eb56a1dde",
+    "fast_transfer/mcp_sse.py": "a38682c09d9414a1eb76ac9fa1162e94b8996f1add740a11fba404cd3431c4d7",
+    "fast_transfer/mcp_official_http.py": "532cf688859307d0968a931f8de4103d4030495993b9c0cea15115c90eb0388c",
+    "fast_transfer/mcp_discovery.py": "a290e2495cee19eae1a41f28b938302079339c6b85cea891ff8d1ac0e7ad620d",
+    "fast_transfer/mcp_binding.py": "d7de3f6cd7a1ae0fc58a2a51c83e66442d6c30b194bcca9a1a26ae7f0bebec2d"
+  },
+  "logs_sha256": {
+    "mcp-official-profile-offline-2026-11-10.txt": "31e7092384ce9f43833317a1d335629254be199201e17eb81c324c51329c3e5e",
+    "mcp-official-profile-local-2026-11-10.txt": "c6a00e2e3a01e517b3f08477d3f54c616069d5dd1d31610201c5f79de83dcf8e"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "status": "metadata_diagnostic_complete",
+  "metadata_requests": 1,
+  "identity_requests": 0,
+  "metadata_comparison": {
+    "file_id_matches": true,
+    "path_matches": true,
+    "size_matches": true,
+    "md5_present": true,
+    "md5_has_hex_format": false,
+    "md5_matches": false,
+    "md5_normalized_matches": true,
+    "regular_file": true,
+    "row_errno_zero": true
+  },
+  "response_codes": [
+    {
+      "has_errno": true,
+      "has_error_code": false,
+      "errno": 0,
+      "error_code": null
+    }
+  ],
+  "closed": true,
+  "mcp_discovery": {
+    "mode": "terminal-discovery-only",
+    "status": "stopped",
+    "reason": "mcp_local_timeout",
+    "live_authenticated": false,
+    "account_verified": false,
+    "object_verified": false,
+    "share_eligible": false,
+    "share_attempted": false,
+    "automatic_retry_allowed": false,
+    "protocol_diagnostics": {
+      "stage": "sse_open",
+      "failure_rule": null,
+      "sse_bytes_read": 0,
+      "sse_lines_read": 0,
+      "event_bytes": 0,
+      "pending_line_bytes": 0,
+      "buffered_bytes": 0,
+      "line_buffer_high_water_bytes": 0,
+      "transport": {
+        "operation": "sse_open",
+        "phase": "tcp_connect",
+        "connection": 1,
+        "phase_elapsed_ms": 3003.338,
+        "phase_completed": false,
+        "session_elapsed_ms": 4335.883,
+        "session_budget_ms": 15000,
+        "remaining_ms": 10664.117,
+        "deadline_reached": false,
+        "io_timeout_ms": 3000,
+        "dns_lookup_count": 1,
+        "last_request_send_returned": false,
+        "last_response_headers_received": false,
+        "history": [
+          {
+            "operation": "sse_open",
+            "phase": "dns",
+            "connection": 1,
+            "elapsed_ms": 1330.931,
+            "completed": true
+          },
+          {
+            "operation": "sse_open",
+            "phase": "tcp_connect",
+            "connection": 1,
+            "elapsed_ms": 3003.338,
+            "completed": false
+          }
+        ]
+      },
+      "event_count": 0,
+      "last_event_kind": "none",
+      "rpc_sequence": 0,
+      "rpc_id_matches": null,
+      "pagination_present": false,
+      "http_statuses": []
+    },
+    "close_confirmed": true,
+    "request_counts": {
+      "sse_open": 1,
+      "initialize": 0,
+      "notifications/initialized": 0,
+      "tools/list": 0
+    }
+  },
+  "task_mapping_derived_in_vps": true,
+  "checked_at_utc": "2026-11-10T15:28:06.642894+00:00"
+}
