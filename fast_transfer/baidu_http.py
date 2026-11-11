@@ -67,7 +67,7 @@ class HTTPRequest:
         u = destination(self.url, self.purpose)
         if self.method not in ('GET', 'POST') or type(self.body) is not bytes or len(self.body) > PART_LIMIT+4096:
             fail('http_limit_exceeded')
-        if self.content_type != 'application/x-www-form-urlencoded' and not re.fullmatch(r'multipart/form-data; boundary=fasttransfer-[0-9a-f]{32}', self.content_type):
+        if self.content_type != 'application/x-www-form-urlencoded' and not re.fullmatch(r'multipart/form-data; boundary=(?:fasttransfer-[0-9a-f]{32}|[0-9a-f]{60})', self.content_type):
             fail('http_header_rejected')
         if self.purpose != 'upload' and len(self.body) > JSON_LIMIT:
             fail('http_limit_exceeded')

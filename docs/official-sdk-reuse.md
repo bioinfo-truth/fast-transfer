@@ -33,3 +33,8 @@ Issue #5负责SDK api上传薄适配及完整性：映射现有协议所需字�
 现有编排是Python，不能直接import Go SDK。下一阶段先设计窄接口与生命周期/取消/错误脱敏契约，比较Go上传worker的进程协议维护成本，确认收益后才接入；不为“使用SDK”重写订单、下载插件和整个任务状态机，也不同时长期维护两套相同的上传请求代码。真正替换前必须保持既有API实现可回退，并用同样的错误/恢复场景验收。当前未新增运行时Go进程或进程间秘密传输。
 
 依据：官方固定版本[README](https://github.com/baidu-netdisk/baidu-drive-sdk-go/blob/472e4a1b111eac1d6307e38802f8fe7adf7e8c21/README.md)、[底层client](https://github.com/baidu-netdisk/baidu-drive-sdk-go/blob/472e4a1b111eac1d6307e38802f8fe7adf7e8c21/baidudriver/api/client.go)、[上传场景](https://github.com/baidu-netdisk/baidu-drive-sdk-go/blob/472e4a1b111eac1d6307e38802f8fe7adf7e8c21/baidudriver/scene/upload.go)、[go.mod](https://github.com/baidu-netdisk/baidu-drive-sdk-go/blob/472e4a1b111eac1d6307e38802f8fe7adf7e8c21/go.mod)。
+
+
+## 后续进展：请求编码已接入协议层
+
+已新增实际导入SDK的Go请求编码器及Python适配，复用四种上传写请求的构造；编码进程禁网且不接收凭据，父进程沿用原有严格HTTP/响应及MD5检查，不另造有凭据的Go网络栈。11项Go测试、vet和122项Python集成/回归通过（含32MiB单片跨进程协议）。SDK响应类型暂未用于真实响应解析，保留现有更严格的检查。该进展仍非通用Task上传后端接线完成，后续需把会话/已确认片与操作账本接通、做真实VPS资源/恢复验收。详见`docs/sdk-request-encoder.md`。

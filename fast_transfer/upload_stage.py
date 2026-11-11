@@ -43,6 +43,9 @@ SAFE_REASONS = frozenset('''
     protocol_conflict protocol_identity_mismatch protocol_account_limits_unknown protocol_quota_insufficient
     protocol_strict_conflict_unproven protocol_shape_invalid protocol_path_changed protocol_part_mismatch
     protocol_session_invalid protocol_not_ready protocol_readback_mismatch
+    sdk_codec_artifact_rejected sdk_codec_input_rejected sdk_codec_deadline
+    sdk_codec_failed sdk_codec_output_rejected sdk_codec_binding_mismatch
+    sdk_codec_memory_budget sdk_codec_memory_unknown
 '''.split())
 
 

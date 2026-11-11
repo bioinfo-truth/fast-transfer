@@ -1,3 +1,7 @@
+# Official Go SDK reuse: compatibility and request codec
+
+The module now includes a capture-only request encoder used by the Python protocol via an explicit optional encoder. See [request adapter](../../docs/sdk-request-encoder.md) for its input/output, network guard, resource costs and build instructions. It does not carry credentials or send network requests; Task upload execution and VPS deployment are still pending. The original probe documentation below remains applicable to the low-level behavior.
+
 # Official Go SDK reuse compatibility probe
 
 This module **imports and exercises the official SDK**, pinned to commit

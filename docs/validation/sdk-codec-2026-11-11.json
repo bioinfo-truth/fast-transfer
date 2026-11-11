@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-11",
+  "sdk_commit": "472e4a1b111eac1d6307e38802f8fe7adf7e8c21",
+  "go_tests": 11,
+  "go_vet": "pass",
+  "python_tests": 122,
+  "new_python_tests": 14,
+  "skipped": 0,
+  "test_network": "child seccomp denied; fake parent HTTP transport",
+  "max_part_process_roundtrip_bytes": 33554432,
+  "credentials_passed_to_codec": false,
+  "real_baidu_requests": 0,
+  "vps_deployment": false,
+  "task_upload_executor_wired": false,
+  "anonymous_source_metadata_requests_attempted": 3,
+  "candidate_new_file_metadata": "verified; content not downloaded",
+  "helper_sha256": "1b2f66c08ef1d423e5f6016f2037b0ac9ca1d1b00794b146bf64944ba88f82fa",
+  "source_sha256": {
+    "fast_transfer/sdk_codec.py": "673923d4ba03aa63b46924231fe098ded73c61caf9ff1ac429b5b797c29ab1b3",
+    "fast_transfer/baidu_http.py": "4a6e0067b65dd9deaa46279dad8037c8a7c275f95a6f11bf8d25e918a80c0086",
+    "fast_transfer/baidu_protocol.py": "67f739497323e1285633307d2784856b431be2cb3edbd8aedcbf85ee3dc68d56",
+    "fast_transfer/upload_stage.py": "64c91f48bfb375887d6f12c434726553e72edcbc9c3846ca261c5feb36b9759f",
+    "scripts/baidu-sdk-codec-guard.py": "66f4f93898fc664a53a90a10d727c51894af4d8fb469c370644b79fda0620f1c",
+    "tests/test_sdk_codec.py": "28156deccf9d524df2ee6b87c2ea8014d8a14895e22476dfb905e46d2f45eb0d",
+    "integrations/baidu-sdk-go/codec/request_test.go": "049d09e90fa110401fe385131bb3574e53a1a5c9500d0838728f77d40d5609fb",
+    "integrations/baidu-sdk-go/codec/request.go": "4233becaefb9152a919f6abd9eddf5c4044d87798c90b2482c10a028bfad5e85",
+    "integrations/baidu-sdk-go/cmd/ft-sdk-codec/main.go": "3b87a3f6051534b47d04d05465c997ce1d3cd4616e35340f7cb8bc458ce9d489"
+  }
+}

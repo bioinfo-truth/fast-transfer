@@ -37,7 +37,7 @@ class BaiduProtocol:
     not the strict conflict-fail guarantee required for real MVP admission.
     """
     def __init__(self, client, app_name, target, expected_account_sha256, limits,
-                 *, diagnostic_rename_policy=False):
+                 *, diagnostic_rename_policy=False, request_encoder=None):
         if not re.fullmatch(r'[A-Za-z][A-Za-z0-9_-]{0,63}', app_name):
             fail('protocol_shape_invalid')
         pattern = re.escape('/apps/'+app_name+'/mvp-validation/')+r'[a-z0-9][a-z0-9-]{0,63}/[A-Za-z0-9][A-Za-z0-9._-]{0,179}'
@@ -47,6 +47,7 @@ class BaiduProtocol:
             fail('protocol_strict_conflict_unproven')
         if not isinstance(limits, TransferLimits):
             fail('protocol_account_limits_unknown')
+        self.request_encoder = request_encoder
         self.client, self.app_name, self.target = client, app_name, target
         self.account, self.limits = expected_account_sha256, limits
         self.diagnostic = diagnostic_rename_policy
@@ -67,11 +68,23 @@ class BaiduProtocol:
 
     def request(self, method, url, params, form=None, *, body=None, content_type=None, purpose='control'):
         self.checkpoint()
-        if form is not None:
-            body = urllib.parse.urlencode(form).encode()
-        req = HTTPRequest(method, url, self.target, purpose, params, body or b'',
-                          content_type or 'application/x-www-form-urlencoded')
+        if form is not None and self.request_encoder is not None:
+            if method != 'POST' or purpose != 'control':
+                fail('http_scope_invalid')
+            req = self.request_encoder.control(url, self.target, params, form)
+        else:
+            if form is not None:
+                body = urllib.parse.urlencode(form).encode()
+            req = HTTPRequest(method, url, self.target, purpose, params, body or b'',
+                              content_type or 'application/x-www-form-urlencoded')
+        return self.exchange_json(req)
+
+    def exchange_json(self, req):
+        self.checkpoint()
+        if req.binding != self.target:
+            fail('http_scope_invalid')
         req.validate()
+        url, params, purpose = req.url, req.params, req.purpose
         reply = self.client.exchange(req)
         try:
             self.checkpoint()
@@ -223,13 +236,17 @@ class BaiduProtocol:
         expected = min(self.limits.part_bytes, session.size-index*self.limits.part_bytes)
         if type(data) is not bytes or len(data) != expected or hashlib.md5(data).hexdigest() != session.hashes[index]:
             fail('protocol_part_mismatch')
-        boundary = 'fasttransfer-'+os.urandom(16).hex()
-        body = (('--'+boundary+'\r\nContent-Disposition: form-data; name="file"; filename="part"\r\n'
-                 'Content-Type: application/octet-stream\r\n\r\n').encode()+data+('\r\n--'+boundary+'--\r\n').encode())
-        obj = self.request('POST', session.host+'/rest/2.0/pcs/superfile2',
-                           {'method': 'upload', 'type': 'tmpfile', 'path': session.path,
-                            'uploadid': session.uploadid, 'partseq': index}, body=body,
-                           content_type='multipart/form-data; boundary='+boundary, purpose='upload')
+        if self.request_encoder is not None:
+            req = self.request_encoder.part(session.path, session.host, session.uploadid, index, data)
+            obj = self.exchange_json(req)
+        else:
+            boundary = 'fasttransfer-'+os.urandom(16).hex()
+            body = (('--'+boundary+'\r\nContent-Disposition: form-data; name="file"; filename="part"\r\n'
+                     'Content-Type: application/octet-stream\r\n\r\n').encode()+data+('\r\n--'+boundary+'--\r\n').encode())
+            obj = self.request('POST', session.host+'/rest/2.0/pcs/superfile2',
+                               {'method': 'upload', 'type': 'tmpfile', 'path': session.path,
+                                'uploadid': session.uploadid, 'partseq': index}, body=body,
+                               content_type='multipart/form-data; boundary='+boundary, purpose='upload')
         if obj.get('md5') != session.hashes[index]:
             fail('protocol_part_mismatch')
         self.confirmations[id(session)][index] = obj['md5']
