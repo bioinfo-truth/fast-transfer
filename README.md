@@ -4,6 +4,7 @@
 
 当前已完成一次真实公开小样例的官方API上传和完整双哈希回读；用户已确认境内原生BDUSS/STOKEN登录、原文件核对、分享及未登录领取下载成功。这是单样例闭环，不等于通用MVP已完成。通用任务真实接线、后端全过程空间/取消保护和跨阶段恢复仍待验收。官方Go SDK复用已固定版本并通过5项禁网兼容性测试，尚未替换现有上传后端。具体见[下一步MVP清单](docs/mvp-next-steps.md)和[SDK复用边界](docs/official-sdk-reuse.md)；下文部分旧阶段说明保留历史实现范围，不代表当前样例仍未交付。
 
+- [通用任务入口：持久状态、源下载和恢复（上传尚未接入）](docs/mvp-task-entry.md)
 - [输入契约与拒绝/人工审核规则](docs/mvp-input-contract.md)
 - [百度 HTTP 绑定、官方依据与关闭门](docs/mvp-baidu-http.md)
 - [M3 无凭据适配、模拟状态与真实验收边界](docs/mvp-upload-stage.md)
