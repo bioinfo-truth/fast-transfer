@@ -49,3 +49,6 @@ python3 -m fast_transfer.task_upload --tasks-dir /PRIVATE/TASKS JOB_ID \
 4. 合成远端已合并、响应交给协议前：杀进程后意图仍unknown；普通执行器拒绝继续，无新请求。新核查进程根据私有定位只读回读，确认后消除未知，原commit计数始终1。
 
 前3场景使用4MiB+123字节两片载荷；第4使用小载荷。所有结果明确`test_cloud_verified`/`cloud_verified=false`。两项新增进程测试（含4场景）及相关回归共108项禁网测试通过，证据`docs/validation/task-upload-process-2026-11-11.json`。这证明本地SIGKILL/新进程恢复与合成服务持久状态下的防重；不是内核断电、真实百度持久语义、VPS峰值内存/速度或实际大文件故障验收。
+
+
+通用CLI后续新增周期资源采样，成功/受控失败结果附`resource_samples`；准确边界与版本区别见[资源采样说明](runtime-resources.md)。它不替代空间/内存准入，也不是精确峰值或完整实网验收。

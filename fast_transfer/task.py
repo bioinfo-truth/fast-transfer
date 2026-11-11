@@ -22,6 +22,7 @@ from .intake import InputProblem, load_manifest, require_accepted
 from .space import DiskProbe, SpaceGuard, BackendNeeds, preflight_workspace
 from .upload_stage import open_regular, source_identity, StageFailure, safe_reason
 from .workflow import digest
+from .resources import ResourceSamples
 
 MAX_JSON = 1024 * 1024
 MAX_RECEIPT = 64 * 1024
@@ -435,6 +436,7 @@ def main(argv=None):
         if name in ('recover-source','restart-incomplete-source'):
             command.add_argument('--index', type=int, required=True)
     args = parser.parse_args(argv)
+    samples = None
     try:
         if args.command == 'create':
             task = Task.create(args.tasks_dir, load_manifest(args.manifest),
@@ -443,14 +445,19 @@ def main(argv=None):
         else:
             task = Task(args.tasks_dir, args.job_id)
             if args.command == 'show':result = task.view()
-            elif args.command == 'download-next':result = task.next_source(timeout=args.timeout)
+            elif args.command == 'download-next':
+                with ResourceSamples(task.root) as samples:
+                    result = task.next_source(timeout=args.timeout)
+                result['resource_samples'] = samples.summary()
             elif args.command == 'recover-source':result = task.recover_source(args.index)
             else:result = task.reset_incomplete_source(args.index)
         print(json.dumps(result, sort_keys=True));return 0
     except InputProblem as exc:
-        print(json.dumps({'status':exc.status,'reason':exc.code}));return 2
+        print(json.dumps({'status':exc.status,'reason':exc.code,
+                          'resource_samples':samples.summary() if samples is not None else None}));return 2
     except Exception:
-        print(json.dumps({'status':'manual_review','reason':'task_local_failure'}));return 2
+        print(json.dumps({'status':'manual_review','reason':'task_local_failure',
+                          'resource_samples':samples.summary() if samples is not None else None}));return 2
 
 
 if __name__ == '__main__':

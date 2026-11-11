@@ -25,6 +25,7 @@ from .space import BackendNeeds, SpaceGuard
 from .task import Task, encoded, read_json, private_file, MAX_RECEIPT
 from .upload_stage import TransferLimits, TransferControl, open_regular, source_identity, file_stamp, StageFailure, safe_reason
 from .workflow import digest
+from .resources import ResourceSamples
 
 METADATA_CAP = 64*1024**2
 METADATA_GROWTH = 2*MAX_RECEIPT+65536
@@ -362,6 +363,7 @@ def main(argv=None):
     p.add_argument('--inspect-commit-proof',type=Path)
     a=p.parse_args(argv)
     last_protocol=[None]
+    samples=None
     try:
         task=Task(a.tasks_dir,a.job_id)
         if a.approve_job!=a.job_id or a.approved_task_sha256!=task.view()['task_spec_sha256']:
@@ -378,22 +380,27 @@ def main(argv=None):
             backend=TaskProtocol(client,app_name,target,a.expected_account_sha256,limits,codec)
             last_protocol[0]=backend
             return backend
-        if a.inspect_commit_proof is not None:
-            from .task_inspect import inspect_commit
-            result=inspect_commit(task,factory,a.expected_account_sha256,a.inspect_commit_proof,
-                                  timeout=a.timeout,approved_task_spec_sha256=a.approved_task_sha256)
-        else:
-            result=run_next(task,factory,a.expected_account_sha256,timeout=a.timeout,approved_task_spec_sha256=a.approved_task_sha256)
+        with ResourceSamples(task.root) as samples:
+            if a.inspect_commit_proof is not None:
+                from .task_inspect import inspect_commit
+                result=inspect_commit(task,factory,a.expected_account_sha256,a.inspect_commit_proof,
+                                      timeout=a.timeout,approved_task_spec_sha256=a.approved_task_sha256)
+            else:
+                result=run_next(task,factory,a.expected_account_sha256,timeout=a.timeout,approved_task_spec_sha256=a.approved_task_sha256)
+        result['resource_samples']=samples.summary()
         print(json.dumps(result,sort_keys=True));return 0
     except (StageFailure,InputProblem) as exc:
         print(json.dumps({'status':'manual_review','reason':safe_reason(exc.code),
                           'cloud_verified':False,'automatic_retry':False,
-                          'api_diagnostics':last_protocol[0].diagnostics if last_protocol[0] is not None else []}));return 2
+                          'api_diagnostics':last_protocol[0].diagnostics if last_protocol[0] is not None else [],
+                          'resource_samples':samples.summary() if samples is not None else None}));return 2
     except KeyboardInterrupt:
-        print(json.dumps({'status':'interrupted','automatic_retry':False,'cloud_verified':False}));return 130
+        print(json.dumps({'status':'interrupted','automatic_retry':False,'cloud_verified':False,
+                          'resource_samples':samples.summary() if samples is not None else None}));return 130
     except Exception:
         print(json.dumps({'status':'manual_review','reason':'task_upload_local_failure',
-                          'cloud_verified':False,'automatic_retry':False}));return 2
+                          'cloud_verified':False,'automatic_retry':False,
+                          'resource_samples':samples.summary() if samples is not None else None}));return 2
 
 
 # No raw exception text escapes the CLI boundary.
