@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-11",
+  "revision": "a6c75a1697fff73ce40e0ca53dfeb22bdd41b6aa",
+  "archive_sha256": "0bd3a5fbfcefb4a2b6e2c4a6682c6b52ea2b9962e5f4d0c52fd05ea2d48cc2aa",
+  "members": 52,
+  "payloads_verified": 51,
+  "hash_mode_owner_and_python_syntax_verified": true,
+  "network": "inherited kernel seccomp denial",
+  "temporary_home": true,
+  "cli_help_passed": 7,
+  "readback_only_help_present": true,
+  "generic_task_create_show": true,
+  "recovery_advisory_verified": true,
+  "show_database_unchanged": true,
+  "unsupported_command_rejected": true,
+  "credentials_read": false,
+  "real_source_download": false,
+  "real_upload_or_share": false,
+  "vps_deployed": false,
+  "remote_published": false,
+  "scope": "local archive and generic input smoke only; not full packaged upload or production acceptance"
+}

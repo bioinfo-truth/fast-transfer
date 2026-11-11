@@ -39,3 +39,11 @@
 在独立临时数据库通过 `max_page_count` 实际触发SQLITE_FULL，不填满真实磁盘。新增一个测试分别覆盖part/commit两个子场景：合成服务已接收写入，finish_operation保存回执之前，测试包装器的容量探测INSERT实际失败。原持久unknown保留、没有伪造确认/完整核验/交付，适配器停止；重新打开原Task在factory之前拒绝，不再次发片或合并。
 
 7项相关禁网测试通过，使用实际本地SDK编码器与合成服务。不是实际收据UPDATE触发SQLITE_FULL，也不是文件系统ENOSPC/日志回滚或生产磁盘耗尽验收；不保证此时还能持久化新reason。只增强数据库容量失败的恢复证据，不扩大此前真实操作范围。仓库证据为 `docs/validation/sqlite-capacity-fault-2026-11-11.json`。
+
+## 2026-11-11：稳定性运行包本地准备完成
+
+已从干净已跟踪版本a6c75a1697fff73ce40e0ca53dfeb22bdd41b6aa构建本地运行包；归档SHA256为 `0bd3a5fbfcefb4a2b6e2c4a6682c6b52ea2b9962e5f4d0c52fd05ea2d48cc2aa`。52个普通成员、51个载荷的名称/摘要/权限/所有权和Python语法通过。使用临时HOME、继承性内核禁网运行解包后7个CLI帮助，确认readback-only选项；通用合成manifest创建和show返回恢复建议且数据库字节不变，非法命令拒绝。
+
+这是本地运行包冒烟检查，不是打包后完整上传验收或VPS部署证明。没有读取凭据、下载真实源、上传或分享。具体证据见仓库 `docs/validation/stability-release-local-2026-11-11.json`。
+
+待确认的具体范围：将该包安装至既有VPS新独立目录，保留旧版、不切换服务，仅做无凭据禁网入口检查；另行确认是否允许同步GitHub/Wiki。已向本人提出选择，回复前不执行这些受既有明确限制的动作。安装代码归档不包含任何数据载荷、账户配置或私有任务收据，不改变此前受阻来源/操作限制。
