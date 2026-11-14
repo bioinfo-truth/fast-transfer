@@ -1,0 +1,24 @@
+{
+  "schema": "native-batch-metadata-validation-v1",
+  "batch_max_objects": 8,
+  "response_limit_bytes": 262144,
+  "objects_real_read_only_verified": 92,
+  "contract_tests": 10,
+  "contract_result": "passed",
+  "production_binary_sha256": "c54f197da99b4d99ff128d7f0167846aae195b726045ec0abbfe67b2d4551779",
+  "production_binary_bytes": 14258336,
+  "dependencies_downloaded": false,
+  "build_config_empty": true,
+  "toolchain_local_telemetry_recorded": true,
+  "previous_build_checks": [
+    "initial compile rejected interface assignment; corrected",
+    "r2 and r3 tests/build passed but empty-HOME assertion rejected Go local telemetry",
+    "r4 explicitly audited only Go telemetry files; full build check passed"
+  ],
+  "real_share_verified": true,
+  "share_intents": 1,
+  "mail_server_accepted": true,
+  "notification_send_intents": 1,
+  "human_whole_order_receipt": "pending",
+  "cloud_content_readback": false
+}
